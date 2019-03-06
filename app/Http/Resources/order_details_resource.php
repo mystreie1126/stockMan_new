@@ -14,7 +14,7 @@ class order_details_resource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        //return parent::toArray($request);
 
         return [
             "type"   => "order_item",

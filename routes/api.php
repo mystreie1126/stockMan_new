@@ -17,10 +17,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//check all the order from funtech.ie and allow client search for order info
-Route::get('/checkOrder','OrderController@checkOrder')->name('order.viewall');
+//check all the order info from funtech.ie 
+Route::get('/orders','OrderController@allOrder')->name('order.viewall');
 
+//get single order info from funtech.ie 
+
+Route::get('/order/{order_id}','OrderController@single_order')->name('order.each');
 
 //view each order details one order has many details 
-Route::get('/order_details/{id}','OrderController@viewOrder_details')->name('order.each');
+Route::get('/order_details/{order_id}','OrderController@viewOrder_details')->name('order_details.each');
 
+
+//Route::get('/customer','CustomerController@customer')->name('single.customer');
+
+
+//update ordered product to branch
+Route::post('/stock/order','OrderController@update_stock');
+
+
+Route::get('/test','OrderController@test');
