@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\HQ\Order;
 use App\HQ\Order_detail as detail;
 use App\HQ\Partner_order_history as PartnerOrder;
+use App\HQ\Partner_rockpos_shop as PartnerPos;
 
 use App\partner\Order as sold;
 use App\partner\Order_detail as sold_detail;
@@ -27,6 +28,9 @@ use App\Http\Resources\updatePartnerStockResrouce;
 
 class OrderController extends Controller
 {
+
+
+
     public function allOrder(){
     	
     	$order = Order::with('buyer_group')->paginate(15);
@@ -56,8 +60,19 @@ class OrderController extends Controller
 
     public function update_stock(Request $request){
     	
-
+    	$partner = Order::findOrFail($request->order_id)->id_customer;
     	//$order_id,$shop_id
+    	$partner_shop = PartnerPos::findOrFail($customer)->rockpos_shop_id;
+    	if($partner_shop){
+    		return $partner_shop;
+    	}
+    	
+    	
+    	
+
+    	//if(PartnerPos::findOrFail(Order::findOrFail($request->order_id)->id_customer))
+    	
+    	//return PartnerPos::where('id_customer',$customer)->get();
 
     	$items = DB::table('ps_order_detail as a')
 	    	     ->select('a.product_reference',DB::raw('sum(a.product_quantity) as quantity'))
@@ -91,4 +106,23 @@ class OrderController extends Controller
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
