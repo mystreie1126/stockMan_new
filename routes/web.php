@@ -11,4 +11,8 @@
 |
 */
 
-Route::get('/', 'test@aa');
+Route::get('/', function(){
+
+	return view('test');
+
+});
