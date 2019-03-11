@@ -24,7 +24,7 @@ class all_online_order_resource extends Resource
             "type"          => "orders",
             "source"        => "funtech",
             "responses"    => [
-                     "order_id" => (string)$this->id_order,
+                     "order_id" => $this->id_order,
                     "reference" => $this->reference,
                 "total_product" => (string)count($this->details),
                  "total_amount" => (string)$this->total_paid_tax_incl,

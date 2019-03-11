@@ -15,4 +15,8 @@ class Stock extends Model
     public function product(){
     	return $this->hasOne('App\Partner\Product','id_product');
     }
+
+    // public function shopName(){
+    // 	return $this->hasOne('App\Partner\Shop','id_shop','id_shop');
+    // }
 }

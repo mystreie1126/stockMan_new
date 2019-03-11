@@ -10,4 +10,6 @@ class Product extends Model
     protected $table = 'ps_product';
 
     protected $primaryKey = 'id_product';
+
+    
 }

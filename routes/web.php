@@ -28,3 +28,6 @@ Route::post('/stock/order','OrderController@update_stock');
 Route::get('/products','ProductController@index');
 
 Route::get('/product/{ref}','ProductController@each_product');
+
+
+Route::get('/product_branch_stock/{ref}','ProductController@product_each_store');
