@@ -33,7 +33,7 @@ class ProductController extends Controller
 
     public function product_each_store($ref){
 
-    	$a = DB::connection('mysql2')->table('ps_product as a')
+    	$branches = DB::connection('mysql2')->table('ps_product as a')
     	    ->select('a.reference','b.name','c.quantity','d.name')
     	    ->join('ps_product_lang as b','a.id_product','b.id_product')
     	    ->join('ps_stock_available as c','a.id_product','c.id_product')
@@ -42,7 +42,11 @@ class ProductController extends Controller
     	    ->groupBy('d.name')
     	    ->get();
 
+    	$hq = DB::table('ps_product as a')->select('b.quantity')
+    		->join('ps_stock_available as b','a.id_product','b.id_product')
+    		->where('a.reference',$ref)
+    		->get();
 
-    	return response()->json($a);
+    	return response()->json(['branch'=> $branches,'HQ'=>$hq]);
     }
 }
