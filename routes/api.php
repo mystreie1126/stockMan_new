@@ -37,6 +37,8 @@ Route::get('/products','ProductController@index');
 Route::get('/product/{ref}','ProductController@each_product');
 
 
+Route::get('/ProductStockSell/{ref}','ProductController@productStockAndSell');
+
 
 
 

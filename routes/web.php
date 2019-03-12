@@ -11,23 +11,15 @@
 |
 */
 
-/* order routes...*/
-//check all the order info from funtech.ie 
-Route::get('/orders','OrderController@allOrder')->name('order.viewall');
-//get single order info from funtech.ie 
-Route::get('/order/{order_id}','OrderController@single_order')->name('order.each');
-//view each order details one order has many details 
-Route::get('/order_details/{order_id}','OrderController@viewOrder_details')->name('order_details.each');
-//update ordered product to branch
-Route::post('/stock/order','OrderController@update_stock');
 
+Route::get('/',function(){
+	return view('index');
+})->name('homepage');
 
+Route::get('/product',function(){
+	return view('product');
+})->name('productpage');
 
-/* product routes....*/
-
-Route::get('/products','ProductController@index');
-
-Route::get('/product/{ref}','ProductController@each_product');
-
-
-Route::get('/product_branch_stock/{ref}','ProductController@product_each_store');
+Route::get('/order',function(){
+	return view('order');
+})->name('orderpage');
