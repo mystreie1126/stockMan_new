@@ -19,11 +19,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 /* order routes...*/
-//check all the order info from funtech.ie 
+//check all the order info from funtech.ie
 Route::get('/orders','OrderController@allOrder')->name('order.viewall');
-//get single order info from funtech.ie 
+//get single order info from funtech.ie
 Route::get('/order/{order_id}','OrderController@single_order')->name('order.each');
-//view each order details one order has many details 
+//view each order details one order has many details
 Route::get('/order_details/{order_id}','OrderController@viewOrder_details')->name('order_details.each');
 //update ordered product to branch
 Route::post('/stock/order','OrderController@update_stock');
@@ -36,11 +36,9 @@ Route::get('/products','ProductController@index');
 
 Route::get('/product/{ref}','ProductController@each_product');
 
-
 Route::get('/ProductStockSell/{ref}','ProductController@productStockAndSell');
 
 
+/* sale routes....*/
 
-
-
-
+Route::get('/recent_orders','OrderController@recentOrders');

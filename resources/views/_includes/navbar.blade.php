@@ -1,26 +1,21 @@
   <nav class="blue darken-2">
     <div class="container">
       <div class="nav-wrapper">
-        <a href="index.html" class="brand-logo">StockManager</a>
+        <a href="{{route('salespage')}}" class="brand-logo">StockManager</a>
         <a href="#" data-activates="side-nav" class="button-collapse show-on-large right">
           <i class="material-icons">menu</i>
         </a>
         <ul class="right hide-on-med-and-down">
-          <li class="active">
-            <a href="{{route('homepage')}}">Dashboard</a>
-          </li>
-          <li>
-            <a href="{{route('productpage')}}">Products</a>
-          </li>
-          <li>
-            <a href="{{route('orderpage')}}">Orders</a>
-          </li>
-          {{-- <li>
-            <a href="rep.html">Replishment</a>
-          </li>
-          <li>
-            <a href="users.html">Partners</a>
-          </li> --}}
+            <li>
+              <a href="{{route('salespage')}}">Sales</a>
+            </li>
+            <li>
+              <a href="{{route('stockpage')}}">Stock</a>
+            </li>
+            <li>
+              <a href="{{route('orderpage')}}">Orders</a>
+            </li>
+
         </ul>
         <!-- Side nav -->
         <ul id="side-nav" class="side-nav">
@@ -35,11 +30,11 @@
             </div>
           </li>
           <li>
-            <a href="{{route('homepage')}}">
-              <i class="material-icons">dashboard</i> Dashboard</a>
+            <a href="{{route('salespage')}}">
+              <i class="material-icons">dashboard</i> Sales</a>
           </li>
           <li>
-            <a href="{{route('productpage')}}">Products</a>
+            <a href="{{route('stockpage')}}">Stock</a>
           </li>
           <li>
             <a href="{{route('orderpage')}}">Orders</a>

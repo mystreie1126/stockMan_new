@@ -20,8 +20,8 @@ use App\Http\Resources\updatePartnerStockResrouce;
 
 
 /*
-- view order both from funtech and rockpos 
-- 
+- view order both from funtech and rockpos
+-
 
 
 */
@@ -32,11 +32,11 @@ class OrderController extends Controller
 
 	/* Get:: All order */
     public function allOrder(){
-    	
+
     	$order = Order::with('buyer_group')->paginate(15);
-    	
+
     	//return $order;
-    	
+
     	return all_online_order_resource::collection($order);
     }
 
@@ -46,7 +46,7 @@ class OrderController extends Controller
     	if($order){
     		return new all_online_order_resource($order);
     	}
-    	
+
     }
 
     /* Get:: Single order details with order_id*/
@@ -56,11 +56,11 @@ class OrderController extends Controller
     	return order_details_resource::collection($d);
     }
 
-    
+
 
     /* POST:: update partner stock with order_id */
     public function update_stock(Request $request){
-    	
+
     	$partner = Order::findOrFail($request->order_id)->id_customer;
     	//$order_id,$shop_id
     	//return PartnerPos::findOrFail($partner)->get();
@@ -68,14 +68,14 @@ class OrderController extends Controller
 
     	//return $partner_shop;
     	if($partner_shop){
-    		
-    	
+
+
 	    	$items = DB::table('ps_order_detail as a')
 		    	     ->select('a.product_reference',DB::raw('sum(a.product_quantity) as quantity'))
 		    	     ->groupBy('product_reference')
 		    	     ->where('id_order',$request->order_id)
 		    	     ->get();
-	    	
+
 			for($i = 0; $i < count($items); $i++){
 	      		 DB::connection('mysql2')->table('ps_stock_available as a')
 		    	->select('a.id_product','ps_product.reference')
@@ -108,7 +108,22 @@ class OrderController extends Controller
     }
 
 
+    public function recentOrders(){
 
+    $data = DB::table('ps_orders as a')
+            ->select('a.id_order','a.id_customer','a.reference','a.date_add','c.firstname','c.lastname','d.name')
+            ->join('ps_customer_group as b','a.id_customer','b.id_customer')
+            ->join('ps_customer as c','a.id_customer','c.id_customer')
+            ->join('ps_order_state_lang as d','d.id_order_state','a.current_state')
+            ->where('b.id_group',5)
+            ->whereNotIn('a.id_customer',[2074,3102])
+            ->orderBy('a.date_add','desc')
+            ->limit(10)
+            ->get();
+
+    return $data;
+
+    }
 
 
 

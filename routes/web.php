@@ -13,12 +13,12 @@
 
 
 Route::get('/',function(){
-	return view('index');
-})->name('homepage');
+	return view('sales');
+})->name('salespage');
 
 Route::get('/product',function(){
 	return view('product');
-})->name('productpage');
+})->name('stockpage');
 
 Route::get('/order',function(){
 	return view('order');

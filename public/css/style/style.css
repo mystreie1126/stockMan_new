@@ -1,6 +1,6 @@
 /*.box{
 	border:1px solid red;
-	
+
 }*/
 
 
@@ -16,4 +16,7 @@
   transform: translateY(-50%);
 }
 
-
+.tt{
+	display: flex;
+	justify-content: space-between;
+}
