@@ -39,6 +39,15 @@ Route::get('/product/{ref}','ProductController@each_product');
 Route::get('/ProductStockSell/{ref}','ProductController@productStockAndSell');
 
 
-/* sale routes....*/
+/* order routes....*/
 
 Route::get('/recent_orders','OrderController@recentOrders');
+
+Route::get('/searchOrder/{ref}','OrderController@searchOrderByRef');
+
+
+
+
+
+
+

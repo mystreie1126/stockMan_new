@@ -31,9 +31,6 @@
 			        	<button class="btn product_btn ">Search</button>
 			        </div>
 
-			          	{{-- <input id="ref-input" type="text">
-			          	<label for="ref-input" data-error="wrong" data-success="right">Reference</label> --}}
-
 
 
 				</form>
@@ -53,10 +50,10 @@
 		</div>
 		<div id="product_box4" class="col s12 m12 l6 box">
 
-            <div id="last-four-week-chart"  style="height: 35vh; width: 100%;"></div>
-           {{--  <div id="last-three-week-chart" class='hide' style="height: 35vh; width: 100%;"></div>
-            <div id="last-two-week-chart" class='hide' style="height: 35vh; width: 100%;"></div>
-            <div id="last-one-week-chart" class='hide' style="height: 35vh; width: 100%;"></div> --}}
+            <div id="last-four-week-chart"   style="height: 35vh; width: 100%;"></div>
+           {{-- <div id="last-three-week-chart"  style="height: 35vh; width: 100%;"></div> --}}
+            {{--<div id="last-two-week-chart" class='hide' style="height: 35vh; width: 100%;"></div>--}}
+            {{-- <div id="last-one-week-chart" class="hide" style="height: 35vh; width: 100%;"></div> --}}
 
 
 

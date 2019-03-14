@@ -261,7 +261,9 @@ let lastOneWeekchart = new CanvasJS.Chart("last-one-week-chart", {
 //render all the charts
 current_Branch_Stock_chart.render();
 total_stock_compare_chart.render();
-lastFourWeekchart.render();
+ lastFourWeekchart.render();
+
+
 
  } //end of success call
 

@@ -8,6 +8,8 @@ class Customer extends Model
 {
     protected $table = 'ps_customer';
 
+    protected $primaryKey = 'id_customer';
+
     public function order(){
     	return $this->hasMany('App\HQ\Order','id_customer');
     }

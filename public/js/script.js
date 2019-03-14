@@ -11,10 +11,19 @@ $(document).ready(function(){
 
          //Init Side nav
          $('.button-collapse').sideNav();
+         $('.modal').modal();
 
 
          // Init Select
        $('select').material_select();
+
+       $('.order_details_table_modal').fancyTable({
+         activeColor: 'blue',
+         pagination: true,
+         pagClosest: 3,
+         perPage: 10,
+
+         });
 
 });
 

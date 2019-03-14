@@ -23,3 +23,7 @@ Route::get('/product',function(){
 Route::get('/order',function(){
 	return view('order');
 })->name('orderpage');
+
+Route::get('/test',function(){
+	return view('testdd');
+});

@@ -11,21 +11,31 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <link rel="stylesheet" href="{{URL::asset('css/style/style.css')}}">
+        <style media="screen">
+          #chartContainer{
+            height: 300px;
+            width:100%;
+          }
+        </style>
     <body>
+
     @include('_includes/navbar')
 
     @yield('content')
 
     @stack('product_editing')
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js
 "></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script>
  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
     <script type="text/javascript" src="{{URL::asset('js/plugin/fancyTable.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/plugin/csvExport.min.js')}}"></script>
+
     <script type="text/javascript" src="{{URL::asset('js/script.js')}}"></script>
     @stack('product_js')
     @stack('sale_js')
-
+    @stack('order_js')
     </body>
 </html>
