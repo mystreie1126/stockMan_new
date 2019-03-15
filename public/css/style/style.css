@@ -24,6 +24,7 @@
 
 .recent_orders{
 	overflow: auto;
+	height: 100vh;
 }
 
 .order_details__table{
@@ -100,6 +101,35 @@
 	margin-bottom: 20px;
 }
 
-.customer_response_details{
-	
+.brand-logo{
+	margin-left:20px;
+}
+
+.get_chart_btn,.export_sold_quantity_btn{
+	/* position: relative; */
+}
+
+#create_chart{
+	margin-top:20px;
+}
+
+
+#chart_modal .tabs .tab a{
+	 color:black;
+	 font-weight: bolder;
+}
+
+.modal_sales_chart{
+	height: 80vh;
+	overflow: auto;
+}
+
+#allshop_pos_sale_chart,#shop_weekly_sale_chart{
+	height: 50vh;
+	width:100%;
+	margin-top:10px 0;
+}
+
+#export_topSale_csv{
+	height: 500px !important;
 }

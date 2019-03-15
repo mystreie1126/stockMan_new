@@ -9,6 +9,7 @@ var response_init = function(){
   $('.response_order_details').remove();
   $('.update_stock_by_order').remove();
   $('.customer_response_details').remove();
+  $('#customer_order_history_chart').empty();
 }
 
 $('#searchOrderInfoByRef').click(function(e){

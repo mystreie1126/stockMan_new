@@ -1,5 +1,5 @@
   <nav class="blue darken-2">
-    <div class="container">
+
       <div class="nav-wrapper">
         <a href="{{route('salespage')}}" class="brand-logo">StockManager</a>
         <a href="#" data-activates="side-nav" class="button-collapse show-on-large right">
@@ -7,13 +7,13 @@
         </a>
         <ul class="right hide-on-med-and-down">
             <li>
-              <a href="{{route('salespage')}}">Sales</a>
+              <a href="{{route('salespage')}}">Shop Sales</a>
             </li>
             <li>
-              <a href="{{route('stockpage')}}">Stock</a>
+              <a href="{{route('stockpage')}}">Check Stock</a>
             </li>
             <li>
-              <a href="{{route('orderpage')}}">Orders</a>
+              <a href="{{route('orderpage')}}">Check Orders</a>
             </li>
 
         </ul>
@@ -34,10 +34,10 @@
               <i class="material-icons">dashboard</i> Sales</a>
           </li>
           <li>
-            <a href="{{route('stockpage')}}">Stock</a>
+            <a href="{{route('stockpage')}}">Check Stock</a>
           </li>
           <li>
-            <a href="{{route('orderpage')}}">Orders</a>
+            <a href="{{route('orderpage')}}">Check Orders</a>
           </li>
          {{--  <li>
             <a href="rep.html">Replishment</a>
@@ -55,6 +55,6 @@
             <a href="login.html" class="waves-effect">Logout</a>
           </li>
         </ul>
-      </div>
+
     </div>
   </nav>

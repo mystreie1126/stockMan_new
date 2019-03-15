@@ -185,7 +185,50 @@ class OrderController extends Controller
 
     }
 
+ public function allsales(Request $request){
 
+    $all_pos_sales = DB::connection('mysql2')
+      ->table('ps_orders as a')
+      ->select(DB::raw('sum(a.total_paid_tax_incl) as total'),'b.name')
+      ->groupBy('a.id_shop')
+      ->join('ps_shop as b','a.id_shop','b.id_shop')
+      ->whereNotIn('a.id_shop',[1,41,35])
+      ->where('a.date_add','>=',$request->date_from)
+      ->where('a.date_add','<=',$request->date_to)
+      ->get();
+
+        $days = -70; $week = 10;
+
+        $weeklysale = [];
+        for($i = 0; $i < 10; $i++){
+          $from  = date("Y-m-d h:i:s",strtotime($days. "day"));
+          $to = date("Y-m-d h:i:s",strtotime(($days+7). "day"));
+          $singleWeeksale = sold::whereBetween('date_add',[$from,$to])->where('id_shop',$request->id_shop)->sum('total_paid_tax_incl');
+          array_push($weeklysale,['week'=> $week,'sale'=>$singleWeeksale]);
+          $days+=7;
+          $week -= 1;
+        }
+
+
+    $shop_name = DB::table('vr_confirm_payment')->where('rockpos_shop_id',$request->id_shop)->value('shop_name');
+    return response()->json(['all_pos_sale'=> $all_pos_sales,'each_week_sale'=>$weeklysale,'name'=>$shop_name]);
+
+   }
+
+   public function topSalesQty(Request $request){
+
+     $qty = DB::connection('mysql2')->table('ps_order_detail as a')
+            ->select('a.product_name','a.product_reference',DB::raw('sum(a.product_quantity) as qty'))
+            ->groupBy('a.product_name')
+            ->join('ps_orders as b','a.id_order','b.id_order')
+            ->where('b.date_add','>=',$request->date_from)
+            ->where('b.date_add','<=',$request->date_to)
+            ->orderBy('qty','desc')
+            ->limit($request->num)
+            ->get();
+
+     return $qty;
+   }
 
 
 

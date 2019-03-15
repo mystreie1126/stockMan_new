@@ -46,8 +46,10 @@ Route::get('/recent_orders','OrderController@recentOrders');
 Route::get('/searchOrder/{ref}','OrderController@searchOrderByRef');
 
 
+/*sales chart routes ...*/
 
+Route::post('/showsales','OrderController@allsales');
 
+/* top sales qty */
 
-
-
+Route::get('/topSalesQty','OrderController@topSalesQty');
