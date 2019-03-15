@@ -1,5 +1,6 @@
-console.log('r/myplace');
-const api = 'http://localhost/project/laravel/stockManager_api/public/api';
+//console.log('r/myplace');
+const proxy = 'https://cors-anywhere.herokuapp.com/';
+const api = proxy+'http://localhost/project/laravel/stockManager_api/public/api';
 
 //init
 $(document).ready(function(){
