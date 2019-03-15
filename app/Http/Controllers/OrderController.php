@@ -10,10 +10,10 @@ use App\HQ\Partner_order_history as PartnerOrder;
 use App\HQ\Partner_rockpos_shop as PartnerShop;
 use App\HQ\Customer as Customer;
 
-use App\partner\Order as sold;
-use App\partner\Order_detail as sold_detail;
-use App\partner\Stock as pos_stock;
-use App\partner\Shop as pos_shop;
+use App\Partner\Order as sold;
+use App\Partner\Order_detail as sold_detail;
+use App\Partner\Stock as pos_stock;
+use App\Partner\Shop as pos_shop;
 
 
 use App\Http\Resources\all_online_order_resource;
