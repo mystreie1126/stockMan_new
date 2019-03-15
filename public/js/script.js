@@ -1,11 +1,11 @@
 //console.log('r/myplace');
 
 
-jQuery.ajaxPrefilter(function(options) {
-    if (options.crossDomain && jQuery.support.cors) {
-        options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
-    }
-});
+// jQuery.ajaxPrefilter(function(options) {
+//     if (options.crossDomain && jQuery.support.cors) {
+//         options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+//     }
+// });
 const api ='http://localhost/project/laravel/stockManager_api/public/api';
 
 //init
