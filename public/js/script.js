@@ -6,7 +6,7 @@
 //         options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
 //     }
 // });
-const api ='http://localhost/project/laravel/stockManager_api/public/api';
+const api =window.location.origin+'/public/api';
 
 //init
 $(document).ready(function(){
