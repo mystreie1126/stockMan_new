@@ -6,7 +6,7 @@
 //         options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
 //     }
 // });
-const api =window.location.origin+'/public/api';
+const api =window.location.origin+'/api';
 
 //init
 $(document).ready(function(){
