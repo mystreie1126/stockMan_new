@@ -6,7 +6,9 @@
 //         options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
 //     }
 // });
-const api =window.location.origin+'/api';
+
+const api = 'http://localhost/project/laravel/stockManager_api/public/api';
+//const api =window.location.origin+'/api';
 
 //init
 $(document).ready(function(){
@@ -32,6 +34,23 @@ $(document).ready(function(){
 
          });
 
+         $('.top_sale_product_table').fancyTable({
+           activeColor: 'teal',
+           pagination: true,
+           pagClosest: 5,
+           perPage: 10,
+           sortable:false
+
+           });
+
+       $('.rep_sale_table').fancyTable({
+         activeColor: 'teal',
+         pagination: true,
+         pagClosest: 3,
+         perPage: 10,
+
+         });
+
          $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 2, // Creates a dropdown of 15 years to control year,
@@ -40,6 +59,19 @@ $(document).ready(function(){
             close: 'Ok',
             closeOnSelect: true, // Close upon selecting a date,
             container: undefined // ex. 'body' will append picker to body
+          });
+
+          $('.timepicker').pickatime({
+            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: false, // Use AM/PM or 24-hour format
+            donetext: 'OK', // text for done-button
+            cleartext: 'Clear', // text for clear-button
+            canceltext: 'Cancel', // Text for cancel-button,
+            container: undefined, // ex. 'body' will append picker to body
+            autoclose: false, // automatic close timepicker
+            ampmclickable: true, // make AM PM clickable
+            aftershow: function(){} //Function for after opening timepicker
           });
 
 });

@@ -15,6 +15,9 @@
             <li>
               <a href="{{route('orderpage')}}">Check Orders</a>
             </li>
+            <li>
+              <a href="{{route('replishment')}}">Replishment</a>
+            </li>
 
         </ul>
         <!-- Side nav -->
@@ -38,6 +41,9 @@
           </li>
           <li>
             <a href="{{route('orderpage')}}">Check Orders</a>
+          </li>
+          <li>
+            <a href="{{route('replishment')}}">Replishment</a>
           </li>
          {{--  <li>
             <a href="rep.html">Replishment</a>

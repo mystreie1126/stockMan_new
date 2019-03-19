@@ -38,5 +38,6 @@
     @stack('product_js')
     @stack('sale_js')
     @stack('order_js')
+    @stack('replishment_js')
     </body>
 </html>

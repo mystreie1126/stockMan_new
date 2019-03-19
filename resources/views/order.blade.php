@@ -70,6 +70,7 @@
 
 					<table class="striped order_details_table_modal ">
 			      <thead>
+							<div class="order_details_reference_name"></div>
 		          <tr>
 		          	  <th>Barcode</th>
 		          	  <th>Name</th>

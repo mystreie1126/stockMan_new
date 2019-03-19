@@ -52,4 +52,13 @@ Route::post('/showsales','OrderController@allsales');
 
 /* top sales qty */
 
-Route::get('/topSalesQty','OrderController@topSalesQty');
+Route::post('/topSalesQty','OrderController@topSalesQty');
+
+
+Route::get('/test','OrderController@test');
+
+/* replishment page*/
+
+Route::post('/get_rep_sales_form','repishmentController@salesForm');
+Route::post('/get_rep_order_form','repishmentController@orderForm');
+Route::post('/get_rep_custom_form','repishmentController@customForm');

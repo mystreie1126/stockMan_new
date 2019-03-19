@@ -35,10 +35,11 @@ $('#searchOrderInfoByRef').click(function(e){
           $('#searchOrderInfoByRef').removeAttr('disabled');
           $('#searchOrderInfoByRef').text('Search');
 
-
+          $('.order_details_reference_name').html('<p>Customer <span class="green-text">'+response.customer.firstname+' '+response.customer.lastname+'</span> with order Reference <span class="green-text">'+ response.order.reference+'</span></p>')
           //success response
-          let condition =  (Number(response.order.current_state) == 5);
-          let state;
+          let condition =  (Number(response.order.current_state) == 5),
+              state;
+
 
            condition  ? state = '<span class="right green-text">Delivered</span>' : state = '<span class="right red-text">Not Delivered</span>';
 

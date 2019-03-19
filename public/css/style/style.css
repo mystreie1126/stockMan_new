@@ -133,3 +133,13 @@
 #export_topSale_csv{
 	height: 500px !important;
 }
+
+#rep_option{
+	margin:20px;
+}
+
+
+.rep_edit_btns{
+	display: flex;
+	flex-direction: column;
+}

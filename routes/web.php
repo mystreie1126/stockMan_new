@@ -24,6 +24,12 @@ Route::get('/order',function(){
 	return view('order');
 })->name('orderpage');
 
+Route::get('/replishment',function(){
+	return view('replishment');
+})->name('replishment');
+
+
+
 Route::get('/test',function(){
 	return view('testdd');
 });

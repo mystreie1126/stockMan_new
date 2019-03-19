@@ -1,14 +1,56 @@
-var shop_id,export_qty;
+var shop_id,topSale_qty;
 var recent_order_url = api+'/recent_orders',
-		show_sales_url = api+'/showsales';
+		show_sales_url = api+'/showsales',
+		top_qty_url = api+'/topSalesQty';
 
 $(document).ready(function(){
-		//download top sell
-		$('.select_top_qty_sold').change(function(){export_qty = $(this).val()})
+			//top sale qty call
+		$('#select_top_qty_sold').change(function(){
+			topSale_qty = $('#select_top_qty_sold').val();
+		})
 
-		$('.export_topSale_csv').click((e)=>{
+		$('.create_topSale_qty_table').click((e)=>{
+
+			let start_date = new Date($('.export_topSale_start_date').val()).toISOString().split('T')[0],
+					end_date = new Date($('.export_topSale_end_date').val()).toISOString().split('T')[0];
+						$('.create_topSale_qty_table').attr('disabled','disabled');
 				e.preventDefault();
-				
+				$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
+				$.ajax({
+					type:'post',
+					url:top_qty_url,
+					dataType:'json',
+					data:{
+						num:topSale_qty,
+						date_from:start_date,
+						date_to:end_date
+					},
+					success:function(response){
+						$('.create_topSale_qty_table').removeAttr('disabled');
+						console.log(response);
+						let html = '';
+						response.forEach((e,i)=>{
+							html += '<tr>'+
+									'<td>'+e.product_reference+'</td>'+
+									'<td>'+e.product_name+'</td>'+
+									'<td>'+e.qty+'</td>'+
+							 			+'</tr>'
+						});
+
+						$('.top_sale_product_table_details').html(html);
+
+						$('.export_topSale_csv').click(()=>{
+							$('.top_sale_product_table').csvExport({
+								title:'Top sale qty from '+$('.export_topSale_start_date').val()+' to '+$('.export_topSale_end_date').val()
+							});
+						})
+
+					},
+					error:function(e){
+							$('.create_topSale_qty_table').removeAttr('disabled');
+					}
+				})
+
 		});
 
 
@@ -16,7 +58,7 @@ $(document).ready(function(){
 
 		$('#shop_name').change(function(){shop_id = $(this).val()});
 		$('.date_class').change(function(){
-			($('.end_date').val() !='' && $('.start_date').val() != '') ? $('.get_allsales_chart_btn').prop("disabled", false):console.log('please select the date to create chart');
+			($('.end_date').val() !='' && $('.start_date').val() != '') ? $('.date_submit_btn').prop("disabled", false):console.log('please select the date to create chart');
 		});
 
 		//right side recent orders call via page loads
@@ -59,8 +101,8 @@ $(document).ready(function(){
 			$('.get_allsales_chart_btn').attr('disabled','disabled');
 			$('.get_allsales_chart_btn').text('Creating..');
 			let date_to = new Date($('.end_date').val()).toISOString().split('T')[0];
-		 let	 date_from = new Date($('.start_date').val()).toISOString().split('T')[0];
-		 let id_shop = Number($('#shop_name').val());
+		  let	date_from = new Date($('.start_date').val()).toISOString().split('T')[0];
+		  let id_shop = Number($('#shop_name').val());
 
 				e.preventDefault();
 				$.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
@@ -142,6 +184,8 @@ $(document).ready(function(){
 
 
 		});
+
+
 
 
 
