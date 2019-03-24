@@ -12,6 +12,9 @@ class Stock extends Model
 
     protected $primaryKey = 'id_product';
 
+    public $timestamps = false;
+
+
     public function product(){
     	return $this->hasOne('App\Partner\Product','id_product');
     }

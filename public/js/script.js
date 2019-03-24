@@ -27,19 +27,20 @@ $(document).ready(function(){
        $('select').material_select();
 
        $('.order_details_table_modal').fancyTable({
-         activeColor: 'blue',
-         pagination: true,
-         pagClosest: 3,
-         perPage: 10,
+         sortColumn:0,
+ 					pagination: true,
+ 					perPage:5,
+ 					globalSearch:true,
+ 					paginationClass: "btn green"
 
          });
 
          $('.top_sale_product_table').fancyTable({
-           activeColor: 'teal',
-           pagination: true,
-           pagClosest: 5,
-           perPage: 10,
-           sortable:false
+           sortColumn:0,
+            pagination: true,
+            perPage:5,
+            globalSearch:true,
+            paginationClass: "btn green"
 
            });
 
@@ -47,7 +48,7 @@ $(document).ready(function(){
          activeColor: 'teal',
          pagination: true,
          pagClosest: 3,
-         perPage: 10,
+         perPage: 5,
 
          });
 

@@ -233,14 +233,7 @@ class OrderController extends Controller
 
    public function test(){
 
-       // $a = new WebSales;
 
-       //$a = WebSales::find(52)->detail;
-       //dd($a);
-
-       $a = WebSales::find(9051)->detail;
-       
-       return gettype($a);
    }
 
 

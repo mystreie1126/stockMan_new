@@ -72,24 +72,22 @@
                   <input id="icon_prefix" type="text" class="validate" name="partener_order_ref" required>
                   <label for="icon_prefix">Partner Order Reference</label>
                 </div>
-                <button class="btn orange" style="transform:translateY(50%)">Create List</button>
+                <button class="btn orange right" style="transform:translateY(50%)">Create List</button>
             </div>
         </div>{{--order submit form--}}
 {{--3 .custom submit form--}}
 
         <div class="rep_type_form row hide" id="custom_rep_form">
             {{csrf_field()}}
-
-
         </div>{{--custom submit form--}}
   </div>{{--end of all rep-form--}}
 
+{{--
+<div id="rep_saved_list">
+    <button class="btn right" name="button">Check Saved list</button>
+  </div> --}}
 
-  <div id="rep_saved_list">
-
-  </div>{{--end of saved list--}}
-
-  <div id="rep_send_list">
+<div id="rep_send_list">
     <p class="rep_sale_table_msg"></p>
     <table class="rep_sale_table striped">
       <thead>
@@ -97,8 +95,8 @@
             <th>Barcode</th>
             <th>Name</th>
             <th>Sold Qty</th>
-            <th>Send</th>
-            <th>HQ Stock</th>
+            <th>Send Qty</th>
+            <th>HQ Qty</th>
             <th>Modified</th>
             <th>Shop</th>
         </tr>
@@ -106,24 +104,26 @@
 
         <tbody class='rep_sale_form_details'>
           <tr>
-            <td>20000</td>
-            <td>iphone</td>
-            <td>10</td>
-            <td><input type="number" value='2' class="validate rep_send_qty" disabled></td>
-            <td>100</td>
-            <td>No</td>
-            <td>No</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td>
-              <a href="javascript:void(0)" class="rep_update_qty indigo-text"><i class="material-icons">edit</i></a>
-              <a href="javascript:void(0)" class="rep_confirm_update green-text" style="margin:0 10px"><i class="material-icons">done_all</i></a>
-              <a href="javascript:void(0)" class="rep_remove_product red-text"><i class="material-icons">delete</i></a>
+
+
+              </div>
             </td>
+
          </tr>
+
        </tbody>
     </table>
+    <div class="rep-sale_form_btn">
+      {{-- <a class="waves-effect waves-light btn right  indigo darken-4 save_sale_to_list"><i class="material-icons right">save</i>Save</a> --}}
+    </div>
   </div>{{--end of send list--}}
-
-
 </div> {{--end of container--}}
 
 

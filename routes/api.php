@@ -62,3 +62,4 @@ Route::get('/test','OrderController@test');
 Route::post('/get_rep_sales_form','repishmentController@salesForm');
 Route::post('/get_rep_order_form','repishmentController@orderForm');
 Route::post('/get_rep_custom_form','repishmentController@customForm');
+Route::post('/save_sale_to_list','repishmentController@save_saleList');
