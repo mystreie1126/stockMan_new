@@ -6,13 +6,12 @@
     <p class="flow-text">Please select the Replishment option to start:</p>
     <div id="rep_option">
       <!-- Dropdown Trigger -->
-      <a class='dropdown-button btn' data-activates='dropdown1'>Replishment Option</a>
+      <a class='dropdown-button btn-large' data-activates='dropdown1'>Replishment Option</a>
 
       <!-- Dropdown Structure -->
       <ul id='dropdown1' class='dropdown-content'>
-        <li><a href="javascript:void(0)" class="get_sales_form"><i class="material-icons">view_module</i>by Sale</a></li>
-        <li><a href="#custom_rep_form" class="get_custom_form modal-trigger"><i class="material-icons">cloud</i>Customize</a></li>
-        <li><a href="#missing_form" class="missing_form modal-trigger red white-text"><i class="material-icons">cloud</i>Missing List</a></li>
+        <li><a href="javascript:void(0)" class="get_sales_form "><i class="material-icons">credit_card</i>Sales item List</a></li>
+        <li><a href="#custom_rep_form" class="get_custom_form modal-trigger"><i class="material-icons">note_add</i>Additonal item</a></li>
       </ul>
     </div>
 
@@ -68,7 +67,7 @@
 {{--2 .custom submit form--}}
 
         <div class="modal modal-fixed-footer rep_type_form" id="custom_rep_form">
-          <div class="modal-content">
+          <div class="modal-content row">
             <h4>Modal Header</h4>
             <p>A bunch of text</p>
           </div>
@@ -77,30 +76,7 @@
           </div>
         </div>{{--custom submit form--}}
 
-{{--3 .missing form--}}
-        <div class="modal modal-fixed-footer rep_type_form" id="missing_form">
-          <div class="modal-content">
-            <h4 class="red-text"><span class="missing_shop"></span> Missing Products from list</h4>
-            <table class="missing_products striped">
-              <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>reference</th>
-                    <th>Send Quantity</th>
-                </tr>
-              </thead>
 
-                <tbody class='missing_products_details'>
-
-
-
-               </tbody>
-            </table>
-
-          </div>
-          <div class="modal-footer">
-          </div>
-        </div>{{--custom submit form--}}
 
 
   </div>{{--end of all rep-form--}}
@@ -153,6 +129,7 @@
             <th>HQ Qty</th>
             <th>Modified</th>
             <th>Shop</th>
+            <th>shop_id</th>
         </tr>
       </thead>
 
@@ -162,7 +139,7 @@
 
        </tbody>
     </table>
-    <div class="rep-sale_form_btn">
+    <div class="rep-sale_form_btn right">
       {{-- <a class="waves-effect waves-light btn right  indigo darken-4 save_sale_to_list"><i class="material-icons right">save</i>Save</a> --}}
     </div>
   </div>{{--end of send list--}}

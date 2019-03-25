@@ -32,7 +32,7 @@ Route::get('/order_details/{order_id}','OrderController@viewOrder_details')->nam
 
 Route::get('/products','ProductController@index');
 
-Route::post('/product','ProductController@each_product');
+Route::post('/addtionalItemWithReference','ProductController@addtionalItemWithReference');
 
 Route::get('/ProductStockSell/{ref}','ProductController@productStockAndSell');
 

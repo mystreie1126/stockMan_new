@@ -54,7 +54,7 @@ $(document).ready(function(){
 
     });
     $('.get_sales_form').click((e,i)=>{
-      console.log(22);
+
         $('.rep_type_form').each((i,e)=>{
           if(!$(e).hasClass('hide')){
             $(e).addClass('hide');
@@ -79,6 +79,7 @@ $(document).ready(function(){
 
     /* getting sales replishment list */
     $('#rep_get_sales').click((e)=>{
+
       $('.loading-effect').removeClass('hide');
 
         let url = api+'/get_rep_sales_form';
@@ -98,7 +99,13 @@ $(document).ready(function(){
           success:function(response){
             console.log(response);
             let html = '';
+            response.web_sale.forEach((e)=>{
+              e.id_shop = response.shop_id
+            });
+            console.log(response.web_sale);
+
             let sold_details = response.store_sale.concat(response.web_sale);
+
             sold_details.forEach(function(element) { element.Modified = "No";});
             sold_details.forEach((e)=>{
               html+='<tr>'+
@@ -117,7 +124,7 @@ $(document).ready(function(){
                         '<input type="hidden" class="id_in_pos" value='+e.pos_product_id+'>'+
                         '<input type="hidden" class="final_shop_id" value='+e.id_shop+'>'+
                       '</td>'+
-
+                      '<td>'+e.id_shop+'</td>'+
                    '</tr>'
             });
 
@@ -151,8 +158,17 @@ $(document).ready(function(){
             $('.loading-effect').addClass('hide');
 
             $('.rep_sale_table').removeClass('hide');
-            $('.rep-sale_form_btn').html('<a class="waves-effect waves-light btn right  indigo darken-4 save_sale_to_list"><i class="material-icons right">save</i>Save</a>');
-            $('.rep_sale_table_msg').html('<p class="flow-text">Total <span class="total_product_msg indigo-text">'+sold_details.length+'</span> type of product(s) in the list</p>')
+            $('.rep-sale_form_btn').html(
+              '<a class="waves-effect waves-light btn teal lighten-2 darken-4" id="export_sale_list" style="margin-right:10px;" ><i class="material-icons right">eject</i>Export</a>'+
+              '<a class="waves-effect waves-light btn  indigo darken-4 save_sale_to_list"><i class="material-icons right">save</i>Save</a>'
+            );
+            $('.rep_sale_table_msg').html(
+                '<p class="flow-text">Total <span class="total_product_msg indigo-text">'+sold_details.length+'</span> type of product(s) in the list</p>'+
+                '<input type="hidden" value='+response.date[0]+'>'+
+                '<input type="hidden" value='+response.date[1]+'>'+
+                '<input type="hidden" value='+response.shop_name+'>'
+            );
+
             $('.rep_sale_table').on('click','.rep_update_qty',function(){
               $(this).parent().parent().find('.rep_send_qty').removeAttr('disabled');
             });
@@ -189,9 +205,9 @@ $(document).ready(function(){
     });
 
 
+    /*====================================save list actions ======================================================*/
 
-
-
+    //1.save to list
     $('.rep-sale_form_btn').on('click','.save_sale_to_list',function(e){
         $('.save_sale_to_list').attr('disabled','disabled');
         $('.save_sale_to_list').text('loading...');
@@ -222,8 +238,11 @@ $(document).ready(function(){
             dataType:'json',
             data:JSON.stringify(send_arr),
             success:function(response){
+
               $('.rep_sale_form_details tr').remove();
               $('.save_sale_to_list').remove();
+              $('#export_sale_list').remove();
+
               send_arr = [];
               console.log(response);
               Materialize.toast('<p class="green-text">List Saved Successfully</p>', 2000);
@@ -233,7 +252,7 @@ $(document).ready(function(){
               update_send_action(response);
               $('.loading-effect').addClass('hide');
               $('.rep_saved_list_table').removeClass('hide');
-              
+
 
             },
             error:function(){
@@ -250,9 +269,22 @@ $(document).ready(function(){
     });
 
 
+    //2.export saved list
+
+      $('.rep-sale_form_btn').on('click','#export_sale_list',function(){
+          $('.rep_sale_table').csvExport({
+            title:$('.rep_sale_table_msg input')[2].defaultValue+' sale list from' + $('.rep_sale_table_msg input')[0].defaultValue + '_to_'+$('.rep_sale_table_msg input')[1].defaultValue
+          });
+      });
+
+
+    /*====================================save list end ======================================================*/
+
     //ready to send
 
     $('.rep_saved_list_table_details').on('click','.ready_to_send',function(){
+      //loading ..
+      $('.loading-effect').removeClass('hide');
 
       let shop_id = $(this).siblings('input').val(),
               row = $(this).parent().parent();
@@ -274,6 +306,8 @@ $(document).ready(function(){
                        },
                        success:function(response){
                          console.log(response);
+
+                         $('.loading-effect').addClass('hide');
                          Materialize.toast('<p class="green-text bolder">List Successfully updated!</p>', 2000);
                        }
                      });
@@ -287,6 +321,9 @@ $(document).ready(function(){
 
     //ready to export
     $('.rep_saved_list_table_details').on('click','.ready_to_export',function(){
+      //loading ..
+      $('.loading-effect').removeClass('hide');
+
       let shop_id = $(this).siblings('input').val(),
               row = $(this).parent().parent();
       $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
@@ -310,6 +347,9 @@ $(document).ready(function(){
            });
 
            $('.export-table_details').html(html);
+
+           $('.loading-effect').addClass('hide');
+
            $('.export_table').csvExport({
             title:'Send to '+response.shop+' on '+response.date
            })
@@ -320,6 +360,10 @@ $(document).ready(function(){
 
     //ready to delete
     $('.rep_saved_list_table_details').on('click','.ready_to_delete',function(){
+
+      //loading ..
+      $('.loading-effect').removeClass('hide');
+
       let shop_id = $(this).siblings('input').val(),
               row = $(this).parent().parent();
       $.confirm({
@@ -341,6 +385,9 @@ $(document).ready(function(){
                        success:function(response){
                          console.log(response);
                          row.remove();
+                         //loading finished..
+                         $('.loading-effect').addClass('hide');
+
                          Materialize.toast('<p class="red-text">List Successfully Deleted</p>', 2000);
 
                        }
@@ -355,11 +402,11 @@ $(document).ready(function(){
 
 
 
+/*==========================================Additonal items==============================================*/
 
 
 
 
-    //missing product
-
+/*==========================================end of Additonal ==============================================*/
 
 });//end of everything

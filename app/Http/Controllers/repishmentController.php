@@ -76,12 +76,15 @@ class repishmentController extends Controller
           ->get();
 
 
-      $shop_name = DB::table('vr_confirm_payment')->where('rockpos_shop_id',$shop_id)->value('shop_name');
+      $shop_name = DB::connection('mysql2')->table('ps_shop')->where('id_shop',$shop_id)->value('name');
 
       return response()->json(['web_sale'=>$web_sale,
                                 'store_sale'=>$store_sale_update,
                                 'shop_name'=>$shop_name,
-                                'missing'=>$missing]);
+                                'shop_id'=>$shop_id,
+                                'missing'=>$missing,
+                                'date'=>[$date_from,$date_to]
+                              ]);
     }
 
 

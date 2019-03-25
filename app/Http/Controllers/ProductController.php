@@ -26,9 +26,21 @@ class ProductController extends Controller
     	return ProductResource::collection($data);
     }
 
-    public function each_product(Request $request){
+    public function addtionalItemWithReference(Request $request){
 
-       
+      $exsistInPos = DB::connection('mysql2')
+      ->table('ps_product as a')->select('b.id_stock_available')
+      ->join('ps_stock_available as b','a.id_product','b.id_product')
+      ->where('a.reference','like','%'.$request->reference.'%')
+      ->where('b.id_shop',$request->id_shop)
+      ->get();
+
+      $exsistInShop_productRef = DB::table('ps_product as a')->select('b.id_stock_available')
+      ->join('ps_stock_available as b','a.id_product','b.id_product')
+      ->where('a.reference','like','%'.$request->reference.'%')
+      ->get();
+
+      return 123;
 
     }
 
