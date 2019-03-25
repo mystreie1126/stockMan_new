@@ -11,8 +11,8 @@
       <!-- Dropdown Structure -->
       <ul id='dropdown1' class='dropdown-content'>
         <li><a href="javascript:void(0)" class="get_sales_form"><i class="material-icons">view_module</i>by Sale</a></li>
-        <li><a href="javascript:void(0)" class="get_order_form"><i class="material-icons">person</i>by Order</a></li>
-        <li><a href="javascript:void(0)" class="get_custom_form"><i class="material-icons">cloud</i>Customize</a></li>
+        <li><a href="#custom_rep_form" class="get_custom_form modal-trigger"><i class="material-icons">cloud</i>Customize</a></li>
+        <li><a href="#missing_form" class="missing_form modal-trigger red white-text"><i class="material-icons">cloud</i>Missing List</a></li>
       </ul>
     </div>
 
@@ -63,33 +63,86 @@
 
         </div> {{--sales submit form--}}
 
-{{--2 .order submit form--}}
-        <div class="rep_type_form row hide" id="order_rep_form">
-            {{csrf_field()}}
-            <div class="row">
-                <div class="input-field col s6">
-                  <i class="material-icons prefix">account_circle</i>
-                  <input id="icon_prefix" type="text" class="validate" name="partener_order_ref" required>
-                  <label for="icon_prefix">Partner Order Reference</label>
-                </div>
-                <button class="btn orange right" style="transform:translateY(50%)">Create List</button>
-            </div>
-        </div>{{--order submit form--}}
-{{--3 .custom submit form--}}
 
-        <div class="rep_type_form row hide" id="custom_rep_form">
-            {{csrf_field()}}
+{{--2 .custom submit form--}}
+
+        <div class="modal modal-fixed-footer rep_type_form" id="custom_rep_form">
+          <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+          </div>
         </div>{{--custom submit form--}}
+
+{{--3 .missing form--}}
+        <div class="modal modal-fixed-footer rep_type_form" id="missing_form">
+          <div class="modal-content">
+            <h4 class="red-text"><span class="missing_shop"></span> Missing Products from list</h4>
+            <table class="missing_products striped">
+              <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>reference</th>
+                    <th>Send Quantity</th>
+                </tr>
+              </thead>
+
+                <tbody class='missing_products_details'>
+
+
+
+               </tbody>
+            </table>
+
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>{{--custom submit form--}}
+
+
   </div>{{--end of all rep-form--}}
 
-{{--
+
+
+
 <div id="rep_saved_list">
-    <button class="btn right" name="button">Check Saved list</button>
-  </div> --}}
+  <table class="rep_saved_list_table striped">
+    <thead>
+      <tr>
+          <th class="center">Shop</th>
+          <th class="center">Product Type(s)</th>
+          <th class="center">Last Update</th>
+          <th class="center">Action</th>
+      </tr>
+    </thead>
+
+      <tbody class='rep_saved_list_table_details'>
+
+          {{-- <tr>
+            <td class="center">Mill</td>
+            <td class="center">26</td>
+            <td class="center">2018 11-29 10:23:34</td>
+            <td class="center">
+              <button class="btn green waves-effect waves-light send_action_btn">Send</button>
+              <input type="hidden" value=''>
+              <button class="btn indigo waves-effect waves-light send_action_btn">Export</button>
+              <button class="btn red waves-effect waves-light send_action_btn">Delete</button>
+            </td>
+          </tr> --}}
+
+
+     </tbody>
+  </table>
+  <div class="progress loading-effect">
+      <div class="indeterminate"></div>
+  </div>
+</div>
 
 <div id="rep_send_list">
     <p class="rep_sale_table_msg"></p>
-    <table class="rep_sale_table striped">
+    <table class="rep_sale_table hide striped">
       <thead>
         <tr>
             <th>Barcode</th>
@@ -103,20 +156,8 @@
       </thead>
 
         <tbody class='rep_sale_form_details'>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
 
 
-              </div>
-            </td>
-
-         </tr>
 
        </tbody>
     </table>
@@ -126,7 +167,44 @@
   </div>{{--end of send list--}}
 </div> {{--end of container--}}
 
+<table class="export_table hide">
+  <thead>
+    <tr>
+        <th>Name</th>
+        <th>reference</th>
+        <th>Send Quantity</th>
+    </tr>
+  </thead>
 
+    <tbody class='export-table_details'>
+
+
+
+   </tbody>
+</table>
+
+
+<div class="container missing-block">
+
+<h4 class="red-text"><span class="missing_shop"></span> Missing Products from list</h4>
+<table class="missing_products striped">
+  <thead>
+    <tr>
+        <th>Name</th>
+        <th>reference</th>
+        <th>Send Quantity</th>
+    </tr>
+  </thead>
+
+    <tbody class='missing_products_details'>
+
+
+
+   </tbody>
+</table>
+<button class="export-missing btn red accent-1">Export</button>
+
+</div>
 @endsection
 
 

@@ -6,6 +6,7 @@
 //         options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
 //     }
 // });
+// window.confirm = function(){return true;};
 
 const api = 'http://localhost/project/laravel/stockManager_api/public/api';
 //const api =window.location.origin+'/api';
@@ -49,6 +50,7 @@ $(document).ready(function(){
          pagination: true,
          pagClosest: 3,
          perPage: 5,
+         globalSearch:true
 
          });
 

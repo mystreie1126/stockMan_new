@@ -20,7 +20,6 @@ class CreateReplishmenthistoryTable extends Migration
             $table->string('reference');
             $table->integer('quantity');
             $table->integer('shop_id');
-            $table->string('shop_name');
             $table->integer('send')->default(0);
             $table->timestamps();
         });

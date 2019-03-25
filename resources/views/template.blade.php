@@ -8,6 +8,7 @@
 
         <title>StockManager</title>
         <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <link rel="stylesheet" href="{{URL::asset('css/style/style.css')}}">
@@ -20,7 +21,6 @@
     <body>
 
     @include('_includes/navbar')
-
     @yield('content')
 
     @stack('product_editing')
@@ -30,6 +30,8 @@
 "></script>
 <script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script>
  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
 
     <script type="text/javascript" src="{{URL::asset('js/plugin/fancyTable.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('js/plugin/csvExport.min.js')}}"></script>

@@ -17,19 +17,19 @@ use App\Http\Resources\Product\eachProductResource;
 
 class ProductController extends Controller
 {
-    
+
 
     public function index(){
-    	
+
     	$data = Product::with(['name','stock'])->paginate(15);
 
     	return ProductResource::collection($data);
     }
 
-    public function each_product($ref){
-    	$product = Product::where('reference',$ref)->get();
+    public function each_product(Request $request){
 
-    	return new eachProductResource($product);
+       
+
     }
 
     public function productStockAndSell($ref){
@@ -50,7 +50,7 @@ class ProductController extends Controller
     		->value('b.quantity');
 
         $branch_total_stock = DB::connection('mysql2')->table('ps_stock_available as a')
-                    ->join('ps_product as b','a.id_product','b.id_product')   
+                    ->join('ps_product as b','a.id_product','b.id_product')
                     ->where('b.reference',$ref)
                     ->whereNotIn('a.id_shop',[1,35,41])
                     ->sum('a.quantity');
@@ -66,7 +66,7 @@ class ProductController extends Controller
 
         for($i = 28; $i > 0; $i-=7){
 
-          
+
             $shop_sales = DB::connection('mysql2')->table('ps_order_detail as X')
                ->select('X.id_order','X.id_shop',
                 'X.product_name',DB::raw('sum(X.product_quantity) as quantity'),'ps_orders.date_add as Date','ps_shop.name')
@@ -77,7 +77,7 @@ class ProductController extends Controller
                ->where('ps_orders.date_add','>=',date("Y-m-d h:i:s", strtotime($days. "day")))
                ->whereNotIn('X.id_shop',[1,35,41])
                ->orderBy('ps_orders.date_add')
-              
+
                ->get();
 
             $web_sales = DB::table('vr_confirm_payment as a')
@@ -87,16 +87,16 @@ class ProductController extends Controller
                        ->groupBy('a.shop_name')
                        ->where('c.product_reference',$ref)
                         ->where('b.date_add','>=',date("Y-m-d h:i:s", strtotime($days. "day")))
-                       ->get(); 
+                       ->get();
 
             array_push($arr, ['weekShop'=>$shop_sales,'weekWeb'=>$web_sales]);
-            $days += 7; 
+            $days += 7;
         }
 
-      
 
-       
-        
+
+
+
        //return $arr;
     	return response()->json([
               'shop_stock' => ['branch'=> $branch_stock,'HQ'=>$hq_stock],
@@ -104,15 +104,15 @@ class ProductController extends Controller
             'sales' =>$arr
 
         ]);
-            
-           
+
+
     }
 
 
- 
 
 
-   
+
+
 
 
 

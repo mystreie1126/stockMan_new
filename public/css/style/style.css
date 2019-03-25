@@ -140,7 +140,26 @@
 
 
 .rep_edit_btns{
-	display: flex;
-	/* //flex-direction: column; */
-	align-items: center;
+		vertical-align:middle;
+}
+
+.rep_edit_btns_each,.send_action_btn{
+	margin-left: 5px;
+
+}
+
+.loading-effect{
+	transform: translateY(40px);
+}
+
+.bolder{
+	font-weight: bolder;
+}
+
+.missing-block{
+	margin-top: 150px;
+}
+
+#missing_form{
+	overflow: auto;
 }

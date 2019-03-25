@@ -84,6 +84,9 @@ class repishmentController extends Controller
                                 'missing'=>$missing]);
     }
 
+
+
+
     public function save_saleList(Request $request){
 
       $list = $request->json()->all();
@@ -113,17 +116,138 @@ class repishmentController extends Controller
          //    ->increment('quantity',$list[$i]['qty']);
       }
 
-      return response()->json(['list'=>$list,'saved_id'=>$saved_id,'msg'=>'Successfully reduction']);
-      return response()->json('Successfully reduction');
+        if(count($saved_id)>0){
+          //get all shops
+            $shops = DB::table('sm_replishment_history')
+                  ->select(DB::raw('distinct(shop_id)'))
+                  ->where('send',0)->get();
+            $shops = send::select('shop_id')->where('send',0)->distinct()->get();
+            $stage_send = [];
+
+            //loop to get each shop data
+            for($c = 0; $c<$shops->count();$c++){
+              $send = DB::table('sm_replishment_history')
+                    ->where('send',0)
+                    ->where('shop_id',$shops[$c]->shop_id)->get();
+
+              $shop_name = DB::connection('mysql2')->table('ps_shop')
+                    ->select('name')->where('id_shop',$shops[$c]->shop_id)
+                    ->value('name');
+
+              $last_update = DB::table('sm_replishment_history')
+                    ->select('created_at')
+                    ->where('send',0)
+                    ->where('shop_id',$shops[$c]->shop_id)
+                    ->orderBy('created_at','desc')
+                    ->value('created_at');
+
+              array_push($stage_send,['sendQty'=>$send->count(),'shop_name'=>$shop_name,
+                                      'last_update'=>$last_update,'shop_id'=>$shops[$c]->shop_id]);
+            }
+
+
+            return $stage_send;
+        }
+
     }
 
-    public function orderForm(Request $request)
-    {
+    public function getSavedList(){
+      $shops = DB::table('sm_replishment_history')
+            ->select(DB::raw('distinct(shop_id)'))
+            ->where('send',0)->get();
+      $shops = send::select('shop_id')->where('send',0)->distinct()->get();
+      $stage_send = [];
 
+      //loop to get each shop data
+      for($c = 0; $c<$shops->count();$c++){
+        $send = DB::table('sm_replishment_history')
+              ->where('send',0)
+              ->where('shop_id',$shops[$c]->shop_id)->get();
+
+        $shop_name = DB::connection('mysql2')->table('ps_shop')
+              ->select('name')->where('id_shop',$shops[$c]->shop_id)
+              ->value('name');
+
+        $last_update = DB::table('sm_replishment_history')
+              ->select('created_at')
+              ->where('send',0)
+              ->where('shop_id',$shops[$c]->shop_id)
+              ->orderBy('created_at','desc')
+              ->value('created_at');
+
+        array_push($stage_send,['sendQty'=>$send->count(),'shop_name'=>$shop_name,
+                                'last_update'=>$last_update,'shop_id'=>$shops[$c]->shop_id]);
+      }
+
+
+      return $stage_send;
     }
 
-    public function customForm(Request $request)
+
+
+    /*ready to export */
+
+    public function readyToExport(Request $request)
     {
+        $sendList = DB::table('sm_replishment_history as a')->select('a.reference as reference','a.quantity as Quantity','b.name')
+                  ->join('ps_product_lang as b','a.shop_product_id','b.id_product')
+                  ->where('b.id_shop',1)
+                  ->where('a.send',0)
+                  ->where('shop_id',$request->shop_id)
+                  ->get();
+
+       $shop_name = DB::connection('mysql2')->table('ps_shop')
+                ->select('name')->where('id_shop',$request->shop_id)
+                ->value('name');
+
+        return response()->json(['list'=>$sendList,'shop'=>$shop_name,'date'=>date('Y-m-d')]);
+    }
+
+
+    /*ready to send */
+
+    public function readyToSend(Request $request)
+    {
+      $flag_arr = [];
+      $list = send::select('pos_product_id','quantity')
+                   ->where('send',0)->where('shop_id',$request->shop_id)->get();
+
+       for($i = 0; $i<$list->count(); $i++){
+         DB::connection('mysql2')->table('ps_stock_available')
+            ->where('id_shop',$request->shop_id)
+            ->where('id_product',$list[$i]->pos_product_id)
+            ->increment('quantity',$list[$i]->quantity);
+
+              array_push($flag_arr,$i);
+       }
+
+      if(count($flag_arr)>0){
+        DB::table('sm_replishment_history')->where('send',0)->where('shop_id',$request->shop_id)->update(['send'=>1]);
+        return response()->json(['msg'=>'successfull added qty to pos','arr'=>count($flag_arr)]);
+      }
+    }
+
+    /*ready to delete */
+    public function readyToDelete(Request $request)
+    {
+     $flag_arr = [];
+     $list = send::select('shop_product_id','quantity')
+                  ->where('send',0)->where('shop_id',$request->shop_id)->get();
+
+      for($i = 0; $i<$list->count(); $i++){
+        DB::table('ps_stock_available')
+           ->where('id_product',$list[$i]->shop_product_id)
+           ->where('id_shop_group',3)
+           ->increment('quantity',$list[$i]->quantity);
+          array_push($flag_arr,$i);
+      }
+
+      if(count($flag_arr)>0){
+        DB::table('sm_replishment_history')->where('send',0)->where('shop_id',$request->shop_id)->delete();
+        return response()->json(['msg'=>'successfull added qty back','arr'=>count($flag_arr)]);
+
+      }
+
 
     }
 

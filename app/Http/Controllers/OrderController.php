@@ -62,53 +62,6 @@ class OrderController extends Controller
 
 
     /* POST:: update partner stock with order_id */
-    public function update_stock(Request $request){
-
-    	$partner = Order::findOrFail($request->order_id)->id_customer;
-    	//$order_id,$shop_id
-    	//return PartnerPos::findOrFail($partner)->get();
-    	$partner_shop = PartnerShop::findOrFail($partner)->rockpos_shop_id;
-
-    	//return $partner_shop;
-    	if($partner_shop){
-
-
-	    	$items = DB::table('ps_order_detail as a')
-		    	     ->select('a.product_reference',DB::raw('sum(a.product_quantity) as quantity'))
-		    	     ->groupBy('product_reference')
-		    	     ->where('id_order',$request->order_id)
-		    	     ->get();
-
-			for($i = 0; $i < count($items); $i++){
-	      		 DB::connection('mysql2')->table('ps_stock_available as a')
-		    	->select('a.id_product','ps_product.reference')
-		    	->join('ps_product','a.id_product','ps_product.id_product')
-		    	->where('a.id_shop',$request->shop_id)
-		    	->where('ps_product.reference',$items[$i]->product_reference)
-		    	->increment('a.quantity',$items[$i]->quantity);
-	  		}
-
-		 	$PartnerOrder = new PartnerOrder;
-
-		 	$PartnerOrder->order_id = $request->order_id;
-		 	$PartnerOrder->customer_id = Order::findOrFail($request->order_id)->id_customer;
-		 	$PartnerOrder->customer_group = Order::findOrFail($request->order_id)->buyer_group;
-		 	$PartnerOrder->created_at = date("Y-m-d H:i:s");
-		 	$PartnerOrder->save();
-
-		 	if($PartnerOrder->save()){
-		 		Order::findOrFail($request->order_id)->update(['current_state' => 5]);
-		 		return new updatePartnerStockResrouce($PartnerOrder);
-		 	}
-		 	else{
-		 		return json()->response('can not update the stock');
-		 	}
-
-		}
-		else{
-			return json()->response('stock not found');
-		}
-    }
 
 
     public function recentOrders(){

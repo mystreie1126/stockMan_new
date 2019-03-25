@@ -25,8 +25,6 @@ Route::get('/orders','OrderController@allOrder')->name('order.viewall');
 Route::get('/order/{order_id}','OrderController@single_order')->name('order.each');
 //view each order details one order has many details
 Route::get('/order_details/{order_id}','OrderController@viewOrder_details')->name('order_details.each');
-//update ordered product to branch
-Route::post('/stock/order','OrderController@update_stock');
 
 
 
@@ -34,7 +32,7 @@ Route::post('/stock/order','OrderController@update_stock');
 
 Route::get('/products','ProductController@index');
 
-Route::get('/product/{ref}','ProductController@each_product');
+Route::post('/product','ProductController@each_product');
 
 Route::get('/ProductStockSell/{ref}','ProductController@productStockAndSell');
 
@@ -63,3 +61,13 @@ Route::post('/get_rep_sales_form','repishmentController@salesForm');
 Route::post('/get_rep_order_form','repishmentController@orderForm');
 Route::post('/get_rep_custom_form','repishmentController@customForm');
 Route::post('/save_sale_to_list','repishmentController@save_saleList');
+Route::get('/getsavedlist','repishmentController@getSavedList');
+
+/* export replishment list*/
+Route::post('/ready_to_export','repishmentController@readyToExport');
+
+/* export replishment send*/
+Route::post('/ready_to_send','repishmentController@readyToSend');
+/* export replishment delete*/
+
+Route::post('/ready_to_delete','repishmentController@readyToDelete');
