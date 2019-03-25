@@ -8,8 +8,8 @@
 // });
 // window.confirm = function(){return true;};
 
-//const api = 'http://localhost/project/laravel/stockManager_api/public/api';
-const api =window.location.origin+'/api';
+const api = 'http://localhost/project/laravel/stockManager_api/public/api';
+//const api =window.location.origin+'/api';
 
 //init
 $(document).ready(function(){

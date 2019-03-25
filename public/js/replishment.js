@@ -124,7 +124,7 @@ $(document).ready(function(){
                         '<input type="hidden" class="id_in_pos" value='+e.pos_product_id+'>'+
                         '<input type="hidden" class="final_shop_id" value='+e.id_shop+'>'+
                       '</td>'+
-                      '<td>'+e.id_shop+'</td>'+
+                    
                    '</tr>'
             });
 

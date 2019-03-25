@@ -35,7 +35,7 @@
                 <option value="34">MarketCross</option>
                 <option value="36">Douglas</option>
                 <option value="37">Millfield</option>
-                <option value="39">Mill</option>
+                <option value="39">Blackpool</option>
               </select>
               <label>Select Branches</label>
           </div>
@@ -129,7 +129,6 @@
             <th>HQ Qty</th>
             <th>Modified</th>
             <th>Shop</th>
-            <th>shop_id</th>
         </tr>
       </thead>
 
