@@ -23,7 +23,8 @@
         <div class="rep_type_form row hide" id="sales_rep_form">
           <div class="col s12 m12 l12">
               <select id="rep_shop_name">
-                <option value="26" class="selected">Mill</option>
+                <option disabled selected>Choose a Shop</option>
+                <option value="26">Mill</option>
                 <option value="25">Kiosk</option>
                 <option value="27">Athlone</option>
                 <option value="28">EyerSquare</option>

@@ -47,6 +47,7 @@ $(document).ready(function(){
 
        $('.rep_sale_table').fancyTable({
          activeColor: 'teal',
+         sortColumn:0,
          pagination: true,
          pagClosest: 3,
          perPage: 5,

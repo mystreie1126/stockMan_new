@@ -79,6 +79,7 @@ $(document).ready(function(){
 
     /* getting sales replishment list */
     $('#rep_get_sales').click((e)=>{
+      $('.loading-effect').removeClass('hide');
 
         let url = api+'/get_rep_sales_form';
         e.preventDefault();
@@ -145,6 +146,10 @@ $(document).ready(function(){
 
 
             $('.rep_sale_form_details').html(html);
+
+            //loading finished
+            $('.loading-effect').addClass('hide');
+
             $('.rep_sale_table').removeClass('hide');
             $('.rep-sale_form_btn').html('<a class="waves-effect waves-light btn right  indigo darken-4 save_sale_to_list"><i class="material-icons right">save</i>Save</a>');
             $('.rep_sale_table_msg').html('<p class="flow-text">Total <span class="total_product_msg indigo-text">'+sold_details.length+'</span> type of product(s) in the list</p>')
@@ -176,6 +181,7 @@ $(document).ready(function(){
                 if(!$(this).parent().parent().find('.rep_send_qty').attr('disabled')){
                 $(this).parent().parent().find('.rep_send_qty').attr('disabled','disabled');
                 Materialize.toast('Quantity updated Successfully', 2000)
+                $(this).parent().parent().find('.rep_sales_modified').text('Yes');
               }
             });
           }
@@ -189,6 +195,9 @@ $(document).ready(function(){
     $('.rep-sale_form_btn').on('click','.save_sale_to_list',function(e){
         $('.save_sale_to_list').attr('disabled','disabled');
         $('.save_sale_to_list').text('loading...');
+        //loading...
+        $('.loading-effect').removeClass('hide');
+
         $('.rep_sale_form_details tr').each(function(a,b){
 
           let ref = $('.final_ref',b).text(),
@@ -224,7 +233,7 @@ $(document).ready(function(){
               update_send_action(response);
               $('.loading-effect').addClass('hide');
               $('.rep_saved_list_table').removeClass('hide');
-
+              
 
             },
             error:function(){
