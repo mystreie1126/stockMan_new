@@ -25,8 +25,6 @@
 
     @stack('product_editing')
     @stack('export_topSale')
-    <script type="text/javascript" src="{{URL::asset('js/script.js')}}"></script>
-
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js
 "></script>
@@ -38,6 +36,8 @@
     <script type="text/javascript" src="{{URL::asset('js/plugin/fancyTable.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('js/plugin/csvExport.min.js')}}"></script>
 
+    <script type="text/javascript" src="{{URL::asset('js/script.js')}}"></script>
+    
     @stack('product_js')
     @stack('sale_js')
     @stack('order_js')
