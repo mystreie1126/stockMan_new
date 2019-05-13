@@ -67,7 +67,7 @@ var repList = new Vue({
                   e.send = (e.standard_qty - e.branch_qty < 0) ? 0 : e.standard_qty - e.branch_qty;
                }else{
                  e.branch_qty = "No";
-                 e.send = e.soldQty;
+                 e.send = "";
                }
 
              html += "<tr>"+

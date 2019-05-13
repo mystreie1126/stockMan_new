@@ -42,7 +42,7 @@
              <th>Sold Quantity</th>
              {{-- <th>HQ Quantity</th> --}}
              <th>Standard Quantity</th>
-             <th>Branch Stock</th>
+             <th>Actual Stock</th>
              <th class="red-text">Send Quantity</th>
            </tr>
          </thead>
