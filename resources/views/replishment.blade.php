@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="container">
     <p class="flow-text">Please select the Replishment option to start:</p>
     <div id="rep_option">
@@ -41,8 +42,9 @@
           </div>
 
         	<div class=" col s3 m3 l3">
-        		<input type="text" class="datepicker rep_start_date" placeholder="Date From">
-          </div>
+{{--             <input type="datetime-local" placeholder="Date From">
+ --}}        		<input type="text" class="datepicker rep_start_date" placeholder="Date From">
+         </div>
 
 
         	<div class=" col s3 m3 l3">
@@ -187,4 +189,5 @@
 
 @push('replishment_js')
   <script type="text/javascript" src="{{URL::asset('js/replishment.js')}}"></script>
-@endpush
+{{-- <script type="text/javascript" src="{{URL::asset('js/replishment.vue.js')}}"></script>
+ --}} @endpush

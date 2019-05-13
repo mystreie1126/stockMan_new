@@ -31,8 +31,8 @@ $(document).ready(function(){
 						let html = '';
 						response.forEach((e,i)=>{
 							html += '<tr>'+
-									'<td>'+e.product_reference+'</td>'+
-									'<td>'+e.product_name+'</td>'+
+									'<td>'+e.reference+'</td>'+
+									'<td>'+e.name+'</td>'+
 									'<td>'+e.qty+'</td>'+
 							 			+'</tr>'
 						});

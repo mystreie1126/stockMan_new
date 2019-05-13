@@ -9,6 +9,28 @@ use App\HQ\req_history as send;
 
 class repishmentController extends Controller
 {
+
+    public function __construct(){
+      $this->middleware('auth');
+    }
+
+    public function index(){
+      $shops = DB::connection('mysql2')->table('ps_shop')
+            ->select('id_shop','name')
+            ->whereNotIn('id_shop',[1,35,42])
+            ->get();
+      return view('rep',compact('shops'));
+    }
+
+    public function customRep(){
+      $shops = DB::connection('mysql2')->table('ps_shop')
+            ->select('id_shop','name')
+            ->whereNotIn('id_shop',[1,35,42])
+            ->get();
+      return view('customRep',compact('shops'));
+    }
+
+    
     public function salesForm(Request $request)
     {
       $shop_id = $request->shop_id;
@@ -54,9 +76,6 @@ class repishmentController extends Controller
            ->orderBy('X.product_reference','desc')
            ->get();
 
-
-
-
       $web_sale = DB::table('vr_confirm_payment as a')
           ->select(DB::raw('sum(b.product_quantity) as quantity'),
                   'b.product_name',
@@ -74,7 +93,6 @@ class repishmentController extends Controller
           ->where('a.created_at','<=',$date_to)
           ->where('device_order',0)
           ->get();
-
 
       $shop_name = DB::connection('mysql2')->table('ps_shop')->where('id_shop',$shop_id)->value('name');
 
@@ -214,6 +232,7 @@ class repishmentController extends Controller
       $flag_arr = [];
       $list = send::select('pos_product_id','quantity')
                    ->where('send',0)->where('shop_id',$request->shop_id)->get();
+      // return $request->shop_id;
 
        for($i = 0; $i<$list->count(); $i++){
          DB::connection('mysql2')->table('ps_stock_available')
@@ -253,6 +272,43 @@ class repishmentController extends Controller
 
 
     }
+
+    public function rollback(){
+      $a = DB::table('sm_replishment_history')->where('created_at','>','2019-04-29 17:01:58')->get();
+      for($i = 0; $i < $a->count(); $i++){
+        DB::table('ps_stock_available')->where('id_product',$a[$i]->shop_product_id)->increment('quantity',$a[$i]->quantity);
+      }
+      return $a;
+
+    }
+
+    public function rep_page(){
+      $shops =  DB::connection('mysql2')->table('ps_shop')
+                ->select('id_shop','name')
+                ->whereNotIn('id_shop',[1,35,42])
+                ->get();
+      return view('rep',compact('shops'));
+    }
+
+    public function check(){
+        $arr = [];
+    		$updatedRecord = DB::connection('mysql3')->table('sm_updateStockRecord')->where('created_at','!=','2019-04-26 00:00:00')->get()->toArray();
+    		for($i = 0; $i < count($updatedRecord); $i++){
+    			$name = DB::table('ps_product_lang')->where('id_product',$updatedRecord[$i]->id_product)->value('name');
+    			$sendQty = DB::table('sm_replishment_history')->where('created_at','>=',$updatedRecord[$i]->created_at)->where('shop_product_id',$updatedRecord[$i]->id_product)->sum('quantity');
+    			$currentQty = DB::table('ps_stock_available')->where('id_stock_available',$updatedRecord[$i]->stock_id)->value('quantity');
+    			 $arr[]=[
+    			 		    'name'=>$name,
+    			 	    'barcode' =>$updatedRecord[$i]->reference,
+    			 	 'updated_qty'=>$updatedRecord[$i]->updated_qty,
+    			    'updated_time'=>$updatedRecord[$i]->created_at,
+    			 	    'send_qty'=>$sendQty,
+    			     'current_qty'=>$currentQty,
+    			  ];
+    		}
+    		return response()->json($arr);
+    }
+
 
 
 }

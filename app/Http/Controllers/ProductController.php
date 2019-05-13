@@ -105,10 +105,6 @@ class ProductController extends Controller
             $days += 7;
         }
 
-
-
-
-
        //return $arr;
     	return response()->json([
               'shop_stock' => ['branch'=> $branch_stock,'HQ'=>$hq_stock],

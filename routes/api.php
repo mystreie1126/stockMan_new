@@ -57,6 +57,14 @@ Route::get('/test','OrderController@test');
 
 /* replishment page*/
 
+Route::post('/createSalesList','repishmentController@salesList');
+
+
+
+
+
+//old controller
+
 Route::post('/get_rep_sales_form','repishmentController@salesForm');
 Route::post('/get_rep_order_form','repishmentController@orderForm');
 Route::post('/get_rep_custom_form','repishmentController@customForm');
@@ -71,3 +79,14 @@ Route::post('/ready_to_send','repishmentController@readyToSend');
 /* export replishment delete*/
 
 Route::post('/ready_to_delete','repishmentController@readyToDelete');
+
+
+Route::post('/test','repishmentController@salesList');
+
+Route::get('/rollback','repishmentController@rollback');
+
+Route::post('/test_singleref','repishmentController@customRepList');
+
+Route::get('/testa','topsellingController@testA');
+
+Route::get('/test_usams','topsellingController@usamsTopSale');

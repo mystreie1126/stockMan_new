@@ -6,18 +6,49 @@
           <i class="material-icons">menu</i>
         </a>
         <ul class="right hide-on-med-and-down">
-            <li>
+           {{--  <li>
               <a href="{{route('salespage')}}">Shop Sales</a>
             </li>
             <li>
               <a href="{{route('stockpage')}}">Check Stock</a>
-            </li>
+            </li> --}}
             <li>
               <a href="{{route('orderpage')}}">Check Orders</a>
             </li>
             <li>
               <a href="{{route('replishment')}}">Replishment</a>
             </li>
+            <li>
+              <a href="{{route('countstock')}}">Count Stock</a>
+            </li>
+
+            <li>
+              @guest
+                  <li><a href="{{ route('login') }}">Login</a></li>
+                  {{-- <li><a href="{{ route('register') }}">Register</a></li> --}}
+              @else
+
+                      {{-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                          {{ Auth::user()->name }} <span class="caret"></span>
+                      </a> --}}
+
+                      <ul class="dropdown-menu">
+                          <li>
+                              <a href="{{ route('logout') }}"
+                                  onclick="event.preventDefault();
+                                           document.getElementById('logout-form').submit();">
+                                  Logout
+                              </a>
+
+                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                  {{ csrf_field() }}
+                              </form>
+                          </li>
+                      </ul>
+
+              @endguest
+            </li>
+
 
         </ul>
         <!-- Side nav -->
@@ -32,19 +63,21 @@
               </a>
             </div>
           </li>
-          <li>
-            <a href="{{route('salespage')}}">
-              <i class="material-icons">dashboard</i> Sales</a>
+       {{--    <li>
+            <a href="{{route('salespage')}}">Shop Sales</a>
           </li>
           <li>
             <a href="{{route('stockpage')}}">Check Stock</a>
-          </li>
+          </li> --}}
           <li>
             <a href="{{route('orderpage')}}">Check Orders</a>
           </li>
           <li>
             <a href="{{route('replishment')}}">Replishment</a>
           </li>
+           <li>
+              <a href="{{route('countstock')}}">Count Stock</a>
+            </li>
          {{--  <li>
             <a href="rep.html">Replishment</a>
           </li>

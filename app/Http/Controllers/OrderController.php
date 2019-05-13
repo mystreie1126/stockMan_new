@@ -176,12 +176,22 @@ class OrderController extends Controller
             ->groupBy('a.product_name')
             ->join('ps_orders as b','a.id_order','b.id_order')
             ->where('b.date_add','>=',$request->date_from)
+            ->where('b.date_add','<=',$request->date_to);
+            // ->orderBy('qty','desc')
+            // ->take($request->num)
+            // ->get();
+
+     $qty2 = DB::table('vr_confirm_payment as a')
+            ->select('c.product_name','c.product_reference',DB::raw('sum(c.product_quantity) as qty2'))
+            ->join('ps_orders as b','a.order_id','b.id_order')
+            ->join('ps_order_detail as c','c.id_order','b.id_order')
+            ->where('b.date_add','>=',$request->date_from)
             ->where('b.date_add','<=',$request->date_to)
-            ->orderBy('qty','desc')
-            ->take($request->num)
+            ->where('a.device_order',0)
+            ->union($qty)
             ->get();
 
-     return $qty;
+     return $qty2;
    }
 
    public function test(){

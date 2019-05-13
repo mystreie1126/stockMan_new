@@ -38,6 +38,7 @@ $(document).ready(function(){
       success:function(response){
           update_send_action(response);
           $('.loading-effect').addClass('hide');
+          console.log(response)
           if(response.length == 0){
             $('.rep_saved_list_table').addClass('hide');
           }
@@ -124,7 +125,7 @@ $(document).ready(function(){
                         '<input type="hidden" class="id_in_pos" value='+e.pos_product_id+'>'+
                         '<input type="hidden" class="final_shop_id" value='+e.id_shop+'>'+
                       '</td>'+
-                    
+
                    '</tr>'
             });
 

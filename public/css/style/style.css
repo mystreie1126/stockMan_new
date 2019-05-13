@@ -3,6 +3,18 @@
 
 }*/
 
+nav{
+		font-family:'Staatliches',cursive;
+}
+
+#main{
+	font-family: 'Acme', sans-serif;
+}
+
+
+.bold{
+	font-weight: bolder;
+}
 
 #product_form{
 	position: relative;
@@ -162,4 +174,27 @@
 
 #missing_form{
 	overflow: auto;
+}
+
+.datetime{
+	display: flex;
+	flex-direction: column;
+}
+
+#replishmentLists .send_qty{
+	width:50%;
+	/* border:1px inset grey; */
+}
+#replishmentLists tbody tr:hover{
+	background-color: #E4E5E5;
+}
+
+.preloader{
+  position: absolute;
+  margin: auto;
+  top: 50vh;
+  bottom: 50vh;
+  left: 0;
+  right: 0;
+
 }
