@@ -7,7 +7,7 @@
 
 <div class="container" id="replishmentLists">
   <div class="sales_rep_form">
-    <p class="flow-text  cyan-text text-darken-3 ">Replishment via sales:</p>
+    <p class="flow-text  cyan-text text-darken-3 ">Re-stock items:</p>
     <div id="sales_rep_form" class="row" >
        <div class="col s12 m3 l3">
         <span class="indigo-text text-lighten-3">Select From:</span>

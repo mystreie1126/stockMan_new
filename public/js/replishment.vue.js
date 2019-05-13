@@ -1,7 +1,7 @@
 
 var salesList = [];
-const replishmentApi = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
-//const replishmentApi = 'http://localhost/project/laravel/newStockApi/public/api/';
+//const replishmentApi = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
+const replishmentApi = 'http://localhost/project/laravel/newStockApi/public/api/';
 
 
 
@@ -53,16 +53,22 @@ var repList = new Vue({
            }
          }).then((res)=>{
            console.log(res.data);
-           let html = '';
-           res.data.forEach((e)=>{
+              let html = '';
+              let all_list = res.data.sale.concat(res.data.re_instock);
+              console.log(all_list);
 
-             if(e.checked !== null){
-                e.branch_qty = e.branch_qty;
-                e.send = (e.standard_qty - e.branch_qty < 0) ? 0 : e.standard_qty - e.branch_qty;
-             }else{
-               e.branch_qty = "No";
-               e.send = e.soldQty;
-             }
+              var lists = all_list.filter((e,i)=>{
+                 return e !== undefined;
+               });
+
+             lists.forEach((e,i)=>{
+               if(e.checked !== null){
+                  e.branch_qty = e.branch_qty;
+                  e.send = (e.standard_qty - e.branch_qty < 0) ? 0 : e.standard_qty - e.branch_qty;
+               }else{
+                 e.branch_qty = "No";
+                 e.send = e.soldQty;
+               }
 
              html += "<tr>"+
                         "<td>"+e.name+"</td>"+
@@ -80,8 +86,6 @@ var repList = new Vue({
                      "</tr>"
 
            });
-           res.data = repList.lists;
-
            $('#test_list').html(html);
            this.list_loading = false;
            this.showButton = true;
