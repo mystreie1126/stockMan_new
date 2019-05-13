@@ -28,9 +28,9 @@ Route::get('/order',function(){
 		return view('order');
 })->name('orderpage')->middleware('auth');
 
-Route::get('/replishment',function(){
-		return view('replishment');
-})->name('replishment')->middleware('auth');
+// Route::get('/replishment',function(){
+// 		return view('replishment');
+// })->name('replishment')->middleware('auth');
 
 Route::get('/countStock',function(){
 		return view('countStock');
@@ -43,7 +43,7 @@ Route::get('/test',function(){
 });
 
 
-Route::get('/rep','repishmentController@index');
+Route::get('/rep','repishmentController@index')->name('replishment')->middleware('auth');
 Route::get('/customRep','repishmentController@customRep');
 Route::get('/check','repishmentController@check');
 

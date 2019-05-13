@@ -31,7 +31,7 @@
     </div>
   </div>
   {{-- end of sales replishment form--}}
-
+  <button type="button" class="btn-large indigo right" v-show="showButton" @click.prevent="exportList">Export to CSV</button>
   <div class=" row">
      <div class="col s12">
        <table class="centered bordered">

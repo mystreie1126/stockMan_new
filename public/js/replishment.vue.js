@@ -1,7 +1,7 @@
 
 var salesList = [];
-const replishmentApi = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
-//const replishmentApi = 'http://localhost/project/laravel/newStockApi/public/api/';
+//const replishmentApi = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
+const replishmentApi = 'http://localhost/project/laravel/newStockApi/public/api/';
 
 
 
@@ -19,7 +19,8 @@ var repList = new Vue({
       endTime:"",
       shop_id:"",
       list_loading:false,
-      submit_loading:false
+      submit_loading:false,
+      showButton:false
   },
   created:function(){
     axios({
@@ -83,6 +84,7 @@ var repList = new Vue({
 
            $('#test_list').html(html);
            this.list_loading = false;
+           this.showButton = true;
          });
 
 
@@ -131,7 +133,17 @@ var repList = new Vue({
           $('#test_list tr').remove();
           $('#rep_salelist_submit').removeAttr('disabled');
           $('#rep_salelist_submit').text('submit');
+          repList.showButton = false;
         })
+      }
+    },
+    exportList:function(){
+      if($('#test_list').children().length > 0){
+        $('#replishmentLists table').csvExport({
+          title:$('#selected_shop option:selected').text()+' sales list from '+this.startTime+' to '+this.endTime
+        });
+      }else{
+        alert('you can not exort the lists');
       }
     }
   }
