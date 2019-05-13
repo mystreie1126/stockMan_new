@@ -16,7 +16,7 @@ Auth::routes();
 
 //Route::get('/dashboard','HomeController@index')->name('salespage');
 
-Route::get('/dashboard',function(){
+Route::get('/',function(){
 	return view('sales');
 })->name('salespage')->middleware('auth');
 
