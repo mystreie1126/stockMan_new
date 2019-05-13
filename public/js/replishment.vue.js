@@ -1,7 +1,7 @@
 
 var salesList = [];
-//const replishmentApi = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
-const replishmentApi = 'http://localhost/project/laravel/newStockApi/public/api/';
+const replishmentApi = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
+//const replishmentApi = 'http://localhost/project/laravel/newStockApi/public/api/';
 
 
 
