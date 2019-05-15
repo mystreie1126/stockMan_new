@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use DB;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use Request;
 use App\HQ\Order;
 use App\HQ\Order_detail as detail;
 use App\HQ\Partner_order_history as PartnerOrder;
@@ -38,8 +39,6 @@ class OrderController extends Controller
 
     	$order = Order::with('buyer_group')->paginate(15);
 
-    	//return $order;
-
     	return all_online_order_resource::collection($order);
     }
 
@@ -65,7 +64,6 @@ class OrderController extends Controller
 
 
     public function recentOrders(){
-
     $data = DB::table('ps_orders as a')
             ->select('a.id_order','a.id_customer','a.reference','a.date_add','c.firstname','c.lastname','a.current_state')
             ->join('ps_customer_group as b','a.id_customer','b.id_customer')
@@ -85,6 +83,7 @@ class OrderController extends Controller
 
 
     public function searchOrderByRef($ref){
+
 
 
         $order = Order::where('reference','like','%'.$ref.'%')->first();
@@ -140,6 +139,7 @@ class OrderController extends Controller
     }
 
  public function allsales(Request $request){
+
 
     $all_pos_sales = DB::connection('mysql2')
       ->table('ps_orders as a')

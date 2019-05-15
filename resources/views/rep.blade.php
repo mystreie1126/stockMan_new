@@ -3,6 +3,7 @@
 @section('content')
 
 
+
 @if(Auth::check())
 
 <div class="container" id="replishmentLists">
@@ -32,6 +33,10 @@
   </div>
   {{-- end of sales replishment form--}}
   <button type="button" class="btn-large indigo right" v-show="showButton" @click.prevent="exportList">Export to CSV</button>
+
+
+  <div id="example-table"></div>
+
   <div class=" row">
      <div class="col s12">
        <table class="centered bordered">
@@ -47,6 +52,7 @@
            </tr>
          </thead>
          <tbody id="test_list">
+
            {{-- <tr >
              <td>iPhone 6 commuter case verlong asdas asdasdadasasdadsas</td>
              <td>100789</td>
@@ -79,6 +85,7 @@
        <p></p>
        <button class="btn-large right" @click.prevent="saveTheList" id="rep_salelist_submit">Sumbit</button>
 
+<button type="button" id="download-csv">download</button>
 
      </div>
   </div>
@@ -100,5 +107,6 @@
 @stop
 
 @push('replishment_js')
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.2.7/dist/js/tabulator.min.js"></script>
 <script type="text/javascript" src="{{URL::asset('js/replishment.vue.js')}}"></script>
 @endpush

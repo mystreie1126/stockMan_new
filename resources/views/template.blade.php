@@ -12,6 +12,7 @@
         <!-- fonts -->
         <link href="https://fonts.googleapis.com/css?family=Staatliches" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Acme" rel="stylesheet">
+        <link href="https://unpkg.com/tabulator-tables@4.2.7/dist/css/tabulator.min.css" rel="stylesheet">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
         <link rel="stylesheet" href="{{URL::asset('css/style/style.css')}}">
@@ -22,7 +23,9 @@
           }
         </style>
     <body>
+      @section('ss')
 
+      @show
 
     @include('_includes/navbar')
     <div id="main">
@@ -39,14 +42,13 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js
 "></script>
-<script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script>
+{{-- <script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script> --}}
  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
 
     <script type="text/javascript" src="{{URL::asset('js/plugin/fancyTable.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('js/plugin/csvExport.min.js')}}"></script>
-
     <script type="text/javascript" src="{{URL::asset('js/script.js')}}"></script>
 
     @stack('product_js')
