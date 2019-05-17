@@ -74,7 +74,7 @@
             <a href="{{route('stockpage')}}">Check Stock</a>
           </li> --}}
           <li>
-            <a href="{{route('hq_inventory')}}">Invetnory Control</a>
+            <a href="{{route('as')}}">Invetnory Control</a>
           </li>
 
           <li>
