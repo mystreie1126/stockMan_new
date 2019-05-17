@@ -111,16 +111,15 @@ class Common
     		  ->where('p.reference','not like','%'.'90'.'%')
     		  ->where('p.reference','not like','%'.'unlock'.'%')
     		  ->where('p.reference','not like','%'.'70'.'%')
-    	     ->join('ps_product as p','a.id_product','p.id_product')
+    	    ->join('ps_product as p','a.id_product','p.id_product');
 
-    	     ->get();
-
-    	// $attr = DB::table('ps_stock_available as a')
-    	// 	->select('attr.reference as ref','a.id_stock_available as stock_id')
-    	// 	->where('a.id_product_attribute','!=',0)
-    	// 	->whereNotIn('attr.reference',['Mill','','Arthurs Quay'])
-    	// 	->join('ps_product_attribute as attr','attr.id_product_attribute','a.id_product_attribute')
-    	// 	->get();
+    	$all = DB::table('ps_stock_available as a')
+    		->select('attr.reference as ref','a.id_stock_available as stock_id')
+    		->where('a.id_product_attribute','!=',0)
+    		->whereNotIn('attr.reference',['Mill','','Arthurs Quay'])
+    		->join('ps_product_attribute as attr','attr.id_product_attribute','a.id_product_attribute')
+        ->union($normal)
+    		->get();
 
     	// $test = DB::table('ps_stock_available as a')
     	// 	->select('attr.reference as ref','a.id_stock_available as stock_id')
@@ -131,7 +130,7 @@ class Common
     	// 	->get();
 
     	//$results = array_merge($normal_ref,$attr_ref);
-        return $normal;
+        return $all;
     	 //return $normal;
          //return array_merge($normal,$attr);
     	//return response()->json(['normal' => $normal,'attr'=>$attr]);
