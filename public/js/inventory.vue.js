@@ -14,7 +14,7 @@ var parent = new Vue({
   },
   created(){
 		//console.log(this.shop_id)
-    axios({method:'get',url:stockMan+'hq_inventoryList'}).then(function(res){
+    axios({method:'get',url:stockMan+'kk'}).then(function(res){
       console.log(res.data)
 
       res.data.forEach((e)=>{
