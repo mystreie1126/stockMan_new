@@ -14,7 +14,7 @@
             </li> --}}
 
             <li>
-              <a href="{{route('hq_inventory')}}">Invetnory Control</a>
+              <a href="{{route('as')}}">Invetnory Control</a>
             </li>
 
             <li>
