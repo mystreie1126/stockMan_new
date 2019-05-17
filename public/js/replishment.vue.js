@@ -1,6 +1,5 @@
 
 var salesList = [];
-//const stockMan = 'http://localhost/project/laravel/newStockApi/public/api/';
 
 
 

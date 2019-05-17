@@ -8,8 +8,7 @@
 // });
 // window.confirm = function(){return true;};
 
-const api = 'http://localhost/project/laravel/stockManager_api/public/api';
-const stockMan = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
+
 //const stockMan = 'http://localhost/project/laravel/newStockApi/public/api/';
 //init
 $(document).ready(function(){
