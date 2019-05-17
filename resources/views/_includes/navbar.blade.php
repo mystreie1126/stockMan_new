@@ -12,14 +12,16 @@
             <li>
               <a href="{{route('stockpage')}}">Check Stock</a>
             </li> --}}
+
+            <li>
+              <a href="{{route('hq_inventory')}}">Invetnory Control</a>
+            </li>
+
             <li>
               <a href="{{route('orderpage')}}">Check Orders</a>
             </li>
             <li>
               <a href="{{route('replishment')}}">Replishment</a>
-            </li>
-            <li>
-              <a href="{{route('countstock')}}">Count Stock</a>
             </li>
 
             <li>
@@ -56,11 +58,13 @@
           <li>
             <div class="user-view">
               <a href="#">
-                <span class="name white-text">Admin</span>
+                <span class="name white-text"></span>
               </a>
-              <a href="#">
-                <span class="email white-text">Warehouse@funtech.ie</span>
-              </a>
+              {{-- @if(Auth::check()) --}}
+              {{-- <a href="#">
+                <span class="email white-text">{{Auth::User()->name}}</span>
+              </a> --}}
+              {{-- @endif --}}
             </div>
           </li>
        {{--    <li>
@@ -70,14 +74,16 @@
             <a href="{{route('stockpage')}}">Check Stock</a>
           </li> --}}
           <li>
+            <a href="{{route('hq_inventory')}}">Invetnory Control</a>
+          </li>
+
+          <li>
             <a href="{{route('orderpage')}}">Check Orders</a>
           </li>
           <li>
             <a href="{{route('replishment')}}">Replishment</a>
           </li>
-           <li>
-              <a href="{{route('countstock')}}">Count Stock</a>
-            </li>
+
          {{--  <li>
             <a href="rep.html">Replishment</a>
           </li>

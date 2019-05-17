@@ -28,23 +28,15 @@ Route::get('/order',function(){
 		return view('order');
 })->name('orderpage')->middleware('auth');
 
-// Route::get('/replishment',function(){
-// 		return view('replishment');
-// })->name('replishment')->middleware('auth');
-
-Route::get('/countStock',function(){
-		return view('countStock');
-})->name('countstock')->middleware('auth');
-
-
+Route::get('/hq_inventoryControl',function(){
+		return view('hq_inventoryControl');
+})->name('hq_inventory')->middleware('auth');
 
 Route::get('/test',function(){
 	return view('testdd');
 });
 
-
 Route::get('/rep','repishmentController@index')->name('replishment')->middleware('auth');
-Route::get('/customRep','repishmentController@customRep');
 Route::get('/check','repishmentController@check');
 
 

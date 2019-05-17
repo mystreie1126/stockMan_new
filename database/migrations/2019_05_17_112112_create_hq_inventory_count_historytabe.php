@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+class CreateHqInventoryCountHistorytabe extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('sm_users', function (Blueprint $table) {
+        Schema::create('sm_hqInventoryCountHistory', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->integer('partner');
-            $table->integer('HQ');
-            $table->integer('user_type');
-            $table->rememberToken();
+            $table->integer('web_stock_id');
+            $table->string('reference')->nullable();
+            $table->integer('current_quantity');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sm_hqInventoryCountHistory');
     }
 }

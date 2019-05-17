@@ -56,5 +56,6 @@
     @stack('order_js')
     @stack('replishment_js')
     @stack('customRep_js')
+    @stack('inventory')
     </body>
 </html>
