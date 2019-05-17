@@ -29,7 +29,7 @@ Route::get('/order',function(){
 })->name('orderpage')->middleware('auth');
 
 Route::get('/hq_inventoryControl',function(){
-		return view('hq_inventoryControl');
+		return view('HQ_inventoryControl');
 })->name('hq_inventory')->middleware('auth');
 
 Route::get('/test',function(){
