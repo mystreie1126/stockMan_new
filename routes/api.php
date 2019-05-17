@@ -55,38 +55,8 @@ Route::post('/topSalesQty','OrderController@topSalesQty');
 
 Route::get('/test','OrderController@test');
 
-/* replishment page*/
+//inventory
 
-Route::post('/createSalesList','repishmentController@salesList');
+Route::get('/hq_inventoryList','inventoryController@HQ_invetory_list');
 
-
-
-
-
-//old controller
-
-Route::post('/get_rep_sales_form','repishmentController@salesForm');
-Route::post('/get_rep_order_form','repishmentController@orderForm');
-Route::post('/get_rep_custom_form','repishmentController@customForm');
-Route::post('/save_sale_to_list','repishmentController@save_saleList');
-Route::get('/getsavedlist','repishmentController@getSavedList');
-
-/* export replishment list*/
-Route::post('/ready_to_export','repishmentController@readyToExport');
-
-/* export replishment send*/
-Route::post('/ready_to_send','repishmentController@readyToSend');
-/* export replishment delete*/
-
-Route::post('/ready_to_delete','repishmentController@readyToDelete');
-
-
-Route::post('/test','repishmentController@salesList');
-
-Route::get('/rollback','repishmentController@rollback');
-
-Route::post('/test_singleref','repishmentController@customRepList');
-
-Route::get('/testa','topsellingController@testA');
-
-Route::get('/test_usams','topsellingController@usamsTopSale');
+Route::post('/saveToInventoryHistory','inventoryController@saveTo_hqInventoryHistory');

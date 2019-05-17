@@ -3,13 +3,14 @@
 @if(Auth::check())
 
   <div class="parent container">
+      <span class="right">Checked By: <span class="red-text">{{Auth::User()->name}}</span></span>
       <input type="hidden" value="{{Auth::User()->id}}" class="stock_userID">
 
 
       <input type="hidden" name="" value="">
       <input type="text" v-model="search">
 
-    
+
       <div v-if="stocks.length > 0" v-for="(stock,index) in filterStocks" v-bind:style="{'border':'1px dotted teal'}">
         <form class="test_1">
             <div @style="styleObj" class="row">

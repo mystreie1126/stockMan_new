@@ -13,6 +13,7 @@
               <a href="{{route('stockpage')}}">Check Stock</a>
             </li> --}}
 
+
             <li>
               <a href="{{route('as')}}">Invetnory Control</a>
             </li>
@@ -34,7 +35,7 @@
                           {{ Auth::user()->name }} <span class="caret"></span>
                       </a> --}}
 
-                      <ul class="dropdown-menu">
+                      <ul>
                           <li>
                               <a href="{{ route('logout') }}"
                                   onclick="event.preventDefault();
