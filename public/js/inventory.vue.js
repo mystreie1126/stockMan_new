@@ -16,9 +16,7 @@ var parent = new Vue({
 		//console.log(this.shop_id)
     axios({method:'get',url:stockMan+'hq_inventoryList'}).then(function(res){
       console.log(res.data)
-
-      var all = res.data.normal.concat(res.data.attr);
-      all.forEach((e)=>{
+      res.data.forEach((e)=>{
 
         e.search = e.reference.toString().toLowerCase();
       });
