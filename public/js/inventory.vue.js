@@ -1,7 +1,7 @@
 console.log(stockMan);
 
 var parent = new Vue({
-  el:'.parent',
+  el:'#stockTake_HQ',
   data:{
     stocks:[],
     search:'',
@@ -10,19 +10,21 @@ var parent = new Vue({
       'height':'30vh',
       'overflow':'auto'
     },
-	  user_id:$('.stock_userID').val()
+	  user_id:$('.stock_userID').val(),
+    loading:true,
   },
   created(){
 		//console.log(this.shop_id)
     axios({
            method:'get',
            url:stockMan+'hq_inventoryList',
-          
+
          }).then(function(res){
       console.log(res.data)
       res.data.forEach((e)=>{
+        parent.loading = false;
+        e.search = e.name.toLowerCase().concat(e.reference.toString().toLowerCase());
 
-        e.search = e.reference.toString().toLowerCase();
       });
 
       parent.stocks = res.data;
@@ -55,13 +57,21 @@ var parent = new Vue({
           }).then((response)=>{
             Materialize.toast(`<h6><span class="green-text">${ref}</span> has been updated!</h6>`, 1000);
             console.log(response.data)
-            btn.parentElement.parentElement.reset();
+          console.log(  $('#stockTake_HQ form'));
+              parent.stocks.forEach((e)=>{
+                e.updateQty = '';
+              })
+
+              $('.input_qty').val("");
+
               btn.disabled = false;
               btn.innerText = 'Update';
-            //btn.parentNode.remove();
+
           }).catch(function(error){
             console.log(error)
           });
+      }else{
+        Materialize.toast(`<h6 class='red-text'>Can Not Sumbit Empty Value!</h6>`, 1000);
       }
     }
   },

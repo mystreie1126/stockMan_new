@@ -106,7 +106,7 @@ class Common
     		 ->select('p.reference as ref','a.id_stock_available as stock_id')
     		 ->where('a.id_product_attribute',0)
     		 ->where('p.reference','!=','')
-    		 ->whereNotIn('p.reference',['Athlone','Arthus Quay','Blackpool','Douglas','Galway Shop','Gorey','MarketCross','Parkway','Wexford','Millfield','Blackpool','Douglas','Mill','ClareHall','Ashleaf','Galway','Arthursquay','ArthrusQuay','Arthurs Quay','Athone'])
+    		 ->whereNotIn('p.reference',['Athlone','Arthus Quay','Blackpool','Douglas','Galway Shop','Gorey','MarketCross','Parkway','Wexford','Millfield','Blackpool','Douglas','Mill','ClareHall','Ashleaf','Galway','Arthursquay','ArthrusQuay','Arthurs Quay','Athone','Market Cross'])
     		  ->where('p.reference','not like','%'.'al'.'%')
     		  ->where('p.reference','not like','%'.'90'.'%')
     		  ->where('p.reference','not like','%'.'unlock'.'%')
@@ -129,11 +129,8 @@ class Common
     	// 	->where('attr.reference','>',300025)
     	// 	->get();
 
-    	//$results = array_merge($normal_ref,$attr_ref);
         return $all;
-    	 //return $normal;
-         //return array_merge($normal,$attr);
-    	//return response()->json(['normal' => $normal,'attr'=>$attr]);
+        //return $test;
 
     }
 

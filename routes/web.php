@@ -28,9 +28,9 @@ Route::get('/order',function(){
 		return view('order');
 })->name('orderpage')->middleware('auth');
 
-Route::get('/hq_inventoryControl',function(){
-		return view('inventoryControl');
-})->name('as')->middleware('auth');
+Route::get('/hq_stockTake',function(){
+		return view('hq_stockTake');
+})->name('HQ_stockTake')->middleware('auth');
 
 Route::get('/test',function(){
 	return view('testdd');

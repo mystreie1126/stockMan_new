@@ -16,12 +16,13 @@ class inventoryController extends Controller
 		$inventory = Common::hq_inventory_list();
 
 		foreach($inventory as $inve){
-
-			$arr[] = [
-				'web_stock_id' => $inve->stock_id,
-				'reference'    => $inve->ref,
-				'name'         => Common::get_productName_by_ref($inve->ref)
-			];
+			if(Common::get_productName_by_ref($inve->ref)){
+				$arr[] = [
+					'web_stock_id' => $inve->stock_id,
+					'reference'    => $inve->ref,
+					'name'         => Common::get_productName_by_ref($inve->ref)
+				];
+			}
 		}
 		return $arr;
 	}
@@ -34,7 +35,7 @@ class inventoryController extends Controller
 		$InvHistory->reference        =	$request->reference;
         $InvHistory->current_quantity = $request->qty;
 		$InvHistory->user_id          = $request->user_id;
-	    $InvHistory->created_at       = date('Y-m-d h:i:s');
+	    $InvHistory->created_at       = date('Y-m-d H:i:s');
 
 	    $InvHistory->save();
 

@@ -15,7 +15,7 @@
 
 
             <li>
-              <a href="{{route('as')}}">Invetnory Control</a>
+              <a href="{{route('HQ_stockTake')}}" class="amber-text">StockTake</a>
             </li>
 
             <li>
@@ -68,14 +68,9 @@
               {{-- @endif --}}
             </div>
           </li>
-       {{--    <li>
-            <a href="{{route('salespage')}}">Shop Sales</a>
-          </li>
+
           <li>
-            <a href="{{route('stockpage')}}">Check Stock</a>
-          </li> --}}
-          <li>
-            <a href="{{route('as')}}">Invetnory Control</a>
+            <a href="{{route('HQ_stockTake')}}">StockTake</a>
           </li>
 
           <li>
@@ -85,20 +80,19 @@
             <a href="{{route('replishment')}}">Replishment</a>
           </li>
 
-         {{--  <li>
-            <a href="rep.html">Replishment</a>
+          <li>
+            <div class="divider">User Action</div>
           </li>
           <li>
-            <a href="users.html">Partners</a>
-          </li> --}}
-          <li>
-            <div class="divider"></div>
+            <a class="subheader">User Action</a>
           </li>
+
           <li>
-            <a class="subheader">Profile</a>
+            <a class="amber-text">My StockTake</a>
           </li>
+
           <li>
-            <a href="login.html" class="waves-effect">Logout</a>
+            <a href="{{route('login')}}" class="waves-effect">Logout</a>
           </li>
         </ul>
 
