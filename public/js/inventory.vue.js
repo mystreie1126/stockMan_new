@@ -1,4 +1,3 @@
-console.log(stockMan);
 
 var parent = new Vue({
   el:'#stockTake_HQ',
@@ -18,7 +17,7 @@ var parent = new Vue({
     axios({
            method:'get',
            url:stockMan+'hq_inventoryList',
-
+           crossDomain:true
          }).then(function(res){
       console.log(res.data)
       res.data.forEach((e)=>{
