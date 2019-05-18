@@ -16,7 +16,7 @@ var parent = new Vue({
 		//console.log(this.shop_id)
     $.ajax({
       type:'get',
-      url: url:stockMan+'hq_inventoryList'
+      url: url:stockMan+'hq_inventoryList',
       success:function(res){
         console.log(res);
       }
