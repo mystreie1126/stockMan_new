@@ -19,6 +19,9 @@ var parent = new Vue({
       url:stockMan+'hq_inventoryList',
       success:function(res){
         console.log(res);
+      },
+      error:function(e){
+        console.log(e);
       }
     })
     // axios({
@@ -33,12 +36,12 @@ var parent = new Vue({
     //
     //   });
 
-      parent.stocks = res.data;
+      //parent.stocks = res.data;
       //console.log(res.data);
 
-    }).catch(function(error){
-      console.log(error)
-    });
+    // }).catch(function(error){
+    //   console.log(error)
+    // });
   },
   methods:{
 
