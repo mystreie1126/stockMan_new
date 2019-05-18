@@ -13,35 +13,25 @@ var parent = new Vue({
     loading:true,
   },
   created(){
-		//console.log(this.shop_id)
-    $.ajax({
-      type:'get',
-      url:stockMan+'hq_inventoryList',
-      success:function(res){
-        console.log(res);
-      },
-      error:function(e){
-        console.log(e);
-      }
-    })
-    // axios({
-    //        method:'get',
-    //        url:stockMan+'hq_inventoryList',
-    //        crossDomain:true
-    //      }).then(function(res){
-    //   console.log(res.data)
-    //   res.data.forEach((e)=>{
-    //     parent.loading = false;
-    //     e.search = e.name.toLowerCase().concat(e.reference.toString().toLowerCase());
-    //
-    //   });
+    
+    axios({
+           method:'get',
+           url:stockMan+'hq_inventoryList',
+           crossDomain:true
+         }).then(function(res){
+      console.log(res.data)
+      res.data.forEach((e)=>{
+        parent.loading = false;
+        e.search = e.name.toLowerCase().concat(e.reference.toString().toLowerCase());
 
-      //parent.stocks = res.data;
-      //console.log(res.data);
+      });
 
-    // }).catch(function(error){
-    //   console.log(error)
-    // });
+      parent.stocks = res.data;
+      console.log(res.data);
+
+    }).catch(function(error){
+      console.log(error)
+    });
   },
   methods:{
 
