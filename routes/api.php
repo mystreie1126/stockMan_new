@@ -56,3 +56,7 @@ Route::post('/topSalesQty','OrderController@topSalesQty');
 Route::get('/test','OrderController@test');
 
 //inventory
+
+Route::get('/hq_inventoryList','inventoryController@HQ_invetory_list');
+
+Route::post('/saveToInventoryHistory','inventoryController@saveTo_hqInventoryHistory');
