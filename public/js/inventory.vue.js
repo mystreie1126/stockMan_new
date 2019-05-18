@@ -14,17 +14,24 @@ var parent = new Vue({
   },
   created(){
 		//console.log(this.shop_id)
-    axios({
-           method:'get',
-           url:stockMan+'hq_inventoryList',
-           crossDomain:true
-         }).then(function(res){
-      console.log(res.data)
-      res.data.forEach((e)=>{
-        parent.loading = false;
-        e.search = e.name.toLowerCase().concat(e.reference.toString().toLowerCase());
-
-      });
+    $.ajax({
+      type:'get',
+      url: url:stockMan+'hq_inventoryList'
+      success:function(res){
+        console.log(res);
+      }
+    })
+    // axios({
+    //        method:'get',
+    //        url:stockMan+'hq_inventoryList',
+    //        crossDomain:true
+    //      }).then(function(res){
+    //   console.log(res.data)
+    //   res.data.forEach((e)=>{
+    //     parent.loading = false;
+    //     e.search = e.name.toLowerCase().concat(e.reference.toString().toLowerCase());
+    //
+    //   });
 
       parent.stocks = res.data;
       //console.log(res.data);
