@@ -42,13 +42,13 @@ var repList = new Vue({
   },
   methods:{
     getList:function(){
-      this.list_loading = true;
       this.startTime = $('#selected_start_date').val()+" 00:00:00";
         this.endTime = $('#selected_end_date').val()+" 23:59:59";
         this.shop_id = $('#selected_shop').val();
 
       if(this.shop_id !== null && new Date(this.startTime).getTime() > 0 && new Date(this.endTime).getTime() > 0 ){
          console.log(`shop id is ${this.shop_id} selected from ${this.startTime} to ${this.endTime}`);
+         this.list_loading = true;
          axios({
            method:'post',
            url:stockMan+'getlistbysale',
@@ -59,7 +59,8 @@ var repList = new Vue({
            }
          }).then((res)=>{
               $('.regular_list_action').removeClass('hide');
-
+              console.log(res.data);
+              this.list_loading = false;
               let all_list = res.data.sale.concat(res.data.re_instock);
               console.log(all_list);
 

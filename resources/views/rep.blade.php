@@ -7,6 +7,19 @@
 @if(Auth::check())
 
 <div class="container" id="replishmentLists">
+
+<div class="preloader-wrapper big active pre-loader" v-if="list_loading">
+  <div class="spinner-layer spinner-red-only">
+    <div class="circle-clipper left">
+      <div class="circle"></div>
+    </div><div class="gap-patch">
+      <div class="circle"></div>
+    </div><div class="circle-clipper right">
+      <div class="circle"></div>
+    </div>
+  </div>
+</div>
+
   <h3></h3>
   <h5>Re Stock Options:</h5>
   <ul class="collapsible" data-collapsible="accordion">

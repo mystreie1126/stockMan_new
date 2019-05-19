@@ -4,7 +4,7 @@
 
 @section('content')
 
-
+<h2>{{ route('login') }}</h2>
 <div class="row">
 	<section class="col l9" style="margin-top:15px">
 					<div class="col s12 m3 l3">

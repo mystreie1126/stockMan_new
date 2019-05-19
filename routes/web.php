@@ -36,8 +36,8 @@ Route::get('/test',function(){
 	return view('testdd');
 });
 
-Route::get('/rep','repishmentController@index')->name('replishment')->middleware('auth');
-Route::get('/check','repishmentController@check');
+Route::get('/rep','replishmentController@index')->name('replishment')->middleware('auth');
+// Route::get('/check','repishmentController@check');
 
 
 

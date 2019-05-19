@@ -28,35 +28,20 @@ Route::get('/order_details/{order_id}','OrderController@viewOrder_details')->nam
 
 
 
-/* product routes....*/
-
-Route::get('/products','ProductController@index');
-
-Route::post('/addtionalItemWithReference','ProductController@addtionalItemWithReference');
-
-Route::get('/ProductStockSell/{ref}','ProductController@productStockAndSell');
-
-
-/* order routes....*/
-
-Route::get('/recent_orders','OrderController@recentOrders');
-
-Route::get('/searchOrder/{ref}','OrderController@searchOrderByRef');
-
-
-/*sales chart routes ...*/
-
-Route::post('/showsales','OrderController@allsales');
-
-/* top sales qty */
-
-Route::post('/topSalesQty','OrderController@topSalesQty');
-
-
-Route::get('/test','OrderController@test');
-
 //inventory
 
 Route::get('/hq_inventoryList','inventoryController@HQ_invetory_list');
 
 Route::post('/saveToInventoryHistory','inventoryController@saveTo_hqInventoryHistory');
+
+/*get replishment sales list*/
+
+Route::post('/getlistbysale','replishmentController@salesList');
+
+Route::post('/save_replist','replishmentController@save_repList');
+
+Route::post('/getSavedList','replishmentController@getSavedList');
+
+/*helper*/
+
+Route::get('/test_ref','helperController@test_ref');
