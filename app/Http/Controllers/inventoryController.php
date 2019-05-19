@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Helper\Common;
 use App\Model\Inventory\hqInventory_history as InvHistory;
-use Facades\App\Repository\StockTake;
+//use Facades\App\Repository\StockTake;
 // use Illuminate\Support\Facades\Auth;
 
 
@@ -17,7 +17,7 @@ class inventoryController extends Controller
 		public function HQ_invetory_list(){
 
 				//return StockTake::HQ_stockTake();
-			return 4;
+	 
 			$arr = [];
 	        $inventory = Common::hq_inventory_list();
 	        foreach($inventory as $inve){
