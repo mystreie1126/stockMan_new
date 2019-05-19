@@ -39,6 +39,7 @@ Route::get('/test',function(){
 Route::get('/rep','replishmentController@index')->name('replishment')->middleware('auth');
 // Route::get('/check','repishmentController@check');
 
+// Route::get('/hq_inventoryList','inventoryController@HQ_invetory_list')->middleware('auth');
 
 
 // Route::get('/', 'HomeController@index')->name('home');

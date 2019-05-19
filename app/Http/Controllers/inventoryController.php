@@ -7,20 +7,17 @@ use DB;
 use App\Helper\Common;
 use App\Model\Inventory\hqInventory_history as InvHistory;
 use Facades\App\Repository\StockTake;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
 
 class inventoryController extends Controller
 {
 
-		public function __construct(){
-			 $this->middleware('auth');
-		}
-
 
 		public function HQ_invetory_list(){
 
-			return StockTake::HQ_stockTake();
+				return StockTake::HQ_stockTake();
+
 		}
 
 		public function saveTo_hqInventoryHistory(Request $request){
