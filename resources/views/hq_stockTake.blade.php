@@ -3,7 +3,7 @@
 @if(Auth::check())
 
   <div id="stockTake_HQ" class="container">
-      {{-- <span class="right" style="font-size:1.2rem;">Stock-Take By: <span class="red-text">{{Auth::User()->name}}</span></span> --}}
+      <span class="right" style="font-size:1.2rem;">Stock-Take By: <span class="red-text">{{Auth::User()->name}}</span></span>
       <input type="hidden" value="{{Auth::User()->id}}" class="stock_userID">
 
 
