@@ -17,7 +17,7 @@ class inventoryController extends Controller
 		public function HQ_invetory_list(){
 
 				//return StockTake::HQ_stockTake();
-
+			return 4;
 			$arr = [];
 	        $inventory = Common::hq_inventory_list();
 	        foreach($inventory as $inve){
