@@ -13,13 +13,13 @@ var parent = new Vue({
     loading:true,
   },
   created(){
-    
+
     axios({
            method:'get',
            url:stockMan+'hq_inventoryList',
            crossDomain:true
          }).then(function(res){
-      console.log(res.data)
+      console.log(res.data.length)
       res.data.forEach((e)=>{
         parent.loading = false;
         e.search = e.name.toLowerCase().concat(e.reference.toString().toLowerCase());
@@ -27,7 +27,7 @@ var parent = new Vue({
       });
 
       parent.stocks = res.data;
-      console.log(res.data);
+      
 
     }).catch(function(error){
       console.log(error)

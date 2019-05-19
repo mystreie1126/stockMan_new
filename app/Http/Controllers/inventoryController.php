@@ -13,10 +13,8 @@ use Facades\App\Repository\StockTake;
 class inventoryController extends Controller
 {
 
-
 		public function HQ_invetory_list(){
 			return StockTake::HQ_stockTake();
-
 		}
 
 		public function saveTo_hqInventoryHistory(Request $request){
