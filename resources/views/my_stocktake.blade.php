@@ -12,5 +12,5 @@
 @stop
 @push('mystocktake_js')
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.2.7/dist/js/tabulator.min.js"></script>
-    <script type="text/javascript" src="{{URL::asset('js/mystockTake.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/mystocktake.js')}}"></script>
 @endpush
