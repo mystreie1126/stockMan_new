@@ -6,7 +6,7 @@
 
 @if(Auth::check())
 
-<div class="container" id="replishmentLists">
+<div id="replishmentLists" style="margin:20px">
 
 <div class="preloader-wrapper big active pre-loader" v-if="list_loading">
   <div class="spinner-layer spinner-red-only">
@@ -28,7 +28,7 @@
       <div class="collapsible-body">
 
         <div class="sales_rep_form">
-          <p class="flow-text  cyan-text text-darken-3 ">Regular Re-Stock</p>
+          <span class="flow-text  cyan-text text-darken-3 ">Regular Re-Stock</span>
           <div id="sales_rep_form" class="row" >
              <div class="col s12 m3 l3">
               <span class="indigo-text text-lighten-3">Select From:</span>
@@ -52,7 +52,23 @@
           </div>
         </div>
 
+        <div class="regular_list_action hide row">
+            <div class="col s12" style="display:flex">
+              <p class="bold"></p>
+              <a class='dropdown-button btn right' style="transform:translate(20%,20%)" data-activates='dropdown1'>Download</a>
+               <ul id='dropdown1' class='dropdown-content'>
+                 <li><a class="downloadCSV">CSV</a></li>
+                 <li><a id="downloadExcel">EXCEL </a></li>
+               </ul>
+           </div>
+          <input type="text" value="" placeholder="Search by name" id="filter-name" class="col s4">
+          <span class="col s1 center" style="transform:translateY(40%)">OR</span>
+          <input type="text" value="" placeholder="search by reference" id="filter-barcode" class="col s4">
 
+          <button type="button" class="blue btn col s2" id="regular_list_submit" style="transform:translate(10%,10%)">Submit</button>
+        </div>
+
+        <div id="regular_list"></div>
       </div>
     </li>
 
@@ -79,45 +95,12 @@
 
         <button type="button" class="btn s12 m3 l3 blue" id="count_search" style="transform:translateY(80%)">search</button>
         </div>
-
-
       </div>
     </li>
   </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   {{-- end of sales replishment form--}}
 
-
-  <div class="regular_list_action hide">
-    <input type="text" value="" placeholder="Search by name" id="filter-name">
-    {{-- <span>OR</span> --}}
-    {{-- <input type="text" value="" placeholder="search by reference" id="filter-barcode"> --}}
-  </div>
-  <div id="regular_list" style="margin-bottom:20px"></div>
-
-
-
-
-
 </div>
-
 
 
 
@@ -125,6 +108,9 @@
 @stop
 
 @push('replishment_js')
-  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.2.7/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script>
+    <script type="text/javascript" src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.2.7/dist/js/tabulator.min.js"></script>
 <script type="text/javascript" src="{{URL::asset('js/replishment.vue.js')}}"></script>
 @endpush

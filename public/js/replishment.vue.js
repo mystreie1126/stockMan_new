@@ -24,6 +24,7 @@ var repList = new Vue({
       startTime:"",
       endTime:"",
       shop_id:"",
+      shop_name:"",
       list_loading:false,
       submit_loading:false,
       showButton:false
@@ -45,6 +46,7 @@ var repList = new Vue({
       this.startTime = $('#selected_start_date').val()+" 00:00:00";
         this.endTime = $('#selected_end_date').val()+" 23:59:59";
         this.shop_id = $('#selected_shop').val();
+      this.shop_name = $('#selected_shop :selected').text();
 
       if(this.shop_id !== null && new Date(this.startTime).getTime() > 0 && new Date(this.endTime).getTime() > 0 ){
          console.log(`shop id is ${this.shop_id} selected from ${this.startTime} to ${this.endTime}`);
@@ -59,22 +61,29 @@ var repList = new Vue({
            }
          }).then((res)=>{
               $('.regular_list_action').removeClass('hide');
-              console.log(res.data);
+              console.log(res.data.list);
+               console.log(res.data.howMany)
               this.list_loading = false;
-              let all_list = res.data.sale.concat(res.data.re_instock);
-              console.log(all_list);
+
+              $('.regular_list_action p').text(`${this.shop_name} Re-stock with ${res.data.howMany} types of product sold from ${this.startTime} to ${this.endTime}`);
 
               var table = new Tabulator('#regular_list',{
-                data:all_list,
+                data:res.data.list,
                 layout:"fitColumns",
-                height:"40vh",
+                height:"60vh",
                 placeholder:"No Data Available",
                 columns:[
                   {title:'Name',field:'name',width:400},
-                  {title:'Barcode',field:'ref',width:100},
-                  {title:'Standard',field:'standard_qty',width:100,cssClass:"red-text"},
-                  {title:'Sold',field:'soldQty',width:10,visible:false},
-                  {title:'Send',field:'webStock_ID',width:100,editor:"input", validator:["min:0", "max:100", "integer"]},
+                  {title:'Barcode',field:'reference',width:200},
+                  {title:'Sold',field:'soldQty',width:100,cssClass:"green-text"},
+                  {title:'Standard',field:'standard',width:100,cssClass:"indigo-text"},
+                  {title:'Checked Stock',field:'has_branch_stock',width:150,cssClass:"amber-text"},
+                  {title:'Branch Qty',field:'branch_stock_qty',width:100,cssClass:"blue-text"},
+                  {title:'Send',field:'suggest_send',width:150,editor:"input", validator:["min:0", "max:100", "integer"]},
+                  {title:'webStockID',field:'web_stockID',width:10, visible:false},
+                  {title:'posStockID',field:'pos_stockID',width:10, visible:false}
+
+
                 ]
               })
 
@@ -82,18 +91,73 @@ var repList = new Vue({
                 table.setFilter('name','like',$('#filter-name').val())
               });
 
-              // $('#filter-barcode').keyup(function(){
-              //   table.setFilter('ref','like',$('#filter-barcode').val())
-              // });
+              $('#filter-barcode').keyup(function(){
+                table.setFilter('reference','like',$('#filter-barcode').val())
+              });
 
+              //download
 
-              $('.filter-action button').click((e)=>{
+              //table.download("xlsx", "data.xlsx", {sheetName:"MyData"})
+
+              $('#downloadExcel').click((e)=>{
+                  table.download("xlsx", `${this.shop_name} from ${this.startTime} to ${this.endTime}.xlsx`, {sheetName:`${this.shop_name}`});
+                  console.log('download xlsx');
+              })
+
+              $('#downloadCSV').click((e)=>{
+                  table.download("csv", `${this.shop_name} from ${this.startTime} to ${this.endTime}.csv`);
+                  console.log('downlad csv');
+              })
+
+            //   $('#downloadPDF').click((e)=>{
+            //       table.download("pdf", "${this.shop_name} from ${this.startTime} to ${this.endTime}.pdf", {
+            //         orientation:"portrait", //set page orientation to portrait
+            //         title:"Dynamics Quotation Report", //add title to report
+            //         autoTable:{ //advanced table styling
+            //             styles: {
+            //                 fillColor: [100, 255, 255]
+            //             },
+            //             columnStyles: {
+            //                 id: {fillColor: 255}
+            //             },
+            //             margin: {top: 60},
+            //         },
+            //     });
+            // });
+
+            //submit
+              $('#regular_list_submit').click(function(e){
                 e.preventDefault();
-                table.hideColumn("webStock_ID")
-                var myData = table.getData(true);
-                    console.log(myData);
+
+                let myData = table.getData(true);
+
+                $(this).attr('disabled','disabled');
+                $(this).text('submitting.....');
+                ifIsEmpty = myData.filter((e)=>{
+                    return e.suggest_send == '';
+                });
+
+                if(ifIsEmpty.length > 0){
+                    alert('Submit value can not be empty!');
+                    $(this).removeAttr('disabled');
+                    $(this).text('Submit');
+                }else if(ifIsEmpty.length == 0){
+                    axios({
+                        method:'post',
+                        url:stockMan+'save_replist',
+                        data:{
+                            sheetData:myData,
+                           shop_id:repList.shop_id
+                        }
+                    }).then((res)=>{
+                        console.log(res);
+                    })
+                }
+
 
               })
+
+
 
       });
 
@@ -102,59 +166,9 @@ var repList = new Vue({
       }else{
         alert('Please select a correct shop or date to proceed');
       }
-    },
-
-    saveTheList:function(){
-      let   valid_arr = [],
-          invalid_arr = [];
-      $('#test_list tr').each(function(index,ele){
-
-          if(sendQty_number($(ele).find('.send_qty').val()) >= 0 && $(ele).find('.send_qty').val() !== ''){
-              valid_arr.push({
-                        send:sendQty_number($(ele).find('.send_qty').val()),
-                         ref:sendQty_number($(ele).find('.l_ref').val()),
-                    standard:sendQty_number($(ele).find('.l_standard').val()),
-             branch_stock_id:sendQty_number($(ele).find('.l_branch_stock_id').val()),
-                web_stock_id:sendQty_number($(ele).find('.l_web_stock_id').val()),
-                     shop_id:repList.shop_id,
-                    uploaded:0,
-                 rep_by_sale:1,
-                  rep_custom:0
-              });
-          }else{
-              invalid_arr.push($(ele).find('.send_qty').val());
-          }
-      });
-      console.log( valid_arr,invalid_arr);
-      if(invalid_arr.length > 0){
-        alert('send Quantity can not be empty and less than 0!');
-      }else if($('#test_list').children().length > 0 && invalid_arr.length == 0){
-        //sumbit here
-        $('#rep_salelist_submit').attr('disabled','disabled');
-        $('#rep_salelist_submit').text('loading...');
-        console.log('saving');
-
-        axios({
-          method:'post',
-          url:stockMan+'save_replist',
-          data:JSON.stringify( valid_arr)
-        }).then((res)=>{
-          console.log(res.data);
-          $('#test_list tr').remove();
-          $('#rep_salelist_submit').removeAttr('disabled');
-          $('#rep_salelist_submit').text('submit');
-          repList.showButton = false;
-        })
-      }
-    },
-    exportList:function(){
-      if($('#test_list').children().length > 0){
-        $('#replishmentLists table').csvExport({
-          title:$('#selected_shop option:selected').text()+' sales list from '+this.startTime+' to '+this.endTime
-        });
-      }else{
-        alert('you can not exort the lists');
-      }
     }
+
+
+
   }
 });

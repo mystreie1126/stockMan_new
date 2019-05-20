@@ -75,7 +75,7 @@ class helperController extends Controller
     }
 
     private function track_staff(){
-      $query = DB::connection('mysql4')->table('stock')->where('user_id',244)->get()->toArray();
+      $query = DB::connection('mysql4')->table('stock')->where('user_id',224)->get()->toArray();
       return $query;
     }
 
@@ -91,7 +91,7 @@ class helperController extends Controller
         $stock->pending  = $stefan->pending;
         $stock->return   = $stefan->return;
        $stock->intransit = $stefan->intransit;
-        $stock->user_id  = 214;
+        $stock->user_id  = 230;
         $stock->standard = $stefan->standard;
         $stock->created_at = date('Y-m-d h:i:s');
         $stock->updated_at = date('Y-m-d h:i:s');
@@ -105,72 +105,70 @@ class helperController extends Controller
 
 
    public function test_ref(){
-      $r = 100353;
+      $ref = 'EP-TA20UWEWHTB';
 
       $arr = [];
       $a = [];
 
 
 
-      if(!Common::get_branchStockID_by_ref($r,26)){
-        return 'this dosent have pos stock id ' . $r;
-      }else if(!Common::get_productName_by_ref($r)){
-        return 'this dosent have proper name ' . $r;
-      }else if(!Common::get_webStockID_by_ref($r)){
-        return 'this dosent have webStock id ' . $r;
-      }else{
+      if(!Common::get_branchStockID_by_ref($ref,26)){
+        return 'this dosent have pos stock id ' . $ref;
+      }
+      else if(!Common::get_productName_by_ref($ref)){
+        return 'this dosent have proper name ' . $ref;
+      }
+      else if(!Common::get_webStockID_by_ref($ref)){
+        return 'this dosent have webStock id ' . $ref;
+      }
+
+      else{
         return 'all good';
       }
 
-      //return self::getPosStockIdByRef($r,26);
-      //return self::getProductNameByRef($r);
-      $data = DB::table('c1ft_stock_manager.sm_updateStockRecord')->get();
 
-      $refs = DB::table('c1ft_pos_prestashop.ps_product')->select('reference','id_product')->get();
-
-      //first round check
-
-
-      foreach($refs as $r){
-        if(Common::get_branchStockID_by_ref($r->reference,26) &&
-           Common::get_productName_by_ref($r->reference) &&
-           Common::get_webStockID_by_ref($r->reference) &&
-           Common::get_productStandard_by_ref($r->reference)
-         ){
-           //  $arr[] = [
-           //  'pos_stock_id' => self::getPosStockIdByRef($d->reference,$d->shop_id),
-           //  'web_stock_id' => $d->stock_id,
-           //  'updated_qty'  => $d->updated_qty,
-           //         'name'  => self::getProductNameByRef($d->reference)
-           // ];
-          array_push($arr,$r->reference);
-        }else{
-          $a[] = [
-            'ref' => $r->reference,
-            'id' => $r->id_product
-           ];
-        }
-
-      }
-
-
-       return $a;
    }
 
 
 
 
-    public function allrefs(){
-       if(self::get_ifhasBranchStock(12221)){
-        return 'has';
-       }else{
-        return 'nono';
-       }
-    }
+   public function test_ref_ifMatch(){
+       $sold_refs   = Common::totalSalesRefs_allshops();
+       $web_refs    = Common::webSalesRefs_allshops();
+       $record_refs = Common::updated_record_refs_allShops();
 
-   public function getsalesqtybyref(Request $request){
+       $a = Common::missingPart($sold_refs, $web_refs );
 
-      return self::get_productSoldQty_by_ref($request->ref,$request->shop_id,$request->from,$request->to);
+       $b = array_merge($sold_refs,$a);// $sold_refs + $web_refs
+       $c = Common::missingPart($b,$record_refs);
+
+       $all = array_merge($b,$c);
+
+
+       $validate = [];
+       $invalidate = [];
+
+       foreach($all as $r){
+         if(
+            Common::get_branchStockID_by_ref($r,26) !== null &&
+            Common::get_productName_by_ref($r) !== null &&
+            Common::get_webStockID_by_ref($r) !== null &&
+            Common::get_productStandard_by_ref($r)!== null
+        ){
+            array_push($validate,$r);
+        }else{
+            array_push($invalidate,$r);
+        }
+        }
+        return $invalidate;
+        return response()->json(['validate'=> $validate,'invalidate'=> $invalidate,'howmanyvalidate'=>count( $validate),'howmanyInvalidate'=>count($invalidate)]);
+
+
+
+
+
+
+
 
    }
 

@@ -94,6 +94,24 @@ return [
            ]
        ],
 
+       'mysql4' => [
+          'driver' => 'mysql',
+          'host' => env('DB_HOST_FORTH'),
+          'port' => env('DB_PORT_FORTH'),
+          'database' => env('DB_DATABASE_FORTH'),
+          'username' => env('DB_USERNAME_FORTH'),
+          'password' => env('DB_PASSWORD_FORTH'),
+          'unix_socket' => env('DB_SOCKET_FORTH'),
+          'charset' => 'utf8mb4',
+          'collation' => 'utf8mb4_unicode_ci',
+          'prefix' => '',
+          'strict' => false,
+          'engine' => null,
+          'options' =>[
+               PDO::ATTR_EMULATE_PREPARES => true,
+          ]
+      ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

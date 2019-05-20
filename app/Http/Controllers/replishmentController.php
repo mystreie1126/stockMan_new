@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\record\RepHistory;
+use App\Model\Record\HQ_replishment_history as RepHistory;
 use DB;
 use App\Helper\Common;
 use Facades\App\Repository\Replishment;
@@ -18,20 +18,6 @@ class replishmentController extends Controller
           ->get();
     return view('rep',compact('shops'));
   }
-
-    private function branchWebSales($startDate,$endDate,$shopID){
-        $query = DB::table('ps_order_detail')
-               ->select('ps_order_detail.product_reference as ref',
-                        DB::raw('sum(ps_order_detail.product_quantity) as webSales_Qty'))
-               ->join('vr_confirm_payment as webSales','ps_order_detail.id_order','webSales.order_id')
-               ->whereBetween('webSales.created_at',[$startDate,$endDate])
-               ->where('webSales.rockpos_shop_id',$shopID)
-               ->groupBy('ps_order_detail.product_reference')
-               ->where('webSales.device_order',0);
-
-        return $query;
-   }
-
 
    //get rep list by sale
 
@@ -63,29 +49,36 @@ class replishmentController extends Controller
 
     public function save_repList(Request $request){
 
-        $lists = $request->json()->all();
+        //$data = $request->json()->all();
+        $data = $request->sheetData;
 
-        foreach($lists as $list){
+        foreach($data as $d){
             $history = new RepHistory;
-            $history->reference           = $list['ref'];
-            $history->web_stock_id        = $list['web_stock_id'];
-            $history->shop_stock_id       = $list['branch_stock_id'];
-            $history->shop_id             = $list['shop_id'];
-            $history->updated_quantity    = $list['send'];
-            $history->standard_quantity   = $list['standard'];
-            $history->uploaded            = $list['uploaded'];
-            $history->rep_by_sale         = $list['rep_by_sale'];
-            $history->rep_by_custom       = $list['rep_custom'];
+            $history->reference           = $d['reference'];
+            $history->web_stock_id        = $d['web_stockID'];
+            $history->shop_stock_id       = $d['pos_stockID'];
+            $history->shop_id             = $request->shop_id;
+            $history->updated_quantity    = $d['suggest_send'];
+            $history->standard_quantity   = $d['standard'];
+            $history->uploaded            = 0;
+            $history->rep_by_sale         = 1;
+            $history->rep_by_custom       = 0;
             $history->created_at          = date('Y-m-d h:i:s');
+
+
 
             if($history->save()){
               DB::table('ps_stock_available')
               ->where('id_stock_available',$history->web_stock_id)
               ->decrement('quantity',intval($history->updated_quantity));
+
+              // DB::table('c1ft_pos_prestashop.ps_stock_available')
+              // ->where('id_stock_available',$history->shop_stock_id)
+              // ->increment('quantity',intval($history->updated_quantity));
             }
         }
 
-        return response()->json('saved');
+        return response()->json('saved and updated');
 
     }
 

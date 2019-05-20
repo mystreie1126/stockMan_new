@@ -24,8 +24,10 @@ class Replishment{
 
        foreach($all_refs as $ref){
            if(
-               Common::get_webStockID_by_ref($ref) && Common::get_branchStockID_by_ref($ref,$shop_id) &&
-               Common::get_productName_by_ref($ref) && Common::get_productStandard_by_ref($ref)
+               Common::get_webStockID_by_ref($ref) !== null &&
+               Common::get_branchStockID_by_ref($ref,$shop_id) !== null &&
+               Common::get_productName_by_ref($ref) !== null &&
+               Common::get_productStandard_by_ref($ref) !== null
 
            ){
                $list[] = [
@@ -38,15 +40,17 @@ class Replishment{
                        'soldQty' =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to),
                'has_branch_stock'=>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ? "Yes":"No",
               'branch_stock_qty' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?  Common::get_branchStockQty_by_ref($ref):"",
-                  'suggest_send' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ? (Common::get_productStandard_by_ref($ref) - Common::get_branchStockQty_by_ref($ref)):0
+                  'suggest_send' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?
+                  (Common::get_productStandard_by_ref($ref) - Common::get_branchStockQty_by_ref($ref)):""
 
                        ];
            }
        }//end of loop
 
-       return $list;
+       return response()->json(['list'=>$list,'howMany'=>count($sales_refs)]);
 
     }
+
 
 
     public function branch_replishmentWithDate($shop_id,$from,$to){
@@ -54,7 +58,7 @@ class Replishment{
         $cacheKey = strtoupper($shop_id.$from.$to);
 
         //return $cacheKey;
-        return cache()->remember($cacheKey,Carbon::now()->addMinutes(10),function() use($shop_id,$from,$to){
+        return cache()->remember($cacheKey,Carbon::now()->addDays(2),function() use($shop_id,$from,$to){
             return self::branch_replishmentWithDate_results($shop_id,$from,$to);
         });
     }

@@ -230,3 +230,18 @@ nav{
 	background: none;
 	border:none;
 } */
+
+.nav_sub_header{
+	display: block;
+	font-size: 1.3rem;
+}
+
+.regular_list_action .filter{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.regular_list_action input::placeholder{
+	text-align: center;
+}

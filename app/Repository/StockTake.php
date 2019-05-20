@@ -28,7 +28,7 @@ class StockTake{
 
         $cacheKey = strtoupper('HQ_stockTake');
         //return DB::table('ps_orders')->get();
-        return cache()->remember($cacheKey,Carbon::now()->addMinutes(10),function(){
+        return cache()->remember($cacheKey,Carbon::now()->addDays(1),function(){
             return self::HQ_stockTake_Results();
         });
     }

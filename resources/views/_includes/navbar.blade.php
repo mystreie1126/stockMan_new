@@ -58,9 +58,7 @@
         <ul id="side-nav" class="side-nav">
           <li>
             <div class="user-view">
-              <a href="#">
-                <span class="name white-text"></span>
-              </a>
+
               {{-- @if(Auth::check()) --}}
               {{-- <a href="#">
                 <span class="email white-text">{{Auth::User()->name}}</span>
@@ -68,28 +66,53 @@
               {{-- @endif --}}
             </div>
           </li>
+          <li class="center">
+              <a>
+                  <span style="font-size:1.6rem">
+                      <span class="red-text">Fun</span><span class="grey-text">Tech</span> StockManager</span>
+                  </span>
+              </a>
 
-          <li>
-            <a href="{{route('HQ_stockTake')}}">StockTake</a>
           </li>
 
+          @if(Auth::check())
+             <li class="center">
+               <a class="indigo-text">Login As: {{Auth::User()->name}}</a>
+             </li>
+          @endif
           <li>
-            <a href="{{route('orderpage')}}">Check Orders</a>
-          </li>
-          <li>
-            <a href="{{route('replishment')}}">Replishment</a>
+            <a href="{{route('HQ_stockTake')}}"><span class="nav_sub_header amber-text">StockTake</span></a>
           </li>
 
+              <li>
+                <a href="#">My StockTake</a>
+              </li>
+
+              <li>
+                <a href="#">StockTake History</a>
+              </li>
           <li>
             <div class="divider">User Action</div>
           </li>
           <li>
-            <a class="subheader">User Action</a>
+            <a href="{{route('replishment')}}"><span class="nav_sub_header green-text">Stock Out</span></a>
           </li>
 
+              <li>
+                <a href="#">Re-inStock</a>
+              </li>
+              <li>
+                <a href="#">Re-inStock History</a>
+              </li>
+              <li>
+                <a href="#">Top Sales</a>
+              </li>
+
           <li>
-            <a class="amber-text">My StockTake</a>
+            <div class="divider">User Action</div>
           </li>
+
+
 
           <li>
             <a href="{{route('login')}}" class="waves-effect">Logout</a>

@@ -5,10 +5,8 @@ use DB;
 
 class Common
 {
-    public static function whatsthefuck(){
-    	$query = DB::table('ps_product_lang')->where('name','like','%'.'glass'.'%')->pluck('name')->toArray();
-    	return $query;
-    }
+    public static $get_productSoldQty_by_ref_value;
+
 
     public static $shops = ['Athlone','Arthus Quay','Blackpool','Douglas','Galway Shop','Gorey','MarketCross','Parkway','Wexford','Millfield','Blackpool','Douglas'];
     public static function missingPart($targetArr,$loopArr){
@@ -25,6 +23,43 @@ class Common
         return in_array($pos_stock_id,$has_branchStock_id);
     }
 
+    /* ===================================helper refs=============================================== */
+
+    public static function totalSalesRefs_allshops(){
+	    $query =  DB::connection('mysql2')->table('ps_order_detail as sales')
+	         ->select('sales.product_id as SALE_productID','pos.reference')
+	         ->join('ps_product as pos','sales.product_id','pos.id_product')
+	         ->join('ps_orders','ps_orders.id_order','sales.id_order')
+	         ->whereBetween('ps_orders.date_add',['2019-05-01','2019-05-20'])
+	         //->where('sales.id_shop',$shop_id)
+	         ->where('pos.reference','!=','EG-PRODUCT01')
+             ->whereBetween('ps_orders.date_add',['2019-05-01','2019-05-20'])
+	         ->groupBy('pos.reference')
+	         ->orderBy('pos.reference')
+	         ->pluck('pos.reference')->toArray();
+
+	         return $query;
+    }
+
+    public static function webSalesRefs_allshops(){
+    	$query = DB::table('vr_confirm_payment as webSales')
+    	         ->select('detail.product_reference')
+    	         ->join('ps_order_detail as detail','detail.id_order','webSales.order_id')
+    	         ->whereBetween('webSales.created_at',['2019-05-01','2019-05-20'])
+    	         //->where('webSales.rockpos_shop_id',$shop_id)
+    	         ->groupBy('detail.product_reference')
+    	         ->pluck('detail.product_reference')->toArray();
+    	return $query;
+    }
+
+    public static function updated_record_refs_allShops(){
+    	$query = DB::table('c1ft_stock_manager.sm_updateStockRecord as record')
+    		   ->select('record.reference as ref')
+    		   ->groupBy('reference')
+    		   ->pluck('ref')->toArray();
+
+    	return $query;
+    }
  /* ===================================References=============================================== */
 
    //  public static function sharedSalesRefs($startDate,$endDate,$shop_id){
