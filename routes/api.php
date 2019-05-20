@@ -34,9 +34,13 @@ Route::get('/hq_inventoryList','inventoryController@HQ_invetory_list');
 
 Route::post('/saveToInventoryHistory','inventoryController@saveTo_stockTakeHistory');
 
-Route::post('/getMyStockTake','inventoryController@myStockTake_records');
 
-Route::get('/getMyStockTake_test','inventoryController@test');
+Route::post('/myStockTake_records','inventoryController@myStockTake_records');
+Route::get('/allStockTake_records','inventoryController@allStockTake_records');
+Route::get('/stockTake_final_results','inventoryController@stockTake_final_results');
+
+
+
 
 
 
@@ -52,4 +56,4 @@ Route::post('/getSavedList','replishmentController@getSavedList');
 
 Route::get('/test_ref','helperController@test_ref');
 
-Route::get('/pp','helperController@test_ref_ifMatch');
+Route::get('/pp','helperController@getStockTakeTableName');

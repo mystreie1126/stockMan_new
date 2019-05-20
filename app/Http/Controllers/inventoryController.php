@@ -27,9 +27,11 @@ class inventoryController extends Controller
 			$stockTake_record = new stockTake_record;
 
 			$stockTake_record->web_stock_id     = $request->web_stock_id;
-			$stockTake_record->reference        =	$request->reference;
-	    	$stockTake_record->current_quantity = $request->qty;
+			$stockTake_record->name             = $request->name;
+			$stockTake_record->reference        = $request->reference;
+	    	$stockTake_record->updated_quantity = $request->qty;
 			$stockTake_record->user_id          = $request->user_id;
+			$stockTake_record->added            = $request->added;
 		    $stockTake_record->created_at       = date('Y-m-d H:i:s');
 		    $stockTake_record->save();
 
@@ -38,22 +40,35 @@ class inventoryController extends Controller
 
 		public function myStockTake_records(Request $request){
 
-			$query = DB::table('c1ft_stock_manager.sm_hqInventoryCountHistory as a')
-					 ->select('a.reference','c.name','a.current_quantity','user.name as user','a.created_at')
-					 ->join('c1ft_pos_prestashop.ps_product as b','a.reference','b.reference')
-					 ->join('c1ft_pos_prestashop.ps_product_lang as c','b.id_product','c.id_product')
-					 ->groupBy('c.name')
-					 ->join('c1ft_stock_manager.sm_users as user','a.user_id','user.id')
-					 ->orderBy('a.created_at','desc')
-					 ->get();
+			$query = DB::table('c1ft_stock_manager.sm_HQstockTake_history as a')
+				   ->select('a.reference','a.name','a.updated_quantity','b.name as username','a.created_at','a.added')
+				   ->join('c1ft_stock_manager.sm_users as b','a.user_id','b.id')
+				   ->where('user_id',$request->user_id)
+				   ->where('sealed',0)
+				   ->get();
 
 		    return $query;
-
-			return $request->user_id;
-
 		}
 
+		public function allStockTake_records(){
 
+			$query = DB::table('c1ft_stock_manager.sm_HQstockTake_history as a')
+				   ->select('a.reference','a.name','a.updated_quantity','b.name as username','a.created_at','a.added')
+				   ->join('c1ft_stock_manager.sm_users as b','a.user_id','b.id')
+				   ->where('sealed',0)
+				   ->get();;
 
+		    return $query;
+		}
+
+		public function stockTake_final_results(){
+
+			$query = DB::table('c1ft_stock_manager.sm_HQstockTake_history')
+			       ->select('name','reference',DB::raw('sum(updated_quantity) as total_updated'))
+				   ->groupBy('reference')
+				   ->get();
+		    return $query;
+
+		}
 
 }

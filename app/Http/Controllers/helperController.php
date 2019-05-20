@@ -132,8 +132,6 @@ class helperController extends Controller
    }
 
 
-
-
    public function test_ref_ifMatch(){
        $sold_refs   = Common::totalSalesRefs_allshops();
        $web_refs    = Common::webSalesRefs_allshops();
@@ -208,8 +206,17 @@ class helperController extends Controller
 
 
 
-
    }
 
+   public function getStockTakeTableName(){
+       $query = DB::table('c1ft_stock_manager.sm_HQstockTake_history')->get();
+
+       foreach($query as $q){
+           DB::table('c1ft_stock_manager.sm_HQstockTake_history')->where('reference',$q->reference)
+           ->update(['name'=>Common::get_productName_by_ref($q->reference)]);
+       }
+
+       return 'updated';
+   }
 
 }

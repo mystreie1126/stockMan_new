@@ -19,7 +19,7 @@ var parent = new Vue({
            url:stockMan+'hq_inventoryList',
            crossDomain:true
          }).then(function(res){
-      console.log(res.data.length)
+      console.log(res.data)
       res.data.forEach((e)=>{
         parent.loading = false;
         e.search = e.name.toLowerCase().concat(e.reference.toString().toLowerCase());
@@ -35,9 +35,9 @@ var parent = new Vue({
   },
   methods:{
 
-    tt:function(index,ref,stock_id,qty,$e){
+    tt:function(index,name,ref,stock_id,qty,$e){
       if(qty !== undefined && qty >= 0){
-        console.log(ref,stock_id,qty)
+        console.log(name,ref,stock_id,qty)
 
       let btn =  document.querySelector(`.a${stock_id}`);
           btn.disabled = true;
@@ -48,10 +48,13 @@ var parent = new Vue({
             method:'post',
             url:stockMan+'saveToInventoryHistory',
             data:{
-              reference:ref,
-              web_stock_id:stock_id,
-              qty:qty,
-							user_id:parent.user_id
+               web_stock_id:stock_id,
+               reference:ref,
+               name:name,
+               qty:qty,
+               user_id:parent.user_id,
+               added:0
+
             }
           }).then((response)=>{
             Materialize.toast(`<h6><span class="green-text">${ref}</span> has been updated!</h6>`, 1000);
@@ -94,7 +97,8 @@ var add_missing = new Vue({
         name:'',
         ref:'',
         qty:'',
-        user_id:$('.stock_userID').val()
+        user_id:$('.stock_userID').val(),
+        isdisabled:false
     },
     methods:{
         reset:function(){
@@ -103,23 +107,31 @@ var add_missing = new Vue({
             this.qty="";
         },
         addMissing:function(name,ref,qty){
-
             if(name !== '' && ref !== '' && qty > 0){
+                this.isdisabled = true;
                 axios({
                     method:'post',
                     url:stockMan+'saveToInventoryHistory',
                     data:{
                         web_stock_id:0,
+                        name:name,
                         reference:ref,
                         qty:qty,
-                        user_id:this.user_id
+                        user_id:this.user_id,
+                        added:1
                     }
                 }).then((res)=>{
                     console.log(res);
+                    Materialize.toast(`<h6 class='green-text'>Updated!</h6>`, 1000);
+                    this.isdisabled = false;
+                    this.reset();
+
+
+
                 });
-                console.log('correct');
+
             }else{
-                console.log('not correct')
+                alert('Please input valid value');
             }
         }
     }

@@ -24,7 +24,7 @@
               <input placeholder="Add Quantity" type="number" v-model="qty">
             </div>
 
-            <button class="btn blue col s5 right" @click.prevent="addMissing(name,ref,qty)">Add</button>
+            <button class="btn blue col s5 right" @click.prevent="addMissing(name,ref,qty)" :disabled='isdisabled'>Add</button>
         </div>
 
  </div>
@@ -65,7 +65,7 @@
               <h5 class="col s6 m6 l6 orange-text" >@{{stock.reference}}</h5>
 
               <button type="button" v-bind:class="['btn-large','a'+stock.web_stock_id,'teal lighten-2 col s6 m6 l6 right']"
-              v-on:click.prevent="tt(index,stock.reference,stock.web_stock_id,stock.updateQty,$event)"
+              v-on:click.prevent="tt(index,stock.name,stock.reference,stock.web_stock_id,stock.updateQty,$event)"
               v-bind:style="{'marginBottom':'10px'}">
                 Submit
               </button>

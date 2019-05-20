@@ -9,5 +9,5 @@ class HQ_stockTake extends Model
     public $timestamps = false;
 
     protected $connection = 'mysql3';
-    protected $table = 'sm_hqInventoryCountHistory';
+    protected $table = 'sm_HQstockTake_history';
 }
