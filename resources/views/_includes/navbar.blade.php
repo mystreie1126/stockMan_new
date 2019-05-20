@@ -85,7 +85,7 @@
           </li>
 
               <li>
-                <a href="#">My StockTake</a>
+                <a href="{{route('mystocktake')}}">My StockTake</a>
               </li>
 
               <li>

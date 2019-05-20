@@ -28,11 +28,17 @@ Route::get('/order_details/{order_id}','OrderController@viewOrder_details')->nam
 
 
 
-//inventory
+//inventory/stockTake
 
 Route::get('/hq_inventoryList','inventoryController@HQ_invetory_list');
 
-Route::post('/saveToInventoryHistory','inventoryController@saveTo_hqInventoryHistory');
+Route::post('/saveToInventoryHistory','inventoryController@saveTo_stockTakeHistory');
+
+Route::post('/getMyStockTake','inventoryController@myStockTake_records');
+
+Route::get('/getMyStockTake_test','inventoryController@test');
+
+
 
 /*get replishment sales list*/
 
