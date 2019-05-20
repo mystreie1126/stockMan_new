@@ -105,7 +105,9 @@ class helperController extends Controller
 
 
    public function test_ref(){
-      $ref = 'EP-TA20UWEWHTB';
+      $ref = 1029780;
+      $shop_id = 26;
+      return Common::get_branchStockQty_by_ref($ref,$shop_id);
 
       $arr = [];
       $a = [];

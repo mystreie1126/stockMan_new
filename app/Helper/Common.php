@@ -279,13 +279,14 @@ class Common
 
     //6.get SINGLE branch stock qty by ref
 
-    public static function get_branchStockQty_by_ref($ref){
+    public static function get_branchStockQty_by_ref($ref,$shop_id){
         $qty = DB::table('c1ft_pos_prestashop.ps_stock_available as stock')
-               ->join('ps_product as p','stock.id_product','p.id_product')
+               ->select('stock.quantity')
+               ->join('c1ft_pos_prestashop.ps_product as p','stock.id_product','p.id_product')
                ->where('p.reference',$ref)
-               ->value('stock.quantity');
-
-        return intval($qty);
+               ->where('stock.id_shop',$shop_id)
+               ->get();
+        if($qty->count() == 1) return intval($qty[0]->quantity);
 
     }
 
