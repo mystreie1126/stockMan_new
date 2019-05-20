@@ -27,7 +27,7 @@ var parent = new Vue({
       });
 
       parent.stocks = res.data;
-      
+
 
     }).catch(function(error){
       console.log(error)
@@ -85,4 +85,42 @@ var parent = new Vue({
     }
   }
 
+});
+
+
+var add_missing = new Vue({
+    el:'#adding_modal',
+    data:{
+        name:'',
+        ref:'',
+        qty:'',
+        user_id:$('.stock_userID').val()
+    },
+    methods:{
+        reset:function(){
+            this.name="";
+            this.ref="";
+            this.qty="";
+        },
+        addMissing:function(name,ref,qty){
+
+            if(name !== '' && ref !== '' && qty > 0){
+                axios({
+                    method:'post',
+                    url:stockMan+'saveToInventoryHistory',
+                    data:{
+                        web_stock_id:0,
+                        reference:ref,
+                        qty:qty,
+                        user_id:this.user_id
+                    }
+                }).then((res)=>{
+                    console.log(res);
+                });
+                console.log('correct');
+            }else{
+                console.log('not correct')
+            }
+        }
+    }
 });

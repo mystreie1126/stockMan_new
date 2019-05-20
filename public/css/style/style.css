@@ -242,6 +242,10 @@ nav{
 	align-items: center;
 }
 
-.regular_list_action input::placeholder{
+.regular_list_action input::placeholder,.mystocktake_filter input::placeholder{
 	text-align: center;
+}
+
+.add_missingfromList{
+	transform: translate(-20px,20%);
 }

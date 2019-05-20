@@ -44,6 +44,7 @@ class inventoryController extends Controller
 					 ->join('c1ft_pos_prestashop.ps_product_lang as c','b.id_product','c.id_product')
 					 ->groupBy('c.name')
 					 ->join('c1ft_stock_manager.sm_users as user','a.user_id','user.id')
+					 ->orderBy('a.created_at','desc')
 					 ->get();
 
 		    return $query;

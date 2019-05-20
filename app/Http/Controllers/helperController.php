@@ -107,7 +107,7 @@ class helperController extends Controller
    public function test_ref(){
       $ref = 1029780;
       $shop_id = 26;
-      return Common::get_branchStockQty_by_ref($ref,$shop_id);
+
 
       $arr = [];
       $a = [];
@@ -146,11 +146,14 @@ class helperController extends Controller
 
        $all = array_merge($b,$c);
 
+       $total_refs = DB::table('c1ft_pos_prestashop.ps_product')->pluck('reference')->toArray();
+
+       //return $total_refs;
 
        $validate = [];
        $invalidate = [];
 
-       foreach($all as $r){
+       foreach($total_refs as $r){
          if(
             Common::get_branchStockID_by_ref($r,26) !== null &&
             Common::get_productName_by_ref($r) !== null &&
@@ -162,8 +165,42 @@ class helperController extends Controller
             array_push($invalidate,$r);
         }
         }
-        return $invalidate;
-        return response()->json(['validate'=> $validate,'invalidate'=> $invalidate,'howmanyvalidate'=>count( $validate),'howmanyInvalidate'=>count($invalidate)]);
+
+        $invalid_pos_stockId_ref =[];
+        $invalid_name_ref = [];
+        $invalid_web_stockId_ref = [];
+
+        $all_god = [];
+
+
+
+        if(count($invalidate) > 0){
+            foreach($invalidate as $ir){
+              if(!Common::get_branchStockID_by_ref($ir,26)){
+                array_push($invalid_pos_stockId_ref,$ir);
+              }
+              else if(!Common::get_productName_by_ref($ir)){
+                array_push($invalid_name_ref,$ir);
+              }
+              else if(!Common::get_webStockID_by_ref($ir)){
+                array_push($invalid_web_stockId_ref,$ir);
+              }
+
+              else{
+                array_push($all_god,$ir);
+              }
+
+            }
+        }
+
+        return response()->json([
+            'invalidPos' => $invalid_pos_stockId_ref,
+
+            'invalidName' => $invalid_name_ref,
+            'invalidWeb' => $invalid_web_stockId_ref
+
+        ]);
+
 
 
 

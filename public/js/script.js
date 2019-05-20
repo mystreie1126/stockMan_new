@@ -13,6 +13,7 @@
 //init
 $(document).ready(function(){
 
+ $('.modal').modal();
  $('.section').fadeIn();
 
         // Hide preloader

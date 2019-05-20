@@ -2,6 +2,35 @@
 @section('content')
 @if(Auth::check())
 
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large red waves-effect modal-trigger" href="#adding_modal">
+      <i class="large material-icons">add</i>
+    </a>
+</div>
+
+<div id="adding_modal" class="modal">
+        <div class="row container">
+            <p class="col s12">If you can not find from the list, please add at here about what your have found.</p>
+
+            <div class="input-field col s12">
+              <input placeholder="Add Name" type="text" v-model="name">
+            </div>
+
+            <div class="input-field col s12">
+              <input placeholder="Add Reference" type="text" v-model="ref">
+            </div>
+
+            <div class="input-field col s12">
+              <input placeholder="Add Quantity" type="number" v-model="qty">
+            </div>
+
+            <button class="btn blue col s5 right" @click.prevent="addMissing(name,ref,qty)">Add</button>
+        </div>
+
+ </div>
+
+
+
   <div id="stockTake_HQ" class="container">
       <span class="right" style="font-size:1.2rem;">Stock-Take By: <span class="red-text">{{Auth::User()->name}}</span></span>
       <input type="hidden" value="{{Auth::User()->id}}" class="stock_userID">
@@ -21,6 +50,9 @@
           </div>
         </div>
       </div>
+
+
+
 
 
 
