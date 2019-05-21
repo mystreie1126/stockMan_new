@@ -141,6 +141,7 @@ var repList = new Vue({
                     alert('Submit value can not be empty!');
                     $(this).removeAttr('disabled');
                     $(this).text('Submit');
+                    console.log(ifIsEmpty);
                 }else if(ifIsEmpty.length == 0){
                     axios({
                         method:'post',
