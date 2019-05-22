@@ -105,13 +105,16 @@ class helperController extends Controller
 
 
    public function test_ref(){
-      $ref = 1029780;
+      $ref = 102790;
       $shop_id = 26;
 
 
       $arr = [];
       $a = [];
 
+      $a = Common::hq_inventory_list();
+
+      return $a;
 
 
       if(!Common::get_branchStockID_by_ref($ref,26)){
@@ -201,11 +204,6 @@ class helperController extends Controller
 
 
 
-
-
-
-
-
    }
 
    public function getStockTakeTableName(){
@@ -217,6 +215,39 @@ class helperController extends Controller
        }
 
        return 'updated';
+   }
+
+
+   public function helpupdatestockthursd(){
+       $query = DB::table('c1ft_stock_manager.sm_replishment_history')
+       ->where('uploaded',null)
+       ->get();
+
+       foreach($query as $q){
+           DB::table('c1ft_store_prestashop.ps_stock_available')->where('id_stock_available',$q->web_stock_id)
+           ->decrement('quantity',intval($q->updated_quantity));
+
+           DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
+           ->increment('quantity',intval($q->updated_quantity));
+       }
+       return 'udated';
+   }
+
+
+   public function helpDouglas(){
+       $query = DB::table('c1ft_pos_prestashop.helper_glass_stock')->get();
+       $shop_id = 36;
+       $from = "2019-05-14";
+       $to = date('Y-m-d h:i:s');
+
+         //return        Common::get_productSoldQty_by_ref(102512,$shop_id,$from,$to);
+       foreach($query as $q){
+           DB::table('c1ft_pos_prestashop.helper_glass_stock')
+           ->decrement('qty',Common::get_productSoldQty_by_ref($q->ref,$shop_id,$from,$to));
+       }
+
+       return 'up';
+
    }
 
 }

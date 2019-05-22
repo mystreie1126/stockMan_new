@@ -143,9 +143,9 @@ class Common
     		 ->where('p.reference','!=','')
     		 ->whereNotIn('p.reference',['Athlone','Arthus Quay','Blackpool','Douglas','Galway Shop','Gorey','MarketCross','Parkway','Wexford','Millfield','Blackpool','Douglas','Mill','ClareHall','Ashleaf','Galway','Arthursquay','ArthrusQuay','Arthurs Quay','Athone','Market Cross'])
     		  ->where('p.reference','not like','%'.'al'.'%')
-    		  ->where('p.reference','not like','%'.'90'.'%')
+    		  //->where('p.reference','not like','%'.'90'.'%')
     		  ->where('p.reference','not like','%'.'unlock'.'%')
-    		  ->where('p.reference','not like','%'.'70'.'%')
+    		  //->where('p.reference','not like','%'.'70'.'%')
     	    ->join('ps_product as p','a.id_product','p.id_product');
 
     	$all = DB::table('ps_stock_available as a')

@@ -75,13 +75,18 @@ var repList = new Vue({
                 columns:[
                   {title:'Name',field:'name',width:400},
                   {title:'Barcode',field:'reference',width:200},
-                  {title:'Sold',field:'soldQty',width:100,cssClass:"green-text"},
-                  {title:'Standard',field:'standard',width:100,cssClass:"indigo-text"},
-                  {title:'Checked Stock',field:'has_branch_stock',width:150,cssClass:"amber-text"},
-                  {title:'Branch Qty',field:'branch_stock_qty',width:100,cssClass:"blue-text"},
+                  {title:'webStockID',field:'web_stockID',width:100},
+                  {title:'posStockID',field:'pos_stockID',width:100},
                   {title:'Send',field:'suggest_send',width:150,editor:"input", validator:["min:0", "max:100", "integer"]},
-                  {title:'webStockID',field:'web_stockID',width:10, visible:false},
-                  {title:'posStockID',field:'pos_stockID',width:10, visible:false}
+                  {title:'Standard',field:'standard',width:100,cssClass:"indigo-text"},
+
+                  //
+                  // {title:'Sold',field:'soldQty',width:100,cssClass:"green-text"},
+                  // {title:'Standard',field:'standard',width:100,cssClass:"indigo-text"},
+                  // {title:'Checked Stock',field:'has_branch_stock',width:150,cssClass:"amber-text"},
+                  // {title:'Branch Qty',field:'branch_stock_qty',width:100,cssClass:"blue-text"},
+                  // {title:'Send',field:'suggest_send',width:150,editor:"input", validator:["min:0", "max:100", "integer"]},
+                  //
 
 
                 ]
@@ -131,12 +136,16 @@ var repList = new Vue({
 
                 let myData = table.getData(true);
 
+                console.log(myData);
+
                 $(this).attr('disabled','disabled');
                 $(this).text('submitting.....');
+
                 ifIsEmpty = myData.filter((e)=>{
-                    return e.suggest_send == '';
+                    return !isNaN(e.suggest_send);
                 });
 
+                console.log(ifIsEmpty);
                 if(ifIsEmpty.length > 0){
                     alert('Submit value can not be empty!');
                     $(this).removeAttr('disabled');
