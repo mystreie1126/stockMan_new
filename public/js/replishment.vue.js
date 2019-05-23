@@ -73,20 +73,15 @@ var repList = new Vue({
                 height:"60vh",
                 placeholder:"No Data Available",
                 columns:[
-                  {title:'Name',field:'name',width:400},
-                  {title:'Barcode',field:'reference',width:200},
-                  {title:'webStockID',field:'web_stockID',width:100},
-                  {title:'posStockID',field:'pos_stockID',width:100},
-                  {title:'Send',field:'suggest_send',width:150,editor:"input", validator:["min:0", "max:100", "integer"]},
-                  {title:'Standard',field:'standard',width:100,cssClass:"indigo-text"},
-
-                  //
-                  // {title:'Sold',field:'soldQty',width:100,cssClass:"green-text"},
-                  // {title:'Standard',field:'standard',width:100,cssClass:"indigo-text"},
-                  // {title:'Checked Stock',field:'has_branch_stock',width:150,cssClass:"amber-text"},
-                  // {title:'Branch Qty',field:'branch_stock_qty',width:100,cssClass:"blue-text"},
-                  // {title:'Send',field:'suggest_send',width:150,editor:"input", validator:["min:0", "max:100", "integer"]},
-                  //
+                  {title:'Name',field:'name',width:300,align:"center"},
+                  {title:'Barcode',field:'reference',width:200,align:"center"},
+                  {title:'Sold',field:'soldQty',width:100,align:"center"},
+                  {title:'Standard',field:'standard',width:100,align:"center",cssClass:"indigo-text"},
+                  {title:'Correct Stock',field:'has_branch_stock',width:200,align:"center"},
+                  {title:'Actual Quantity',field:'branch_stock_qty',width:200,align:"center",cssClass:"blue-text"},
+                  {title:'Send',field:'suggest_send',width:100,editor:"number"},
+                  {title:'webStockID',field:'web_stockID',width:2,visible:false},
+                  {title:'posStockID',field:'pos_stockID',width:2,visible:false}
 
 
                 ]
@@ -133,25 +128,29 @@ var repList = new Vue({
             //submit
               $('#regular_list_submit').click(function(e){
                 e.preventDefault();
-
-                let myData = table.getData(true);
-
-                console.log(myData);
-
                 $(this).attr('disabled','disabled');
                 $(this).text('submitting.....');
 
-                ifIsEmpty = myData.filter((e)=>{
-                    return !isNaN(e.suggest_send);
-                });
+                let myData = table.getData(true);
+                //console.log(myData);
 
-                console.log(ifIsEmpty);
-                if(ifIsEmpty.length > 0){
-                    alert('Submit value can not be empty!');
+
+                //console.log(myData.map((e)=>e.suggest_send));
+
+                myData.forEach((e)=>{
+                    e.suggest_send = Number(e.suggest_send);
+                })
+
+                let invalidNum = myData.filter((e)=>{
+                    return isNaN(e.suggest_send) == true || e.suggest_send < 0;
+                })
+
+                console.log( invalidNum);
+                if(invalidNum.length > 0){
+                    alert('Submit value has to be a positive number!');
                     $(this).removeAttr('disabled');
                     $(this).text('Submit');
-                    console.log(ifIsEmpty);
-                }else if(ifIsEmpty.length == 0){
+                }else if(invalidNum.length == 0){
                     axios({
                         method:'post',
                         url:stockMan+'save_replist',
@@ -160,6 +159,8 @@ var repList = new Vue({
                            shop_id:repList.shop_id
                         }
                     }).then((res)=>{
+                        $('#regular_list_submit').removeAttr('disabled');
+                        $('#regular_list_submit').text('Submit');
                         console.log(res);
                     })
                 }

@@ -222,14 +222,9 @@ nav{
 	font-size:1.2rem;
 	text-align: center;
 }
-/* .tabulator .tabulator-header{
-	border:none;
-} */
-/*
-.tabulator,.tabulator-header{
-	background: none;
-	border:none;
-} */
+.tabulator .tabulator-header .tabulator-col {
+    text-align:center;
+}
 
 .nav_sub_header{
 	display: block;

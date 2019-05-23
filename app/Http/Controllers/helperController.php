@@ -218,33 +218,14 @@ class helperController extends Controller
    }
 
 
-   public function helpupdatestockthursd(){
-       $query = DB::table('c1ft_stock_manager.sm_replishment_history')
-       ->where('uploaded',null)
-       ->get();
-
-       foreach($query as $q){
-           DB::table('c1ft_store_prestashop.ps_stock_available')->where('id_stock_available',$q->web_stock_id)
-           ->decrement('quantity',intval($q->updated_quantity));
-
-           DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
-           ->increment('quantity',intval($q->updated_quantity));
-       }
-       return 'udated';
-   }
-
-
    public function helpDouglas(){
-       $query = DB::table('c1ft_pos_prestashop.helper_glass_stock')->get();
-       $shop_id = 36;
-       $from = "2019-05-14";
+       $query = DB::table('c1ft_pos_prestashop.douglasTemGlass')->get();
+       $from = '2019-05-14 14:26:00';
        $to = date('Y-m-d h:i:s');
+       //return $to;
+       return Common::get_branch_restockQty_by_ref(102511,$from,$to,36);
 
-         //return        Common::get_productSoldQty_by_ref(102512,$shop_id,$from,$to);
-       foreach($query as $q){
-           DB::table('c1ft_pos_prestashop.helper_glass_stock')
-           ->decrement('qty',Common::get_productSoldQty_by_ref($q->ref,$shop_id,$from,$to));
-       }
+
 
        return 'up';
 

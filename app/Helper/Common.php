@@ -290,6 +290,16 @@ class Common
 
     }
 
+
+    // public static function get_branch_restockQty_by_ref($ref,$from,$to,$shop_id){
+    //     $qty = DB::table('c1ft_stock_manager.sm_replishment_history')
+    //            ->select('reference','updated_quantity')
+    //            ->where('shop_id',$shop_id)
+    //            ->where('reference',$ref)
+    //            ->whereBetween('created_at',[$from,$to])
+    //            ->get();
+    // }
+
     //7.get retail price by ref
 
     //8.get product catagory type by ref
