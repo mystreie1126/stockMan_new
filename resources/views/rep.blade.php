@@ -57,7 +57,6 @@
               <p class="bold"></p>
               <a class='dropdown-button btn right' style="transform:translate(20%,20%)" data-activates='dropdown1'>Download</a>
                <ul id='dropdown1' class='dropdown-content'>
-                 <li><a class="downloadCSV">CSV</a></li>
                  <li><a id="downloadExcel">EXCEL </a></li>
                </ul>
            </div>

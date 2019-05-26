@@ -22,7 +22,7 @@ class Replishment{
        $all_refs = array_merge($sales_refs,$missing_updated_stock_refs);
        $list = [];
 
-       foreach($all_refs as $ref){
+       foreach($sales_refs as $ref){
            if(
                Common::get_webStockID_by_ref($ref) !== null &&
                Common::get_branchStockID_by_ref($ref,$shop_id) !== null &&
@@ -39,9 +39,12 @@ class Replishment{
                       'standard' =>  Common::get_productStandard_by_ref($ref),
                        'soldQty' =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to),
                'has_branch_stock'=>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ? "Yes":"No",
-              'branch_stock_qty' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?  (Common::get_branchStockQty_by_ref($ref,$shop_id)):"Not Sure",
-                  'suggest_send' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?
-                  (Common::get_productStandard_by_ref($ref) - Common::get_branchStockQty_by_ref($ref,$shop_id)):"TBD"
+               'branch_stock_qty'=> "Not Sure",
+              'suggest_send'     =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to)
+                  // 'suggest_send' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?
+                  // (Common::get_productStandard_by_ref($ref) - Common::get_branchStockQty_by_ref($ref,$shop_id)):"TBD",
+                  // 'branch_stock_qty' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?  (Common::get_branchStockQty_by_ref($ref,$shop_id)):"Not Sure"
+
 
                        ];
            }

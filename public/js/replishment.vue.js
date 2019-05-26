@@ -77,8 +77,8 @@ var repList = new Vue({
                   {title:'Barcode',field:'reference',width:200,align:"center"},
                   {title:'Sold',field:'soldQty',width:100,align:"center"},
                   {title:'Standard',field:'standard',width:100,align:"center",cssClass:"indigo-text"},
-                  {title:'Correct Stock',field:'has_branch_stock',width:200,align:"center"},
-                  {title:'Actual Quantity',field:'branch_stock_qty',width:200,align:"center",cssClass:"blue-text"},
+                  // {title:'Correct Stock',field:'has_branch_stock',width:200,align:"center"},
+                  // {title:'Actual Quantity',field:'branch_stock_qty',width:200,align:"center",cssClass:"blue-text"},
                   {title:'Send',field:'suggest_send',width:100,editor:"number"},
                   {title:'webStockID',field:'web_stockID',width:2,visible:false},
                   {title:'posStockID',field:'pos_stockID',width:2,visible:false}

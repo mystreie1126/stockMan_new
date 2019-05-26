@@ -122,7 +122,7 @@ var add_missing = new Vue({
                     }
                 }).then((res)=>{
                     console.log(res);
-                    Materialize.toast(`<h6 class='green-text'>Updated!</h6>`, 1000);
+                    Materialize.toast(`<h6 class='green-text'>Data Submited!</h6>`, 1000);
                     this.isdisabled = false;
                     this.reset();
 

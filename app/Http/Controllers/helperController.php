@@ -105,16 +105,13 @@ class helperController extends Controller
 
 
    public function test_ref(){
-      $ref = 102790;
+      $ref = 101262;
       $shop_id = 26;
 
+      return Common::get_webStockID_by_ref($ref);
 
       $arr = [];
-      $a = [];
 
-      $a = Common::hq_inventory_list();
-
-      return $a;
 
 
       if(!Common::get_branchStockID_by_ref($ref,26)){
@@ -207,11 +204,11 @@ class helperController extends Controller
    }
 
    public function getStockTakeTableName(){
-       $query = DB::table('c1ft_stock_manager.sm_HQstockTake_history')->get();
+       $query = DB::table('c1ft_stock_manager.sm_replishment_history')->where('created_at','>','2019-05-23')->get();
 
        foreach($query as $q){
-           DB::table('c1ft_stock_manager.sm_HQstockTake_history')->where('reference',$q->reference)
-           ->update(['name'=>Common::get_productName_by_ref($q->reference)]);
+           DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
+           ->increment('quantity',intval($q->updated_quantity));
        }
 
        return 'updated';

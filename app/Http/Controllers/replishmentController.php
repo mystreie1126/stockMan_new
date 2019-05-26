@@ -64,21 +64,7 @@ class replishmentController extends Controller
             $history->rep_by_custom       = 0;
             $history->created_at          = date('Y-m-d h:i:s');
 
-
-            if($history->save()){
-              DB::table('ps_stock_available')
-              ->where('id_stock_available',$history->web_stock_id)
-              ->decrement('quantity',intval($history->updated_quantity));
-              //
-              // DB::table('c1ft_pos_prestashop.ps_stock_available')
-              // ->where('id_stock_available',$history->shop_stock_id)
-              // ->increment('quantity',intval($history->updated_quantity));
-              //
-              // DB::table('c1ft_stock_manager.sm_replishment_history')
-              // ->where('id',$history->id)
-              // ->update(['uploaded'=>1]);
-
-            }
+            $history->save();
         }
 
 
