@@ -97,6 +97,9 @@ $('.replishment_list_action').on('click','.saveTo_salesList',function(e){
                 table.setData([]);
             }
         })
+    }else{
+        alert('Send quantity has to be a positive number!')
+        reset_button($('.saveTo_salesList'));
     }
 });
 
