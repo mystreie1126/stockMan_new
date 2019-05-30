@@ -56,4 +56,7 @@ Route::post('/getSavedList','replishmentController@getSavedList');
 
 Route::get('/test_ref','helperController@test_ref');
 
-Route::get('/pp','helperController@getStockTakeTableName');
+Route::get('/pp','helperController@getMe');
+
+
+Route::get('/allshopSales','kerianController@allShopSalesQty_by_ref');

@@ -24,6 +24,9 @@ class CreateNewReplishmentHistoryTable extends Migration
             $table->integer('uploaded')->nullable();
             $table->integer('rep_by_sale')->nullable();
             $table->integer('rep_by_custom')->nullable();
+            $table->integer('rep_by_standard')->nullable();
+            $table->dateTime('selected_startDate')->nullable();
+            $table->dateTime('selected_endDate')->nullable();
             $table->timestamps();
         });
     }

@@ -215,17 +215,51 @@ class helperController extends Controller
    }
 
 
-   public function helpDouglas(){
-       $query = DB::table('c1ft_pos_prestashop.douglasTemGlass')->get();
-       $from = '2019-05-14 14:26:00';
-       $to = date('Y-m-d h:i:s');
-       //return $to;
-       return Common::get_branch_restockQty_by_ref(102511,$from,$to,36);
+  public function getMe(){
+    //  $query = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
+    //           ->select('pos_stock_id',DB::raw('sum(updated_quantity) as total'))
+    //           ->where('sealed',1)
+    //           ->groupBy('pos_stock_id')
+    //           ->get();
+    //  foreach($query as $q){
+    //      DB::table('c1ft_pos_prestashop.ps_stock_available')
+    //         ->where('id_stock_available',$q->pos_stock_id)
+    //         ->update(['quantity'=>$q->total]);
+    //  }
+    // return 'done';
+      $standardID = DB::table('c1ft_stock_manager.sm_pos_product_standard')
+                    ->pluck('pos_product_id')->toArray();
 
+       $stockTake_stockID =  DB::table('c1ft_stock_manager.sm_branchStockTake_history')
+                 ->select('pos_stock_id')
+                 ->where('sealed',1)
+                 ->groupBy('pos_stock_id')
+                 ->pluck('pos_stock_id');
 
+       $allStandard = DB::table('c1ft_pos_prestashop.ps_stock_available')
+                    ->select('id_stock_available','id_product')
+                    ->where('id_shop',26)
+                    ->whereNotIn('id_stock_available', $stockTake_stockID)
+                    ->get();
 
-       return 'up';
+       // $missed_in_standard = DB::connection('mysql2')->table('ps_product as a')
+       //                       ->select('a.id_product','b.name')
+       //                       ->join('ps_product_lang as b','a.id_product','b.id_product')
+       //
+       //                       ->whereIn('a.id_product',Common::missingPart($standardID,  $allStandard ))
+       //                       ->groupBy('b.name')
+       //                       ->get();
 
-   }
+        //return   $missed_in_standard;
+
+        foreach($allStandard as $s){
+            DB::connection('mysql2')->table('ps_stock_available')
+            ->where('id_stock_available',$s->id_stock_available)
+            ->update(['quantity'=> Common::standardQty($s->id_product)]);
+        }
+        return 'done';
+        //return  Common::missingPart($standardID,  $allStandard );
+
+  }
 
 }

@@ -1,185 +1,119 @@
 
-var salesList = [];
-
-
-
-
-
-
-
-$("#download-csv").click(function(e){
-    e.preventDefault();
-    table.download("csv", "data.csv");
+var table = new Tabulator("#replishment_list", {
+    data:[], //set initial table data
 });
-function sendQty_number(qty){
-  return Math.floor(Number(qty));
+
+function submit_once(e){
+    $(e).attr('disabled','disabled');
+    $(e).text('loading...');
 }
+
+function reset_button(e){
+    $(e).removeAttr('disabled');
+    $(e).text('Submit');
+}
+
+$('#createSalesList').click((e)=>{
+    e.preventDefault();
+    //table.setData(tableData2);
+    $('.pre-loader').removeClass('hide');
+    let startTime = $('#selected_start_date').val()+" 00:00:00",
+          endTime = $('#selected_end_date').val()+" 23:59:59",
+          shop_id = $('#selected_shop').val(),
+        shop_name = $('#selected_shop :selected').text();
+        // console.log(123);
+    if(shop_id !== null && new Date(startTime).getTime() > 0 && new Date(endTime).getTime() > 0 ){
+       $.ajax({
+           type:'post',
+           url:stockMan+'getlistbysale',
+           dataType:'json',
+           data:{
+               start_time:startTime,
+               end_time:endTime,
+               shop_id:shop_id
+           },
+           success:function(res){
+               console.log(res);
+               $('.replishment_list_action').html('<button class="saveTo_salesList btn">Submit</button>');
+               $('.download').html('<button class="btn right download_btn">Export CSV</button>')
+               var columns = [
+                   {title:'Name',field:'name',width:300,align:"center"},
+                   {title:'Barcode',field:'reference',width:200,align:"center"},
+                   {title:'Sold',field:'soldQty',width:100,align:"center"},
+                   // {title:'Standard',field:'standard',width:100,align:"center",cssClass:"indigo-text"},
+                   // {title:'Correct Stock',field:'has_branch_stock',width:200,align:"center"},
+                   // {title:'Actual Quantity',field:'branch_stock_qty',width:200,align:"center",cssClass:"blue-text"},
+                   {title:'Send',field:'suggest_send',width:100,editor:"number",align:"center",cssClass:'indigo-text'},
+                   {title:'Shop Name',field:'shop_name',width:250,align:"center"},
+                   {title:'selected_from',field:'selected_from',width:2,visible:false},
+                   {title:'selected_to',field:'selected_to',width:2,visible:false},
+                   {title:'webStockID',field:'web_stockID',width:2,visible:false},
+                   {title:'posStockID',field:'pos_stockID',width:2,visible:false}
+
+               ];
+
+               table.setColumns(columns);
+               table.setData(res.list);
+               //$('.message').text(`Replishment By Sale - selected ${shop_name} with sales from ${startTime} to ${endTime}`);
+               $('.message').html(`<h5>Replishment By Sale - selected Branch: <span class="indigo-text">${shop_name}</span><h5>
+                                   <h5>Selected Sales Date From: <span class="teal-text">${startTime}</span> to: <span class="teal-text">${endTime}</span><h5>
+                                 `)
+               $('.pre-loader').addClass('hide');
+
+           }
+       })
+    }
+
+});
+
+//submit sales replist list
+$('.replishment_list_action').on('click','.saveTo_salesList',function(e){
+    e.preventDefault();
+    submit_once(this);
+
+    let data = table.getData(true);
+    data.forEach((e)=>e.suggest_send = Number(e.suggest_send));
+    let invalidNum = data.filter((e)=>{
+        return isNaN(e.suggest_send) == true || e.suggest_send < 0;
+    })
+
+    console.log(data.map((e)=>{return e.suggest_send}))
+
+    if(invalidNum.length == 0){
+        $.ajax({
+            method:'post',
+            dataType:'json',
+            url:stockMan+'save_replist',
+            data:{
+                sheetData:data,
+                shop_id:$('#selected_shop').val(),
+            },
+            success:function(res){
+                console.log(res);
+                reset_button($('.saveTo_salesList'));
+                $('.replishment_list_action').html('');
+                $('.download').html('');
+                $('.message').html('<h5>Success Submited!</h5>');
+                table.setData([]);
+            }
+        })
+    }
+});
+
+//download
+
+
+// table.download("csv", "data.csv"); //download table data as a CSV formatted file with a file name of data.csv
+
+$('.download').on('click','.download_btn',function(e){
+    e.preventDefault();
+    let data = table.getData(true);
+    let name = `${data[0].shop_name} list from ${data[0].selected_from} to ${data[0].selected_to}`;
+     console.log(data[0]);
+    table.download('csv',`${name}.csv`);
+});
+
+
 
 
 //
-var repList = new Vue({
-  el:'#replishmentLists',
-  data:{
-      lists:[],
-      startTime:"",
-      endTime:"",
-      shop_id:"",
-      shop_name:"",
-      list_loading:false,
-      submit_loading:false,
-      showButton:false
-  },
-  created:function(){
-    axios({
-      method:'post',
-      url:stockMan+'getSavedList',
-      data:{
-        rep_by_sale:1,
-        custom_rep:0
-      }
-    }).then((res)=>{
-      console.log(res.data);
-    });
-  },
-  methods:{
-    getList:function(){
-      this.startTime = $('#selected_start_date').val()+" 00:00:00";
-        this.endTime = $('#selected_end_date').val()+" 23:59:59";
-        this.shop_id = $('#selected_shop').val();
-      this.shop_name = $('#selected_shop :selected').text();
-
-      if(this.shop_id !== null && new Date(this.startTime).getTime() > 0 && new Date(this.endTime).getTime() > 0 ){
-         console.log(`shop id is ${this.shop_id} selected from ${this.startTime} to ${this.endTime}`);
-         this.list_loading = true;
-         axios({
-           method:'post',
-           url:stockMan+'getlistbysale',
-           data:{
-             start_time:this.startTime,
-             end_time:this.endTime,
-             shop_id:this.shop_id
-           }
-         }).then((res)=>{
-              $('.regular_list_action').removeClass('hide');
-              console.log(res.data.list);
-               console.log(res.data.howMany)
-              this.list_loading = false;
-
-              $('.regular_list_action p').text(`${this.shop_name} Re-stock with ${res.data.howMany} types of product sold from ${this.startTime} to ${this.endTime}`);
-
-              var table = new Tabulator('#regular_list',{
-                data:res.data.list,
-                layout:"fitColumns",
-                height:"60vh",
-                placeholder:"No Data Available",
-                columns:[
-                  {title:'Name',field:'name',width:300,align:"center"},
-                  {title:'Barcode',field:'reference',width:200,align:"center"},
-                  {title:'Sold',field:'soldQty',width:100,align:"center"},
-                  {title:'Standard',field:'standard',width:100,align:"center",cssClass:"indigo-text"},
-                  // {title:'Correct Stock',field:'has_branch_stock',width:200,align:"center"},
-                  // {title:'Actual Quantity',field:'branch_stock_qty',width:200,align:"center",cssClass:"blue-text"},
-                  {title:'Send',field:'suggest_send',width:100,editor:"number"},
-                  {title:'webStockID',field:'web_stockID',width:2,visible:false},
-                  {title:'posStockID',field:'pos_stockID',width:2,visible:false}
-
-
-                ]
-              })
-
-              $('#filter-name').keyup(function(){
-                table.setFilter('name','like',$('#filter-name').val())
-              });
-
-              $('#filter-barcode').keyup(function(){
-                table.setFilter('reference','like',$('#filter-barcode').val())
-              });
-
-              //download
-
-              //table.download("xlsx", "data.xlsx", {sheetName:"MyData"})
-
-              $('#downloadExcel').click((e)=>{
-                  table.download("xlsx", `${this.shop_name} from ${this.startTime} to ${this.endTime}.xlsx`, {sheetName:`${this.shop_name}`});
-                  console.log('download xlsx');
-              })
-
-              $('#downloadCSV').click((e)=>{
-                  table.download("csv", `${this.shop_name} from ${this.startTime} to ${this.endTime}.csv`);
-                  console.log('downlad csv');
-              })
-
-            //   $('#downloadPDF').click((e)=>{
-            //       table.download("pdf", "${this.shop_name} from ${this.startTime} to ${this.endTime}.pdf", {
-            //         orientation:"portrait", //set page orientation to portrait
-            //         title:"Dynamics Quotation Report", //add title to report
-            //         autoTable:{ //advanced table styling
-            //             styles: {
-            //                 fillColor: [100, 255, 255]
-            //             },
-            //             columnStyles: {
-            //                 id: {fillColor: 255}
-            //             },
-            //             margin: {top: 60},
-            //         },
-            //     });
-            // });
-
-            //submit
-              $('#regular_list_submit').click(function(e){
-                e.preventDefault();
-                $(this).attr('disabled','disabled');
-                $(this).text('submitting.....');
-
-                let myData = table.getData(true);
-                //console.log(myData);
-
-
-                //console.log(myData.map((e)=>e.suggest_send));
-
-                myData.forEach((e)=>{
-                    e.suggest_send = Number(e.suggest_send);
-                })
-
-                let invalidNum = myData.filter((e)=>{
-                    return isNaN(e.suggest_send) == true || e.suggest_send < 0;
-                })
-
-                console.log( invalidNum);
-                if(invalidNum.length > 0){
-                    alert('Submit value has to be a positive number!');
-                    $(this).removeAttr('disabled');
-                    $(this).text('Submit');
-                }else if(invalidNum.length == 0){
-                    axios({
-                        method:'post',
-                        url:stockMan+'save_replist',
-                        data:{
-                            sheetData:myData,
-                           shop_id:repList.shop_id
-                        }
-                    }).then((res)=>{
-                        $('#regular_list_submit').removeAttr('disabled');
-                        $('#regular_list_submit').text('Submit');
-                        console.log(res);
-                    })
-                }
-
-
-              })
-
-
-
-      });
-
-
-
-      }else{
-        alert('Please select a correct shop or date to proceed');
-      }
-    }
-
-
-
-  }
-});

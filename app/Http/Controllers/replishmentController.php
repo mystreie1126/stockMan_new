@@ -51,17 +51,22 @@ class replishmentController extends Controller
 
         //$data = $request->json()->all();
         $data = $request->sheetData;
+
+        //return count($data);
         foreach($data as $d){
             $history = new RepHistory;
             $history->reference           = $d['reference'];
             $history->web_stock_id        = $d['web_stockID'];
             $history->shop_stock_id       = $d['pos_stockID'];
-            $history->shop_id             = $request->shop_id;
+            $history->shop_id             = $d['shop_id'];
             $history->updated_quantity    = $d['suggest_send'];
             $history->standard_quantity   = $d['standard'];
             $history->uploaded            = 0;
             $history->rep_by_sale         = 1;
             $history->rep_by_custom       = 0;
+            $history->rep_by_standard     = 0;
+            $history->selected_startDate  = $d['selected_from'];
+            $history->selected_endDate    = $d['selected_to'];
             $history->created_at          = date('Y-m-d h:i:s');
 
             $history->save();

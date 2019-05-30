@@ -27,33 +27,7 @@ $(document).ready(function(){
          // Init Select
        $('select').material_select();
 
-       $('.order_details_table_modal').fancyTable({
-         sortColumn:0,
- 					pagination: true,
- 					perPage:5,
- 					globalSearch:true,
- 					paginationClass: "btn green"
-
-         });
-
-         $('.top_sale_product_table').fancyTable({
-           sortColumn:0,
-            pagination: true,
-            perPage:5,
-            globalSearch:true,
-            paginationClass: "btn green"
-
-           });
-
-       $('.rep_sale_table').fancyTable({
-         activeColor: 'teal',
-         sortColumn:0,
-         pagination: true,
-         pagClosest: 3,
-         perPage: 5,
-         globalSearch:true
-
-         });
+    
 
          $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month

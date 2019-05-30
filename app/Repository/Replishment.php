@@ -40,7 +40,11 @@ class Replishment{
                        'soldQty' =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to),
                'has_branch_stock'=>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ? "Yes":"No",
                'branch_stock_qty'=> "Not Sure",
-              'suggest_send'     =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to)
+              'suggest_send'     =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to),
+                  'shop_name'    =>  Common::get_branch_name_by_shopID($shop_id),
+                  'shop_id'      => $shop_id,
+                  'selected_from'=> $from,
+                  'selected_to'  => $to
                   // 'suggest_send' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?
                   // (Common::get_productStandard_by_ref($ref) - Common::get_branchStockQty_by_ref($ref,$shop_id)):"TBD",
                   // 'branch_stock_qty' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?  (Common::get_branchStockQty_by_ref($ref,$shop_id)):"Not Sure"
