@@ -4,58 +4,76 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\Record\HQ_replishment_history as RepHistory;
+//use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
 use DB;
 use App\Helper\Common;
 use Facades\App\Repository\Replishment;
 
 class replishmentController extends Controller
 {
+  private function make_uploadList($by_sale = 0,$by_standard = 0,$by_custom = 0){
+      $shops_by_sale = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
+                        ->select('a.shop_id','b.name as shop_name')
+                        ->join('c1ft_pos_prestashop.ps_shop as b','b.id_shop','a.shop_id')
+                        ->where('a.uploaded',0)
+                        ->where('a.rep_by_sale',$by_sale)
+                        ->where('a.rep_by_custom',$by_custom)
+                        ->where('a.rep_by_standard',$by_standard)
+                        ->groupBy('a.shop_id')
+                        ->get();
 
-  public function index(){
+   foreach($shops_by_sale as $shop){
+       $shop->detail = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
+                       ->select('a.shop_stock_id','a.reference as barcode','a.product_name','a.updated_quantity','b.name as shopname','a.selected_startDate','a.selected_endDate','a.created_at')
+                       ->where('a.shop_id',$shop->shop_id)
+                       ->where('a.uploaded',0)
+                       ->where('a.rep_by_sale',$by_sale)
+                       ->where('a.rep_by_custom',$by_custom)
+                       ->where('a.rep_by_standard',$by_standard)
+                       ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
+                       ->get();
+        }
+
+        return  $shops_by_sale;
+  }
+
+
+
+  public function rep_page(){
+
     $shops = DB::connection('mysql2')->table('ps_shop')
           ->select('id_shop','name')
           ->whereNotIn('id_shop',[1,35,42])
           ->get();
-    return view('rep',compact('shops'));
+
+    $need_upload = RepHistory::where('uploaded',0)->get();
+
+    return view('stock_out/rep',compact('shops','need_upload'));
   }
+
+  public function rep_update_page(){
+
+      $shops_by_sale = self::make_uploadList(1,0,0);
+
+      return view('stock_out/update_to_branch',compact('shops_by_sale'));
+  }
+
+
 
    //get rep list by sale
 
     public function salesList(Request $request){
         //$request->shop_id, $request->start_time,$request->end_time
-
         return Replishment::branch_replishmentWithDate($request->shop_id,$request->start_time,$request->end_time);
-
     }
-
-
-/* end of getting sales list by sales */
-
-/* getting custom sales list */
-//shop_id, reference
-    public function customRepList(Request $request){
-        $search = DB::table('c1ft_pos_prestashop.ps_product')
-                ->where('reference','like','%'.$request->input_reference.'%')
-                ->get();
-        if($search->count() > 0){
-          $ref = $search[0]->reference;
-          return self::singleRefRepDetails($ref,$request->shop_id);
-        }
-    }
-/* ----*/
-
-
-
 
     public function save_repList(Request $request){
 
-        //$data = $request->json()->all();
         $data = $request->sheetData;
-
-        //return count($data);
         foreach($data as $d){
             $history = new RepHistory;
             $history->reference           = $d['reference'];
+            $history->product_name        = $d['name'];
             $history->web_stock_id        = $d['web_stockID'];
             $history->shop_stock_id       = $d['pos_stockID'];
             $history->shop_id             = $d['shop_id'];
@@ -69,107 +87,120 @@ class replishmentController extends Controller
             $history->selected_endDate    = $d['selected_to'];
             $history->created_at          = date('Y-m-d h:i:s');
 
-            $history->save();
+            if($history->save()){
+                DB::table('ps_stock_available')->where('id_stock_available', $d['web_stockID'])
+                ->decrement('quantity',$d['suggest_send']);
+            }
         }
 
-
-
-        return response()->json('saved and updated');
+        return response()->json('saved');
 
     }
 
-    public function getSavedList(Request $request){
-      $arr = [1,2,3];
-      return response()->json($arr);
+
+/* getting custom sales list */
+
+    public function custom_replishment_search(Request $request){
+        $result = (object)[];
+
+        if(
+            Common::get_webStockID_by_ref($request->ref) !== null &&
+            Common::get_branchStockID_by_ref($request->ref,intval($request->shop_id)) !== null &&
+            Common::get_productName_by_ref($request->ref) !== null &&
+            Common::get_productStandard_by_ref($request->ref) !== null
+         ){
+             $result->ref           = $request->ref;
+             $result->branchStockID = Common::get_branchStockID_by_ref($request->ref,intval($request->shop_id));
+             $result->webStockID    = Common::get_webStockID_by_ref($request->ref);
+             $result->name          = Common::get_productName_by_ref($request->ref);
+             $result->standard      = Common::get_productStandard_by_ref($request->ref);
+             $result->shop_id       = $request->shop_id;
+             $result->shop_name     = DB::table('c1ft_pos_prestashop.ps_shop')->where('id_shop',intval($request->shop_id))->value('name');
+
+              return response()->json(['result'=>$result,'pass'=>1]);
+          }else{
+              return response()->json(['pass'=>0]);
+
+          }
+    }
+
+    public function custom_replishment_save(Request $request){
+
+        // $history = new RepHistory;
+        // $history->reference           = $request->detail['ref'];
+        // $history->product_name        = $request->detail['name'];
+        // $history->web_stock_id        = intval($request->detail['webStockID']);
+        // $history->shop_stock_id       = intval($request->detail['branchStockID']);
+        // $history->shop_id             = intval($request->detail['shop_id']);
+        // $history->updated_quantity    = intval($request->qty);
+        // $history->standard_quantity   = intval($request->detail['standard']);
+        // $history->uploaded            = 0;
+        // $history->rep_by_sale         = 0;
+        // $history->rep_by_custom       = 1;
+        // $history->rep_by_standard     = 0;
+        // $history->created_at          = date('Y-m-d h:i:s');
+        //
+        // if($history->save()){
+        //     DB::table('ps_stock_available')->where('id_stock_available',intval($request->detail['webStockID']))
+        //     ->decrement('quantity',intval($request->qty));
+        //
+        //     return 'success';
+        // }
+        return $request;
+    }
+
+/* ----*/
+
+
+    //update list data
+    public function update_to_branch(Request $request){
+
+
+        $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
+                ->where('uploaded',0)
+                ->where('shop_id',$request->shop_id)
+                ->where('rep_by_sale',$request->by_sale)
+                ->get();
+
+        foreach($query as $q){
+            DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
+                ->increment('quantity',intval($q->updated_quantity));
+        }
+
+        DB::table('c1ft_stock_manager.sm_all_replishment_history')
+            ->where('uploaded',0)
+            ->where('shop_id',$request->shop_id)
+            ->where('rep_by_sale',$request->by_sale)
+            ->update(['uploaded'=>1]);
+
+        return redirect()->route('rep_update');
+    }
+
+    public function delete_before_update_to_branch(Request $request){
+        $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
+                ->where('uploaded',0)
+                ->where('shop_id',$request->shop_id)
+                ->where('rep_by_sale',$request->by_sale)
+                ->get();
+        foreach($query as $q){
+            DB::table('ps_stock_available')->where('id_stock_available',$q->web_stock_id)
+            ->increment('quantity',intval($q->updated_quantity));
+        }
+
+        DB::table('c1ft_stock_manager.sm_all_replishment_history')
+            ->where('uploaded',0)
+            ->where('shop_id',$request->shop_id)
+            ->where('rep_by_sale',$request->by_sale)
+            ->delete();
+
+        return redirect()->route('rep_update');
+
     }
 
 
 
-    /*ready to export */
-
-    public function readyToExport(Request $request)
-    {
-        $sendList = DB::table('sm_replishment_history as a')->select('a.reference as reference','a.quantity as Quantity','b.name')
-                  ->join('ps_product_lang as b','a.shop_product_id','b.id_product')
-                  ->where('b.id_shop',1)
-                  ->where('a.send',0)
-                  ->where('shop_id',$request->shop_id)
-                  ->get();
-
-       $shop_name = DB::connection('mysql2')->table('ps_shop')
-                ->select('name')->where('id_shop',$request->shop_id)
-                ->value('name');
-
-        return response()->json(['list'=>$sendList,'shop'=>$shop_name,'date'=>date('Y-m-d')]);
-    }
 
 
-    /*ready to send */
-
-    public function readyToSend(Request $request)
-    {
-      $flag_arr = [];
-      $list = send::select('pos_product_id','quantity')
-                   ->where('send',0)->where('shop_id',$request->shop_id)->get();
-      // return $request->shop_id;
-
-       for($i = 0; $i<$list->count(); $i++){
-         DB::connection('mysql2')->table('ps_stock_available')
-            ->where('id_shop',$request->shop_id)
-            ->where('id_product',$list[$i]->pos_product_id)
-            ->increment('quantity',$list[$i]->quantity);
-
-              array_push($flag_arr,$i);
-       }
-
-      if(count($flag_arr)>0){
-        DB::table('sm_replishment_history')->where('send',0)->where('shop_id',$request->shop_id)->update(['send'=>1]);
-        return response()->json(['msg'=>'successfull added qty to pos','arr'=>count($flag_arr)]);
-      }
-    }
-
-    /*ready to delete */
-    public function readyToDelete(Request $request)
-    {
-     $flag_arr = [];
-     $list = send::select('shop_product_id','quantity')
-                  ->where('send',0)->where('shop_id',$request->shop_id)->get();
-
-      for($i = 0; $i<$list->count(); $i++){
-        DB::table('ps_stock_available')
-           ->where('id_product',$list[$i]->shop_product_id)
-           ->where('id_shop_group',3)
-           ->increment('quantity',$list[$i]->quantity);
-          array_push($flag_arr,$i);
-      }
-
-      if(count($flag_arr)>0){
-        DB::table('sm_replishment_history')->where('send',0)->where('shop_id',$request->shop_id)->delete();
-        return response()->json(['msg'=>'successfull added qty back','arr'=>count($flag_arr)]);
-
-      }
-
-
-    }
-
-    public function check(){
-        $arr = [];
-    		$updatedRecord = DB::connection('mysql3')->table('sm_updateStockRecord')->where('created_at','!=','2019-04-26 00:00:00')->get()->toArray();
-    		for($i = 0; $i < count($updatedRecord); $i++){
-    			$name = DB::table('ps_product_lang')->where('id_product',$updatedRecord[$i]->id_product)->value('name');
-    			$sendQty = DB::table('sm_replishment_history')->where('created_at','>=',$updatedRecord[$i]->created_at)->where('shop_product_id',$updatedRecord[$i]->id_product)->sum('quantity');
-    			$currentQty = DB::table('ps_stock_available')->where('id_stock_available',$updatedRecord[$i]->stock_id)->value('quantity');
-    			 $arr[]=[
-    			 		    'name'=>$name,
-    			 	    'barcode' =>$updatedRecord[$i]->reference,
-    			 	 'updated_qty'=>$updatedRecord[$i]->updated_qty,
-    			    'updated_time'=>$updatedRecord[$i]->created_at,
-    			 	    'send_qty'=>$sendQty,
-    			     'current_qty'=>$currentQty,
-    			  ];
-    		}
-    		return response()->json($arr);
-    }
 
 
 

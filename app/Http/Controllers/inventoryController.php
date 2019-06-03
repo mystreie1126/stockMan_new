@@ -71,4 +71,5 @@ class inventoryController extends Controller
 
 		}
 
+
 }

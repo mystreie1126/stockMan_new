@@ -20,6 +20,16 @@
   </div>
 </div>
 
+@if($need_upload->count() > 0)
+    <div class="fixed-action-btn horizontal">
+        <a class="btn btn-floating pulse red"><i class="material-icons">priority_high</i></a>
+        <ul>
+          <li><a class="red-text">There are remaining data needs to be uploaded</a></li>
+        </ul>
+    </div>
+
+@endif
+
   <h3></h3>
   <h5>Re Stock Options:</h5>
   <ul class="collapsible" data-collapsible="accordion">
@@ -90,7 +100,22 @@
             <label for="custom_stock_ref">Reference</label>
         </div>
 
-        <button type="button" class="btn s12 m3 l3 blue" id="count_search" style="transform:translateY(80%)">search</button>
+            <button type="button" class="btn s12 m3 l3 blue custom_stock_search" style="transform:translateY(80%)">search</button>
+            <div class="col s12">
+                {{-- <ul class="collection with-header">
+                    <li class="collection-header indigo-text center">Produc Names refs mill</li>
+                    <li class="collection-item">
+                        <div class="center">
+                            <div class="input-field inline">
+                               <input type="number" class="validate center" placeholder="input quantity">
+                            </div>
+                            <button class="btn" style="transform:translate(10%,10%)">sumbit</button>
+                        </div>
+                    </li>
+                  </ul> --}}
+
+
+
         </div>
       </div>
     </li>

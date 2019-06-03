@@ -28,95 +28,89 @@
             <li>
               @guest
                   <li><a href="{{ route('login') }}">Login</a></li>
-                  {{-- <li><a href="{{ route('register') }}">Register</a></li> --}}
               @else
+                  <ul>
+                      <li>
+                          <a href="{{ route('logout') }}"
+                              onclick="event.preventDefault();
+                                       document.getElementById('logout-form').submit();">
+                              Logout
+                          </a>
 
-                      {{-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
-                          {{ Auth::user()->name }} <span class="caret"></span>
-                      </a> --}}
-
-                      <ul>
-                          <li>
-                              <a href="{{ route('logout') }}"
-                                  onclick="event.preventDefault();
-                                           document.getElementById('logout-form').submit();">
-                                  Logout
-                              </a>
-
-                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                  {{ csrf_field() }}
-                              </form>
-                          </li>
-                      </ul>
-
+                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                              {{ csrf_field() }}
+                          </form>
+                      </li>
+                  </ul>
               @endguest
             </li>
-
-
         </ul>
         <!-- Side nav -->
-        <ul id="side-nav" class="side-nav">
-          <li>
-            <div class="user-view">
 
-              {{-- @if(Auth::check()) --}}
-              {{-- <a href="#">
-                <span class="email white-text">{{Auth::User()->name}}</span>
-              </a> --}}
-              {{-- @endif --}}
-            </div>
-          </li>
+        <ul id="side-nav" class="side-nav">
+          <p></p>
           <li class="center">
               <a>
                   <span style="font-size:1.6rem">
                       <span class="red-text">Fun</span><span class="grey-text">Tech</span> StockManager</span>
                   </span>
               </a>
-
           </li>
-
           @if(Auth::check())
              <li class="center">
                <a class="indigo-text">Login As: {{Auth::User()->name}}</a>
              </li>
-          @endif
-          <li>
-            <a href="{{route('HQ_stockTake')}}"><span class="nav_sub_header amber-text">StockTake</span></a>
-          </li>
 
               <li>
-                <a href="{{route('mystocktake')}}">My StockTake</a>
+                <a><span class="nav_sub_header amber-text">StockTake</span></a>
               </li>
 
               <li>
-                <a href="#">StockTake History</a>
+                <a href="{{route('HQ_stockTake')}}">My StockTake</a>
               </li>
-          <li>
-            <div class="divider">User Action</div>
-          </li>
-          <li>
-            <a href="{{route('replishment')}}"><span class="nav_sub_header green-text">Stock Out</span></a>
-          </li>
 
               <li>
-                <a href="#">Re-inStock</a>
+                <a href="{{route('mystocktake')}}">StockTake Records</a>
               </li>
+
+              <li>
+                <a href="{{route('stockTake_analysis')}}">StockTake Analysis</a>
+              </li>
+
+              <li>
+                <div class="divider">User Action</div>
+              </li>
+            <!-- stock Out-->
+              <li>
+                <a><span class="nav_sub_header indigo-text">Stock Out</span></a>
+              </li>
+
+              <li>
+                <a href="{{route('replishment')}}">Re-inStock</a>
+              </li>
+
               <li>
                 <a href="#">Re-inStock History</a>
               </li>
+
               <li>
-                <a href="#">Top Sales</a>
+                <a href="{{route('rep_update')}}">Update to Branches</a>
               </li>
 
-          <li>
-            <div class="divider">User Action</div>
-          </li>
+              <li>
+                <div class="divider">User Action</div>
+              </li>
 
+              <!-- stock In-->
+              <li>
+                <a href="#"><span class="nav_sub_header green-text">Stock In</span></a>
+              </li>
 
-
-          <li>
-            <a href="{{route('login')}}" class="waves-effect">Logout</a>
-          </li>
+          @else
+              <li class="center">
+                <a>Please login</a>
+              </li>
+          @endif
         </ul>
 
     </div>

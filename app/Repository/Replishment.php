@@ -17,12 +17,22 @@ class Replishment{
             $web_sales_refs = Common::webSalesRefs($from,$to,$shop_id);
               $missing_refs = Common::missingPart($pos_sale_refs,$web_sales_refs);
 
-       $sales_refs = array_merge($pos_sale_refs,$missing_refs);
-       $missing_updated_stock_refs = Common::missingPart($sales_refs,$updated_stock_refs);
-       $all_refs = array_merge($sales_refs,$missing_updated_stock_refs);
+       $sell_refs = array_merge($pos_sale_refs,$missing_refs);
+       $missing_updated_stock_refs = Common::missingPart($sell_refs,$updated_stock_refs);
+       $all_refs = array_merge($sell_refs,$missing_updated_stock_refs);
        $list = [];
 
-       foreach($sales_refs as $ref){
+
+
+       if(intval($shop_id) == 27){
+           $sell_refs = array_merge($pos_sale_refs,$missing_refs);
+           $extraRefs = Common::extraRefsAfterStockTake($shop_id);
+           $final_refs = array_merge($sell_refs, Common::missingPart($sell_refs,$extraRefs));
+       }else{
+            $final_refs = $sell_refs;
+       }
+
+       foreach($final_refs as $ref){
            if(
                Common::get_webStockID_by_ref($ref) !== null &&
                Common::get_branchStockID_by_ref($ref,$shop_id) !== null &&
@@ -54,7 +64,7 @@ class Replishment{
            }
        }//end of loop
 
-       return response()->json(['list'=>$list,'howMany'=>count($sales_refs)]);
+       return response()->json(['list'=>$list,'howMany'=>count($final_refs)]);
 
     }
 

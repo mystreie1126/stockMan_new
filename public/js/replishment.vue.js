@@ -1,17 +1,10 @@
 
+
 var table = new Tabulator("#replishment_list", {
     data:[], //set initial table data
 });
 
-function submit_once(e){
-    $(e).attr('disabled','disabled');
-    $(e).text('loading...');
-}
 
-function reset_button(e){
-    $(e).removeAttr('disabled');
-    $(e).text('Submit');
-}
 
 $('#createSalesList').click((e)=>{
     e.preventDefault();
@@ -62,14 +55,18 @@ $('#createSalesList').click((e)=>{
 
            }
        })
-    }
+   }else{
+       alert('please select proper value to get list');
+       $('.pre-loader').addClass('hide');
+
+   }
 
 });
 
 //submit sales replist list
 $('.replishment_list_action').on('click','.saveTo_salesList',function(e){
     e.preventDefault();
-    submit_once(this);
+    submit_once(this,'loading......');
 
     let data = table.getData(true);
     data.forEach((e)=>e.suggest_send = Number(e.suggest_send));
@@ -99,7 +96,6 @@ $('.replishment_list_action').on('click','.saveTo_salesList',function(e){
         })
     }else{
         alert('Send quantity has to be a positive number!')
-        reset_button($('.saveTo_salesList'));
     }
 });
 
@@ -117,6 +113,83 @@ $('.download').on('click','.download_btn',function(e){
 });
 
 
+/*================================custom sending list==============================================================*/
 
 
-//
+$('.custom_stock_search').click(function(e){
+    let custom_shop_id = $('#selected_custom_stock_shop').val(),
+            custom_ref = $('#custom_stock_ref').val();
+    console.log(custom_shop_id,custom_ref);
+
+    $.ajax({
+        type:'post',
+        url:stockMan+'custom_replishment_search',
+        data:{
+            shop_id:custom_shop_id,
+            ref:custom_ref
+        },
+        success:function(res){
+            console.log(res)
+            console.log($('.custom_stock_search').next());
+            if(res.pass == 1){
+                let html ='<ul class="collection with-header">'+
+                    '<li class="collection-header indigo-text center">'+
+                           '<h5>'+res.result.ref+', '+res.result.name+', to'+res.result.shop_name+'</h6></li>'+
+                     '<li class="collection-item">'+
+                        '<div class="center">'+
+                            '<div class="input-field inline">'+
+                               '<input type="number" class="center custom_stock_input" placeholder="input quantity" required>'+
+                            '</div>'+
+                            '<button class="btn custom_stock_submit" style="transform:translate(10%,10%)">sumbit</button>'+
+                        '</div>'+
+                    '</li>'+
+                    '<input type="hidden" class="test_val" value='+res.result.ref+'>'+
+                    '<input type="hidden" value='+res.result.name+'>'+
+                    '<input type="hidden" value='+res.result.shop_name+'>'+
+
+                 '</ul>';
+                $('.custom_stock_search').next().html(html);
+                let detail = {branchStockID:res.result.branchStockID}
+
+                $('.custom_stock_search').next().on('click','.custom_stock_submit',function(e){
+                    e.preventDefault();
+                    submit_once(this,'loading......');
+                    submit_once($('.custom_stock_search'),'submiting..');
+
+                    let qty = $('.custom_stock_input').val();
+                    if(qty <= 0 || qty == " "){
+                        alert('You can not submit less or equal to 0 quantity!');
+                        reset_button(this,'submit');
+                        reset_button($('.custom_stock_search'),'search');
+                    }else if(qty > 0){
+                        $.ajax({
+                            type:'post',
+                            cache:false,
+                            data:{
+                                detail:$('.test_val').val(),
+
+                            },
+                            url:stockMan+'custom_replishment_save',
+                            success:function(e){
+
+                                reset_button($('.custom_stock_search'),'search');
+                                $('.custom_stock_search').next().empty();
+                                $('.custom_stock_search').next().html('');
+
+
+                                console.log(e);
+                            }
+                        })
+                    }
+
+                })
+
+            }
+        }
+    })
+
+
+
+
+
+});

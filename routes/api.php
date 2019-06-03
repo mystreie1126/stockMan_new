@@ -52,11 +52,23 @@ Route::post('/save_replist','replishmentController@save_repList');
 
 Route::post('/getSavedList','replishmentController@getSavedList');
 
+/* upload replishment result by sale */
+
+Route::post('/update_to_branch','replishmentController@update_to_branch')->name('update_to_branch');
+
+Route::post('/delete_before_update_to_branch','replishmentController@delete_before_update_to_branch')->name('delete_before_update_to_branch');
+
+/* custom repishment */
+
+Route::post('/custom_replishment_search','replishmentController@custom_replishment_search');
+Route::post('/custom_replishment_save','replishmentController@custom_replishment_save');
+
 /*helper*/
 
 Route::get('/test_ref','helperController@test_ref');
 
-Route::get('/pp','helperController@getMe');
+Route::get('/pp','helperController@test_stockTake_refs');
+Route::get('/pa','helperController@getThat');
 
 
 Route::get('/allshopSales','kerianController@allShopSalesQty_by_ref');

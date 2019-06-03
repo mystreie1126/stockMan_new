@@ -40,6 +40,17 @@
       var stockMan = 'http://stockangryman.funtech.ie/api/';
       //var stockMan = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
       //var stockMan = 'http://localhost/project/laravel/stockManager_api/public/api/';
+
+      var submit_once = function(e,btn_text){
+          $(e).attr('disabled','disabled');
+          $(e).text(btn_text);
+      }
+
+      var reset_button = function(e,btn_text){
+          $(e).removeAttr('disabled');
+          $(e).text(btn_text);
+      }
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -61,5 +72,7 @@
     @stack('customRep_js')
     @stack('inventory')
     @stack('mystocktake_js')
+    @stack('stockTake_analysis_js')
+    @stack('update_to_branch')
     </body>
 </html>

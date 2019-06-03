@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Reclrd\Branch_stock_UpdateHistory;
-use App\Model\Reclrd\HQ_replishment_history;
+//use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
+use App\Model\Record\HQ_replishment_history as RepHistory;
 use App\Model\Track\Parts_stock;
 use App\Helper\Common;
 use DB;
@@ -105,28 +105,26 @@ class helperController extends Controller
 
 
    public function test_ref(){
-      $ref = 101262;
+      $ref =   101202;
       $shop_id = 26;
-
-      return Common::get_webStockID_by_ref($ref);
-
-      $arr = [];
+            //return Common::get_webStockID_by_ref($ref);
 
 
+          if(!Common::get_branchStockID_by_ref($ref,27)){
+            return 'this dosent have pos stock id ' . $ref;
+          }
+          else if(!Common::get_productName_by_ref($ref)){
+            return 'this dosent have proper name ' . $ref;
+          }
+          else if(!Common::get_webStockID_by_ref($ref)){
+            return 'this dosent have webStock id ' . $ref;
+          }
 
-      if(!Common::get_branchStockID_by_ref($ref,26)){
-        return 'this dosent have pos stock id ' . $ref;
-      }
-      else if(!Common::get_productName_by_ref($ref)){
-        return 'this dosent have proper name ' . $ref;
-      }
-      else if(!Common::get_webStockID_by_ref($ref)){
-        return 'this dosent have webStock id ' . $ref;
-      }
+          else{
 
-      else{
-        return 'all good';
-      }
+            return Common::get_webStockID_by_ref($ref);
+          }
+
 
 
    }
@@ -216,50 +214,51 @@ class helperController extends Controller
 
 
   public function getMe(){
-    //  $query = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
-    //           ->select('pos_stock_id',DB::raw('sum(updated_quantity) as total'))
-    //           ->where('sealed',1)
-    //           ->groupBy('pos_stock_id')
-    //           ->get();
-    //  foreach($query as $q){
-    //      DB::table('c1ft_pos_prestashop.ps_stock_available')
-    //         ->where('id_stock_available',$q->pos_stock_id)
-    //         ->update(['quantity'=>$q->total]);
-    //  }
-    // return 'done';
-      $standardID = DB::table('c1ft_stock_manager.sm_pos_product_standard')
-                    ->pluck('pos_product_id')->toArray();
+     $query = DB::table('c1ft_stock_manager.sm_branchStockTake_history as a')
+              ->where('a.sealed',1)
+              ->where('a.shop_id',27)
+              ->groupBy('a.pos_stock_id')
+              ->join('c1ft_pos_prestashop.ps_stock_available as b','a.pos_stock_id','b.id_stock_available')
 
-       $stockTake_stockID =  DB::table('c1ft_stock_manager.sm_branchStockTake_history')
-                 ->select('pos_stock_id')
-                 ->where('sealed',1)
-                 ->groupBy('pos_stock_id')
-                 ->pluck('pos_stock_id');
+              ->pluck('b.id_product')->toArray();
 
-       $allStandard = DB::table('c1ft_pos_prestashop.ps_stock_available')
-                    ->select('id_stock_available','id_product')
-                    ->where('id_shop',26)
-                    ->whereNotIn('id_stock_available', $stockTake_stockID)
-                    ->get();
+     $a= DB::table('c1ft_stock_manager.sm_pos_product_standard as a')
+           ->select('a.pos_product_id','a.standard','b.quantity')
+           ->whereIn('a.pos_product_id',$query)
+           ->join('c1ft_pos_prestashop.ps_stock_available as b','a.pos_product_id','b.id_product')
+           ->where('b.id_shop',27)
+           ->get();
 
-       // $missed_in_standard = DB::connection('mysql2')->table('ps_product as a')
-       //                       ->select('a.id_product','b.name')
-       //                       ->join('ps_product_lang as b','a.id_product','b.id_product')
-       //
-       //                       ->whereIn('a.id_product',Common::missingPart($standardID,  $allStandard ))
-       //                       ->groupBy('b.name')
-       //                       ->get();
+    return $a;
 
-        //return   $missed_in_standard;
 
-        foreach($allStandard as $s){
-            DB::connection('mysql2')->table('ps_stock_available')
-            ->where('id_stock_available',$s->id_stock_available)
-            ->update(['quantity'=> Common::standardQty($s->id_product)]);
-        }
-        return 'done';
-        //return  Common::missingPart($standardID,  $allStandard );
 
   }
 
+  public function getThat(){
+
+      
+
+  }
+
+  public function test_stockTake_refs(){
+      // $refs = DB::table('c1ft_stock_manager.sm_branchStockTake_history')->where('shop_id',27)->where('sealed',1)->pluck('reference')->toArray();
+      // $arr = [];
+      // foreach($refs as $ref){
+      //     if(!Common::get_webStockID_by_ref($ref)){
+      //         array_push($arr,$ref);
+      //     }
+      // }
+      //
+      // return $arr;
+
+      $query = DB::table('c1ft_store_prestashop.ps_stock_available as a')
+               ->select('a.web_stock_id','b.name','b.reference','a.quantity as current_quantity')
+               ->groupBy('a.web_stock_id')
+                ->where('b.sealed',1)
+               ->join('c1ft_stock_manager.sm_HQstockTake_history as b','a.id_stock_available','b.web_stock_id')
+                ->get();
+
+             return $query;
+  }
 }

@@ -314,6 +314,18 @@ class Common
 
     /*============================================================================================== */
 
+    public static function extraRefsAfterStockTake($shop_id){
+        $branchStockTake_refs = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
+                 ->where('sealed',1)
+                 ->where('shop_id',$shop_id)
+                 ->groupBy('reference')->pluck('reference')->toArray();
+
+        $HQ_stockTake_refs = DB::table('c1ft_stock_manager.sm_HQstockTake_history')
+                 ->where('sealed',1)
+                 ->groupBy('reference')->pluck('reference')->toArray();
+
+        return Common::missingPart($branchStockTake_refs,$HQ_stockTake_refs);
+    }
 
 
 }

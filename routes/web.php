@@ -36,17 +36,21 @@ Route::get('/test',function(){
 	return view('testdd');
 });
 
-Route::get('/rep','replishmentController@index')->name('replishment')->middleware('auth');
-
+//stockTake
 Route::get('/my_stockTake',function(){
 	return view('my_stocktake');
 })->name('mystocktake')->middleware('auth');
-// Route::get('/check','repishmentController@check');
 
-// Route::get('/hq_inventoryList','inventoryController@HQ_invetory_list')->middleware('auth');
+Route::get('/stockTake_analysis',function(){
+	return view('stockTake_analysis');
+})->name('stockTake_analysis')->middleware('auth');
 
+//stockOut
 
-// Route::get('/', 'HomeController@index')->name('home');
+Route::get('/rep','replishmentController@rep_page')->name('replishment')->middleware('auth');
+
+Route::get('/rep_update','replishmentController@rep_update_page')->name('rep_update')->middleware('auth');
+
 
 
 
