@@ -27,7 +27,7 @@ $('#createSalesList').click((e)=>{
            },
            success:function(res){
                console.log(res);
-               $('.replishment_list_action').html('<button class="saveTo_salesList btn">Submit</button>');
+               $('.list_action').html('<button class="saveTo_salesList btn">Submit</button>');
                $('.download').html('<button class="btn right download_btn">Export CSV</button>')
                var columns = [
                    {title:'Name',field:'name',width:300,align:"center"},
@@ -64,7 +64,7 @@ $('#createSalesList').click((e)=>{
 });
 
 //submit sales replist list
-$('.replishment_list_action').on('click','.saveTo_salesList',function(e){
+$('.list_action').on('click','.saveTo_salesList',function(e){
     e.preventDefault();
     submit_once(this,'loading......');
 
@@ -83,15 +83,14 @@ $('.replishment_list_action').on('click','.saveTo_salesList',function(e){
             url:stockMan+'save_replist',
             data:{
                 sheetData:data,
-                shop_id:$('#selected_shop').val(),
             },
             success:function(res){
                 console.log(res);
                 reset_button($('.saveTo_salesList'));
-                $('.replishment_list_action').html('');
+
+                $('.list_action').html('');
                 $('.download').html('');
-                $('.message').html('<h5>Success Submited!</h5>');
-                table.setData([]);
+                $('.message').html('<h5 class="green-text">Success Submited!</h5>').fadeOut(5000);                table.setData([]);
             }
         })
     }else{
@@ -107,11 +106,97 @@ $('.replishment_list_action').on('click','.saveTo_salesList',function(e){
 $('.download').on('click','.download_btn',function(e){
     e.preventDefault();
     let data = table.getData(true);
-    let name = `${data[0].shop_name} list from ${data[0].selected_from} to ${data[0].selected_to}`;
-     console.log(data[0]);
+    let name = `${data[0].shop_name} list`;
     table.download('csv',`${name}.csv`);
 });
+/*================================standard sending list==============================================================*/
 
+$('#createStandardList').click(function(e){
+    e.preventDefault();
+    let shop_id = $('#selected_standard_stock_shop').val();
+
+    if($('.pre-loader').hasClass('hide')){
+        $('.pre-loader').removeClass('hide');
+    }
+
+    if(Number(shop_id) != 0){
+        console.log(shop_id);
+        $.ajax({
+            type:'post',
+            url:stockMan+'standard_replishment_list',
+            data:{
+                shop_id:shop_id
+            },
+            success:function(res){
+                console.log(res);
+
+                $('.list_action').html('<button class="saveTo_standardList btn">Submit</button>');
+                $('.download').html('<button class="btn right download_btn">Export CSV</button>')
+
+                var columns = [
+                    {title:'Name',field:'name',width:300,align:"center"},
+                    {title:'Barcode',field:'reference',width:200,align:"center"},
+                    {title:'Standard',field:'standard',width:100,align:"center",cssClass:"green-text"},
+                    {title:'Stock Qty',field:'quantity',width:200,align:"center",cssClass:"amber-text"},
+                    {title:'Send',field:'send',width:100,editor:"number",align:"center",cssClass:'indigo-text'},
+                    {title:'Shop Name',field:'shop_name',width:250,align:"center"},
+                    {title:'webStockID',field:'webStockID',width:2,visible:false},
+                    {title:'posStockID',field:'branchStockID',width:2,visible:false}
+
+                ];
+                if(!$('.pre-loader').hasClass('hide')){
+                    $('.pre-loader').addClass('hide');
+                }
+                table.setColumns(columns);
+                table.setData(res);
+
+            }
+        })
+    }else{
+        if(!$('.pre-loader').hasClass('hide')){
+            $('.pre-loader').addClass('hide');
+        }
+        alert('Selected Shop can not be null!');
+    }
+
+});
+
+
+$('.list_action').on('click','.saveTo_standardList',function(e){
+    console.log('standard');
+
+    let data = table.getData(true);
+    data.forEach((e)=>e.send = Number(e.send));
+    let invalidNum = data.filter((e)=>{
+        return isNaN(e.send) == true || e.send < 0;
+    })
+
+    if(invalidNum.length == 0){
+        submit_once(this,'loading......');
+
+        $.ajax({
+            method:'post',
+            dataType:'json',
+            url:stockMan+'save_standard_replist',
+            data:{
+                sheetData:data,
+            },
+            success:function(res){
+                console.log(res);
+
+                $('.list_action').html('');
+                $('.download').html('');
+                $('.message').html('<h5 class="green-text">Success Submited!</h5>').fadeOut(5000);
+                table.setData([]);
+            }
+        })
+    }else{
+        alert('Send quantity has to be a positive number!')
+    }
+
+
+
+})
 
 /*================================custom sending list==============================================================*/
 

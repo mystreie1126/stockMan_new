@@ -24,13 +24,15 @@ class Replishment{
 
 
 
-       if(intval($shop_id) == 27){
-           $sell_refs = array_merge($pos_sale_refs,$missing_refs);
-           $extraRefs = Common::extraRefsAfterStockTake($shop_id);
-           $final_refs = array_merge($sell_refs, Common::missingPart($sell_refs,$extraRefs));
-       }else{
-            $final_refs = $sell_refs;
-       }
+       // if(intval($shop_id) == 27){
+       //     $sell_refs = array_merge($pos_sale_refs,$missing_refs);
+       //     $extraRefs = Common::extraRefsAfterStockTake($shop_id);
+       //     $final_refs = array_merge($sell_refs, Common::missingPart($sell_refs,$extraRefs));
+       // }else{
+       //      $final_refs = $sell_refs;
+       // }
+
+       $final_refs = $sell_refs;
 
        foreach($final_refs as $ref){
            if(
@@ -46,7 +48,7 @@ class Replishment{
                    'pos_stockID' =>  Common::get_branchStockID_by_ref($ref,$shop_id),
                           'name' =>  Common::get_productName_by_ref($ref),
                      'reference' =>  $ref,
-                      'standard' =>  Common::get_productStandard_by_ref($ref),
+                      'standard' =>  -1,
                        'soldQty' =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to),
                'has_branch_stock'=>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ? "Yes":"No",
                'branch_stock_qty'=> "Not Sure",

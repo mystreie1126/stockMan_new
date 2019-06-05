@@ -85,21 +85,69 @@ class kerianController extends Controller
      }
 
     public function allShopSalesQty_by_ref(){
-        $from = '2019-05-20 00:00:00';
-        $to   = '2019-05-26 23:00:00';
-        $refs = self::get_sales_refs($from,$to);
+        $from = '2019-05-27 00:00:00';
+        $to   = '2019-06-02 23:00:00';
+        $shop_id = 27;
+
+        $pos_sale_refs  = Common::totalSalesRefs($from,$to,$shop_id);
+        $web_sales_refs = Common::webSalesRefs($from,$to,$shop_id);
+        $missing_refs = Common::missingPart($pos_sale_refs,$web_sales_refs);
+
+        $sell_refs = array_merge($pos_sale_refs,$missing_refs);
+
         $result = [];
 
 
-        foreach($refs as $r){
+        foreach($sell_refs as $r){
             $result[] = [
                 'name' => Common::get_productName_by_ref($r),
                 'reference'=> $r,
-                'sold_qty' => self::get_productSoldQty_by_ref_allshops($r,$from,$to)
+                'sold_qty' => Common::get_productSoldQty_by_ref($r,$shop_id,$from,$to)
             ];
         }
 
         return $result;
 
     }
+
+    public function athlone_standard_list(){
+        $branchStockTake_refs = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
+                 ->where('sealed',1)
+                 ->where('shop_id',27)
+                 ->groupBy('reference')->pluck('reference')->toArray();
+        $arr = [];
+        $invalidArr = [];
+        $allrefs =  array_merge(Common::extraRefsAfterStockTake(27),$branchStockTake_refs);
+
+        foreach($allrefs as $ref){
+
+                $arr[] = [
+                    'name' => Common::get_productName_by_ref($ref),
+                    'webStockID' => Common::get_webStockID_by_ref($ref),
+                    'branchStockID' => Common::get_branchStockID_by_ref($ref,27),
+                    'reference' => $ref
+                ];
+
+        }
+
+        return $arr;
+
+    }
+
+    public function product_without_imageSold(){
+        $query = DB::table('c1ft_stock_manager.product_without_image')->get();
+        $from = '2019-03-01 00:00:00';
+        $to = date('Y-m-d h:i:s');
+        foreach($query as $q){
+            DB::table('c1ft_stock_manager.product_without_image')
+            ->where('ref',$q->ref)
+            ->update(['sold_qty'=>self::get_productSoldQty_by_ref_allshops($q->ref,$from,$to)]);
+        }
+
+        return 'done';
+    }
+
+
+
+
 }

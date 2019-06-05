@@ -63,6 +63,12 @@ Route::post('/delete_before_update_to_branch','replishmentController@delete_befo
 Route::post('/custom_replishment_search','replishmentController@custom_replishment_search');
 Route::post('/custom_replishment_save','replishmentController@custom_replishment_save');
 
+
+/* standard replishment*/
+
+Route::post('/standard_replishment_list','replishmentController@standard_replishment_list');
+
+Route::post('/save_standard_replist','replishmentController@save_standard_replist');
 /*helper*/
 
 Route::get('/test_ref','helperController@test_ref');
@@ -72,3 +78,10 @@ Route::get('/pa','helperController@getThat');
 
 
 Route::get('/allshopSales','kerianController@allShopSalesQty_by_ref');
+
+/* kerian controller*/
+Route::get('/athlone_standard_list','kerianController@athlone_standard_list');
+
+Route::get('/allShopSalesQty_by_ref','kerianController@allShopSalesQty_by_ref');
+
+Route::get('/pas','kerianController@product_without_imageSold');

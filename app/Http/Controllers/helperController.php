@@ -90,7 +90,7 @@ class helperController extends Controller
         $stock->quantity = $stefan->quantity;
         $stock->pending  = $stefan->pending;
         $stock->return   = $stefan->return;
-       $stock->intransit = $stefan->intransit;
+        $stock->intransit = $stefan->intransit;
         $stock->user_id  = 230;
         $stock->standard = $stefan->standard;
         $stock->created_at = date('Y-m-d h:i:s');
@@ -103,11 +103,9 @@ class helperController extends Controller
 
     }
 
-
    public function test_ref(){
-      $ref =   101202;
-      $shop_id = 26;
-            //return Common::get_webStockID_by_ref($ref);
+      $ref =   102357;
+      $shop_id = 27;
 
 
           if(!Common::get_branchStockID_by_ref($ref,27)){
@@ -237,7 +235,7 @@ class helperController extends Controller
 
   public function getThat(){
 
-      
+
 
   }
 

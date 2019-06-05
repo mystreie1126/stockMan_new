@@ -32,13 +32,34 @@
 
   <h3></h3>
   <h5>Re Stock Options:</h5>
-  <ul class="collapsible" data-collapsible="accordion">
-      <li>
-  <div class="collapsible-header"><i class="material-icons">filter_drama</i>Regular Re-stock (Monday and Thursday)</div>
+<ul class="collapsible" data-collapsible="accordion">
+
+    <li>
+      <div class="collapsible-header"><i class="material-icons green-text">whatshot</i>Standard Restock(Athlone only)</div>
+      <div class="collapsible-body">
+
+        <div class="row" >
+           <div class="col s12 m4 l4">
+            <span class="green-text text-lighten-3">Select Branch:</span>
+            <select id="selected_standard_stock_shop">
+              <option disabled selected>Choose a Shop</option>
+                  <option value="27">Athlone</option>
+            </select>
+          </div>
+
+          <button class="green btn col s6 m2 l2" id="createStandardList" style="transform:translate(10%,80%)">Create List</button>
+      </div>
+    </li>
+
+
+
+
+<li>
+  <div class="collapsible-header"><i class="material-icons teal-text">filter_drama</i>Re-stock by Sales</div>
   <div class="collapsible-body">
 
     <div class="sales_rep_form">
-      <span class="flow-text  cyan-text text-darken-3 ">Regular Re-Stock</span>
+      <span class="flow-text  cyan-text text-darken-3 ">Re-Stock by Sales</span>
       <div id="sales_rep_form" class="row" >
          <div class="col s12 m3 l3">
           <span class="indigo-text text-lighten-3">Select From:</span>
@@ -80,7 +101,9 @@
   </div>
 </li>
 
-    <li>
+
+    {{-- custom restock --}}
+    {{-- <li>
       <div class="collapsible-header"><i class="material-icons">whatshot</i>Custom Restock (Any Time)</div>
       <div class="collapsible-body">
 
@@ -102,35 +125,23 @@
 
             <button type="button" class="btn s12 m3 l3 blue custom_stock_search" style="transform:translateY(80%)">search</button>
             <div class="col s12">
-                {{-- <ul class="collection with-header">
-                    <li class="collection-header indigo-text center">Produc Names refs mill</li>
-                    <li class="collection-item">
-                        <div class="center">
-                            <div class="input-field inline">
-                               <input type="number" class="validate center" placeholder="input quantity">
-                            </div>
-                            <button class="btn" style="transform:translate(10%,10%)">sumbit</button>
-                        </div>
-                    </li>
-                  </ul> --}}
 
-
-
-        </div>
+            </div>
       </div>
-    </li>
+    </li> --}}
 
   </ul>
-  {{-- end of sales replishment form--}}
+  {{-- end of the whole list action form--}}
   <hr>
-  <div class="download">
 
-  </div>
+  <div class="download"></div>
   <div class="message"></div>
 
+  {{-- data list  --}}
+  <h5>Replishment List:</h5>
   <div id="replishment_list"></div>
-  <div class="replishment_list_action">
-  </div>
+  <div class="list_action"></div>
+
 </div>
 
 
