@@ -157,51 +157,38 @@ class replishmentController extends Controller
 
     public function standard_replishment_list(Request $request){
 
-        $query = DB::table('c1ft_stock_manager.stage_sm_branch_standard_stock as standard')
-                 ->select('standard.reference','standard.standard_qty as standard','stock.quantity','name.name','stock.id_stock_available as branchStockID',
-                            DB::raw('(standard.standard_qty - stock.quantity) as send')
-                 )
-                 ->where('standard.shop_id',$request->shop_id)
-                 ->join('c1ft_pos_prestashop.ps_stock_available as stock','standard.branch_stock_id','stock.id_stock_available')
-                 ->join('c1ft_pos_prestashop.ps_product_lang as name','name.id_product','stock.id_product')
-                 ->where('name.id_shop',$request->shop_id)
-                 ->whereRaw('standard.standard_qty - stock.quantity > 0')
-                 ->get();
-
-        foreach($query as $q){
-            $q->webStockID = Common::get_webStockID_by_ref($q->reference);
-            $q->shop_name = DB::table('c1ft_pos_prestashop.ps_shop')->where('id_shop',$request->shop_id)->value('name');
-            $q->shop_id   = $request->shop_id;
-        }
-        return $query;
+        return Replishment::branch_replishmentWithStandard($request->shop_id);
     }
 
 
     public function save_standard_replist(Request $request){
 
-        $data = $request->sheetData;
-
+        
+        return $request->sheetData;
         foreach($data as $d){
-            $history = new RepHistory;
-            $history->reference           = $d['reference'];
-            $history->product_name        = $d['name'];
-            $history->web_stock_id        = $d['webStockID'];
-            $history->shop_stock_id       = $d['branchStockID'];
-            $history->shop_id             = $d['shop_id'];
-            $history->updated_quantity    = $d['send'];
-            $history->standard_quantity   = $d['standard'];
-            $history->uploaded            = 0;
-            $history->rep_by_sale         = 0;
-            $history->rep_by_custom       = 0;
-            $history->rep_by_standard     = 1;
-            $history->created_at          = date('Y-m-d h:i:s');
+            array_push($arr,1);
+            // $history = new RepHistory;
+            // $history->reference           = (string)$d['reference'];
+            // $history->product_name        = (string)$d['name'];
+            // $history->web_stock_id        = intval($d['webStockID']);
+            // $history->shop_stock_id       = intval($d['branchStockID']);
+            // $history->shop_id             = intval($d['shop_id']);
+            // $history->updated_quantity    = intval($d['send']);
+            // $history->standard_quantity   = intval($d['standard']);
+            // $history->uploaded            = 0;
+            // $history->rep_by_sale         = 0;
+            // $history->rep_by_custom       = 0;
+            // $history->rep_by_standard     = 1;
+            // $history->created_at          = date('Y-m-d h:i:s');
+            //
+            // $history->save();
 
-            $history->save();
             // if($history->save()){
             //     DB::table('ps_stock_available')->where('id_stock_available', $d['webStockID'])
             //     ->decrement('quantity',$d['send']);
             // }
         }
+        return $arr;
 
         return response()->json('saved');
     }

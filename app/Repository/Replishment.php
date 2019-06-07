@@ -71,6 +71,28 @@ class Replishment{
     }
 
 
+    private function branch_replishmentbystandard($shop_id){
+        $query = DB::table('c1ft_stock_manager.sm_branch_standard_stock as standard')
+                 ->select('standard.reference','standard.standard_qty as standard','stock.quantity','name.name','stock.id_stock_available as branchStockID',
+                            DB::raw('(standard.standard_qty - stock.quantity) as send')
+                 )
+                 ->where('standard.shop_id',$shop_id)
+                 ->join('c1ft_pos_prestashop.ps_stock_available as stock','standard.branch_stock_id','stock.id_stock_available')
+                 ->join('c1ft_pos_prestashop.ps_product_lang as name','name.id_product','stock.id_product')
+                 ->where('name.id_shop',$shop_id)
+                 ->whereRaw('standard.standard_qty - stock.quantity > 0')
+                 ->get();
+
+        foreach($query as $q){
+
+                $q->webStockID = Common::get_webStockID_by_ref($q->reference) !== null ? Common::get_webStockID_by_ref($q->reference) : 0;
+                $q->shop_name = DB::table('c1ft_pos_prestashop.ps_shop')->where('id_shop',$shop_id)->value('name');
+                $q->shop_id   = $shop_id;
+
+        }
+        return $query;
+    }
+
 
     public function branch_replishmentWithDate($shop_id,$from,$to){
 
@@ -79,6 +101,13 @@ class Replishment{
         //return $cacheKey;
         return cache()->remember($cacheKey,Carbon::now()->addDays(2),function() use($shop_id,$from,$to){
             return self::branch_replishmentWithDate_results($shop_id,$from,$to);
+        });
+    }
+
+    public function branch_replishmentWithStandard($shop_id){
+        $cacheKey = strtoupper($shop_id.'by_standard');
+        return cache()->remember($cacheKey,Carbon::now()->addDays(2),function() use($shop_id){
+            return self::branch_replishmentbystandard($shop_id);
         });
     }
 }

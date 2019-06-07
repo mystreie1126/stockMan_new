@@ -170,6 +170,8 @@ $('.list_action').on('click','.saveTo_standardList',function(e){
     let invalidNum = data.filter((e)=>{
         return isNaN(e.send) == true || e.send < 0;
     })
+    console.log(data);
+
 
     if(invalidNum.length == 0){
         submit_once(this,'loading......');
@@ -179,7 +181,9 @@ $('.list_action').on('click','.saveTo_standardList',function(e){
             dataType:'json',
             url:stockMan+'save_standard_replist',
             data:{
-                sheetData:data,
+                sheetData:{
+                    dd:data
+                },
             },
             success:function(res){
                 console.log(res);
