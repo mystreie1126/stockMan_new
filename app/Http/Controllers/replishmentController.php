@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Record\HQ_replishment_history as RepHistory;
-//use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
+//use App\Model\Record\HQ_replishment_history as RepHistory;
+use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
 use DB;
 use App\Helper\Common;
 use Facades\App\Repository\Replishment;
@@ -157,7 +157,7 @@ class replishmentController extends Controller
 
     public function standard_replishment_list(Request $request){
 
-        $query = DB::table('c1ft_stock_manager.sm_branch_standard_stock as standard')
+        $query = DB::table('c1ft_stock_manager.stage_sm_branch_standard_stock as standard')
                  ->select('standard.reference','standard.standard_qty as standard','stock.quantity','name.name','stock.id_stock_available as branchStockID',
                             DB::raw('(standard.standard_qty - stock.quantity) as send')
                  )
@@ -196,11 +196,11 @@ class replishmentController extends Controller
             $history->rep_by_standard     = 1;
             $history->created_at          = date('Y-m-d h:i:s');
 
-            //$history->save();
-            if($history->save()){
-                DB::table('ps_stock_available')->where('id_stock_available', $d['webStockID'])
-                ->decrement('quantity',$d['send']);
-            }
+            $history->save();
+            // if($history->save()){
+            //     DB::table('ps_stock_available')->where('id_stock_available', $d['webStockID'])
+            //     ->decrement('quantity',$d['send']);
+            // }
         }
 
         return response()->json('saved');

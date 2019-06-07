@@ -104,7 +104,7 @@ class helperController extends Controller
     }
 
    public function test_ref(){
-      $ref =   102357;
+      $ref =   6958444966670;
       $shop_id = 27;
 
 
@@ -119,7 +119,7 @@ class helperController extends Controller
           }
 
           else{
-
+              return Common::get_branchStockID_by_ref($ref,27);
             return Common::get_webStockID_by_ref($ref);
           }
 
@@ -235,7 +235,22 @@ class helperController extends Controller
 
   public function getThat(){
 
+      $mill_refs = Common::extraRefsAfterStockTake(26);
 
+      $arr = [];
+
+      foreach($mill_refs as $ref){
+          $arr[]=[
+              'webStockID'  => Common::get_webStockID_by_ref($ref),
+              'branchStockID'=>Common::get_branchStockID_by_ref($ref,26),
+              'Shop' => 'Mill',
+              'name' => Common::get_productName_by_ref($ref),
+              'barcode' => $ref
+
+          ];
+      }
+
+      return $arr;
 
   }
 

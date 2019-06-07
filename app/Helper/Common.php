@@ -324,7 +324,9 @@ class Common
                  ->where('sealed',1)
                  ->groupBy('reference')->pluck('reference')->toArray();
 
-        return Common::missingPart($branchStockTake_refs,$HQ_stockTake_refs);
+        $a =  Common::missingPart($branchStockTake_refs,$HQ_stockTake_refs);
+
+        return array_merge($a,$branchStockTake_refs);
     }
 
 
