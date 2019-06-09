@@ -308,9 +308,33 @@ class Common
         return $name;
     }
 
-    //7.get retail price by ref
+    //7.get stock_in record by refs
+
+    public static function get_product_deliveredQty_to_Branch($ref){
+        $qty = DB::table('c1ft_stock_manager.sm_all_replishment_history')
+
+
+               ->where('rep_by_standard',1)
+               ->where('reference',$ref)
+               ->groupBy('reference')->value(DB::raw('sum(updated_quantity)'));
+
+               return intval($qty);
+    }
 
     //8.get product catagory type by ref
+
+
+    public static function get_qty_lastStockTake($ref,$shop_id){
+        $qty = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
+
+               ->where('shop_id',$shop_id)
+               ->where('sealed',1)
+               ->where('reference',$ref)
+               ->groupBy('reference')->value(DB::raw('sum(updated_quantity)'));
+
+               return intval($qty);
+    }
+
 
     /*============================================================================================== */
 

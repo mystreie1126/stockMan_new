@@ -104,7 +104,7 @@ class helperController extends Controller
     }
 
    public function test_ref(){
-      $ref =   6958444966670;
+      $ref =   102356;
       $shop_id = 27;
 
 
@@ -119,7 +119,7 @@ class helperController extends Controller
           }
 
           else{
-              return Common::get_branchStockID_by_ref($ref,27);
+
             return Common::get_webStockID_by_ref($ref);
           }
 
@@ -199,58 +199,31 @@ class helperController extends Controller
 
    }
 
-   public function getStockTakeTableName(){
-       $query = DB::table('c1ft_stock_manager.sm_replishment_history')->where('created_at','>','2019-05-23')->get();
-
-       foreach($query as $q){
-           DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
-           ->increment('quantity',intval($q->updated_quantity));
-       }
-
-       return 'updated';
-   }
 
 
-  public function getMe(){
-     $query = DB::table('c1ft_stock_manager.sm_branchStockTake_history as a')
-              ->where('a.sealed',1)
-              ->where('a.shop_id',27)
-              ->groupBy('a.pos_stock_id')
-              ->join('c1ft_pos_prestashop.ps_stock_available as b','a.pos_stock_id','b.id_stock_available')
-
-              ->pluck('b.id_product')->toArray();
-
-     $a= DB::table('c1ft_stock_manager.sm_pos_product_standard as a')
-           ->select('a.pos_product_id','a.standard','b.quantity')
-           ->whereIn('a.pos_product_id',$query)
-           ->join('c1ft_pos_prestashop.ps_stock_available as b','a.pos_product_id','b.id_product')
-           ->where('b.id_shop',27)
-           ->get();
-
-    return $a;
-
-
-
-  }
 
   public function getThat(){
 
-      $mill_refs = Common::extraRefsAfterStockTake(26);
+      $lastStockTakeRefs = DB::table('c1ft_stock_manager.sm_branchStockTake_history as a')
+                    ->select('a.reference','a.name','a.pos_stock_id',DB::raw('sum(a.updated_quantity) as stockTake'),'b.quantity as current_qty')
+                    ->where('a.created_at','>','2019-06-06')
+                    ->groupBy('a.pos_stock_id')
+                    ->join('c1ft_pos_prestashop.ps_stock_available as b','b.id_stock_available','a.pos_stock_id')
+                    ->get();
+     $from = '2019-06-06 19:40:33';
+     $to = date('Y-m-d h:i:s');
+     //return Common::get_product_deliveredQty_to_Branch(101197);
 
-      $arr = [];
+     foreach($lastStockTakeRefs as $r){
+         $r->out = Common::get_productSoldQty_by_ref($r->reference,27,$from,$to);
+         $r->in  = Common::get_product_deliveredQty_to_Branch($r->reference);
+     }
+     return $lastStockTakeRefs;
 
-      foreach($mill_refs as $ref){
-          $arr[]=[
-              'webStockID'  => Common::get_webStockID_by_ref($ref),
-              'branchStockID'=>Common::get_branchStockID_by_ref($ref,26),
-              'Shop' => 'Mill',
-              'name' => Common::get_productName_by_ref($ref),
-              'barcode' => $ref
 
-          ];
-      }
 
-      return $arr;
+
+
 
   }
 

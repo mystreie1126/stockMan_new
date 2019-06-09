@@ -8,11 +8,13 @@ use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
 use DB;
 use App\Helper\Common;
 use Facades\App\Repository\Replishment;
+use Mail;
+use App\Mail\replishmentEmail;
 
 class replishmentController extends Controller
 {
   private function make_uploadList($by_sale = 0,$by_standard = 0,$by_custom = 0){
-      $shops_by_sale = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
+      $shops_by_sale = DB::table('c1ft_stock_manager.stage_sm_all_replishment_history as a')
                         ->select('a.shop_id','b.name as shop_name')
                         ->join('c1ft_pos_prestashop.ps_shop as b','b.id_shop','a.shop_id')
                         ->where('a.uploaded',0)
@@ -23,7 +25,7 @@ class replishmentController extends Controller
                         ->get();
 
    foreach($shops_by_sale as $shop){
-       $shop->detail = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
+       $shop->detail = DB::table('c1ft_stock_manager.stage_sm_all_replishment_history as a')
                        ->select('a.shop_stock_id','a.reference as barcode','a.product_name','a.updated_quantity','b.name as shopname','a.selected_startDate','a.selected_endDate','a.created_at')
                        ->where('a.shop_id',$shop->shop_id)
                        ->where('a.uploaded',0)
@@ -70,6 +72,9 @@ class replishmentController extends Controller
     public function save_repList(Request $request){
 
         $data = $request->sheetData;
+
+
+
         foreach($data as $d){
             $history = new RepHistory;
             $history->reference           = $d['reference'];
@@ -87,11 +92,11 @@ class replishmentController extends Controller
             $history->selected_endDate    = $d['selected_to'];
             $history->created_at          = date('Y-m-d h:i:s');
 
-             //$history->save();
-            if($history->save()){
-                DB::table('ps_stock_available')->where('id_stock_available', $d['web_stockID'])
-                ->decrement('quantity',$d['suggest_send']);
-            }
+             $history->save();
+            // if($history->save()){
+            //     DB::table('ps_stock_available')->where('id_stock_available', $d['web_stockID'])
+            //     ->decrement('quantity',$d['suggest_send']);
+            // }
         }
 
         return response()->json('saved');
@@ -163,7 +168,7 @@ class replishmentController extends Controller
 
     public function save_standard_replist(Request $request){
 
-        
+
         return $request->sheetData;
         foreach($data as $d){
             array_push($arr,1);
@@ -211,22 +216,29 @@ class replishmentController extends Controller
     //update list data
     public function update_to_branch(Request $request){
 
-        $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
+        $query = DB::table('c1ft_stock_manager.stage_sm_all_replishment_history')
                 ->where('uploaded',0)
                 ->where('shop_id',$request->shop_id)
                 ->where('rep_by_sale',$request->by_sale)
                 ->get();
+        $shopname = DB::table('c1ft_pos_prestashop.ps_shop')->where('id_shop',$request->shop_id)->value('name');
+        //
+        // foreach($query as $q){
+        //     DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
+        //         ->increment('quantity',intval($q->updated_quantity));
+        // }
 
-        foreach($query as $q){
-            DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
-                ->increment('quantity',intval($q->updated_quantity));
-        }
+        // DB::table('c1ft_stock_manager.sm_all_replishment_history')
+        //     ->where('uploaded',0)
+        //     ->where('shop_id',$request->shop_id)
+        //     ->where('rep_by_sale',$request->by_sale)
+        //     ->update(['uploaded'=>1]);
 
-        DB::table('c1ft_stock_manager.sm_all_replishment_history')
-            ->where('uploaded',0)
-            ->where('shop_id',$request->shop_id)
-            ->where('rep_by_sale',$request->by_sale)
-            ->update(['uploaded'=>1]);
+
+
+
+        //return $a;
+        Mail::to('it@funtech.ie')->send(new replishmentEmail($query,$shopname));
 
         return redirect()->route('rep_update');
     }

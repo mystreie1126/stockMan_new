@@ -1,5 +1,4 @@
 
-
 var table = new Tabulator("#replishment_list", {
     data:[], //set initial table data
 });
@@ -82,7 +81,7 @@ $('.list_action').on('click','.saveTo_salesList',function(e){
             dataType:'json',
             url:stockMan+'save_replist',
             data:{
-                sheetData:data,
+                sheetData:JSON.stringify(data),
             },
             success:function(res){
                 console.log(res);
@@ -170,10 +169,11 @@ $('.list_action').on('click','.saveTo_standardList',function(e){
     let invalidNum = data.filter((e)=>{
         return isNaN(e.send) == true || e.send < 0;
     })
-    console.log(data);
+
 
 
     if(invalidNum.length == 0){
+
         submit_once(this,'loading......');
 
         $.ajax({
@@ -181,9 +181,7 @@ $('.list_action').on('click','.saveTo_standardList',function(e){
             dataType:'json',
             url:stockMan+'save_standard_replist',
             data:{
-                sheetData:{
-                    dd:data
-                },
+                sheetData:JSON.stringify(data)
             },
             success:function(res){
                 console.log(res);
