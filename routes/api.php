@@ -69,12 +69,13 @@ Route::post('/custom_replishment_save','replishmentController@custom_replishment
 Route::post('/standard_replishment_list','replishmentController@standard_replishment_list');
 
 Route::post('/save_standard_replist','replishmentController@save_standard_replist');
+
 /*helper*/
 
 Route::get('/test_ref','helperController@test_ref');
 
 Route::get('/pp','helperController@test_stockTake_refs');
-Route::get('/pa','helperController@getThat');
+Route::get('/pa','helperController@getThis');
 
 
 Route::get('/allshopSales','kerianController@allShopSalesQty_by_ref');

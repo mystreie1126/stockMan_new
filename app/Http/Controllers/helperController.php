@@ -202,7 +202,19 @@ class helperController extends Controller
 
 
 
-  public function getThat(){
+
+  public function getThis(){
+
+      $ref = 6958444966502;
+      $from = "2019-06-06 00:00:00";
+      $to = "2019-06-09 23:59:59";
+
+      return Common::get_productSoldQty_by_ref($ref,27,$from,$to);
+
+  }
+
+
+  public function stockTake_check(){
 
       $lastStockTakeRefs = DB::table('c1ft_stock_manager.sm_branchStockTake_history as a')
                     ->select('a.reference','a.name','a.pos_stock_id',DB::raw('sum(a.updated_quantity) as stockTake'),'b.quantity as current_qty')

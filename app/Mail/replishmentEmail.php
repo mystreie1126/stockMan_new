@@ -35,7 +35,7 @@ class replishmentEmail extends Mailable
     {
         $lists = $this->sendList;
         $shopname =  $this->shopname;
-        $date = date('Y-m-d h:i:s');
+        $date = date('Y-m-d');
 
         return $this->view('email.Mail_replishment',compact('lists','shopname','date'));
     }
