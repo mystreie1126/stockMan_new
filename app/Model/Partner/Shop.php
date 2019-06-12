@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Partner;
+namespace App\Model\Partner;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,4 +14,6 @@ class Shop extends Model
     public function product(){
     	return $this->hasMany('App\Partner\Stock','id_shop','id_shop');
     }
+
+
 }

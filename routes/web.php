@@ -51,6 +51,17 @@ Route::get('/rep','replishmentController@rep_page')->name('replishment')->middle
 
 Route::get('/rep_update','replishmentController@rep_update_page')->name('rep_update')->middleware('auth');
 
+//device page
+
+Route::get('/new_device','DeviceController@new_device_page')->name('newDeviceStockIn');
+
+Route::get('/deviceTransfer','DeviceController@transfer_device_page')->name('transferDevices');
+
+Route::get('/send_device','DeviceController@ready_to_send')->name('sendDevice');
+
+
+
+
 
 
 

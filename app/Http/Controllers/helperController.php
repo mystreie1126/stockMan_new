@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
-use App\Model\Record\HQ_replishment_history as RepHistory;
+use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
+//use App\Model\Record\HQ_replishment_history as RepHistory;
 use App\Model\Track\Parts_stock;
 use App\Helper\Common;
 use DB;
@@ -205,11 +205,26 @@ class helperController extends Controller
 
   public function getThis(){
 
-      $ref = 6958444966502;
-      $from = "2019-06-06 00:00:00";
-      $to = "2019-06-09 23:59:59";
 
-      return Common::get_productSoldQty_by_ref($ref,27,$from,$to);
+       $history = new RepHistory;
+       $history->reference           = 123;
+       $history->product_name        = 'test';
+       $history->web_stock_id        = 123123;
+       $history->shop_stock_id       = 123123;
+       $history->shop_id             = 1;
+       $history->updated_quantity    = 1231;
+       $history->standard_quantity   = 123123;
+       $history->uploaded            = 0;
+       $history->rep_by_sale         = 0;
+       $history->rep_by_custom       = 0;
+       $history->rep_by_standard     = 1;
+       $history->created_at          = date('Y-m-d h:i:s');
+       $history->save();
+
+       if($history->save()){
+           DB::table('ps_stock_available')->where('id_stock_available',2944052)
+           ->decrement('quantity',20);
+       }
 
   }
 

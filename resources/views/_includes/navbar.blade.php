@@ -101,9 +101,20 @@
                 <div class="divider">User Action</div>
               </li>
 
-              <!-- stock In-->
+              <!-- Manage Devices -->
               <li>
-                <a href="#"><span class="nav_sub_header green-text">Stock In</span></a>
+                <a href="#"><span class="nav_sub_header purple-text text-darken-1">Manage Devices</span></a>
+              </li>
+
+              <li>
+                <a href="{{route('newDeviceStockIn')}}">Devices Stock In</a>
+              </li>
+
+              <li>
+                <a href="{{route('transferDevices')}}">Transfer Devices</a>
+              </li>
+              <li>
+                <a href="{{route('sendDevice')}}">Ready To Send</a>
               </li>
 
           @else

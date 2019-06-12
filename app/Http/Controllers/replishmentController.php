@@ -99,7 +99,7 @@ class replishmentController extends Controller
             $history->selected_endDate    = $d['selected_to'];
             $history->created_at          = date('Y-m-d h:i:s');
 
-             // $history->save();
+             //$history->save();
             if($history->save()){
                 DB::table('ps_stock_available')->where('id_stock_available', $d['web_stockID'])
                 ->decrement('quantity',$d['suggest_send']);
@@ -139,7 +139,7 @@ public function save_standard_replist(Request $request){
         $history->rep_by_standard     = 1;
         $history->created_at          = date('Y-m-d h:i:s');
 
-        $history->save();
+        //$history->save();
 
         if($history->save()){
             DB::table('ps_stock_available')->where('id_stock_available', $d['webStockID'])
@@ -222,7 +222,7 @@ public function save_standard_replist(Request $request){
   */
 
 
-    //UPDATE SALED REPLISHMENT LIST
+    //UPDATE SALED REPLISHMENT LIST AND SEND NOTIFICATION EMAIL
 
     private function mark_as_uploaded($sale,$standard,$custom,$shop_id){
 

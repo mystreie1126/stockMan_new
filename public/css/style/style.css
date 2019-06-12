@@ -244,3 +244,7 @@ nav{
 .add_missingfromList{
 	transform: translate(-20px,20%);
 }
+
+.device_storage option{
+	color:red !important;
+}

@@ -1,33 +1,14 @@
-//console.log('r/myplace');
 
-
-// jQuery.ajaxPrefilter(function(options) {
-//     if (options.crossDomain && jQuery.support.cors) {
-//         options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
-//     }
-// });
-// window.confirm = function(){return true;};
-
-
-//const stockMan = 'http://localhost/project/laravel/newStockApi/public/api/';
-//init
+//
 $(document).ready(function(){
 
- $('.modal').modal();
- $('.section').fadeIn();
+         $('.modal').modal();
+         $('.section').fadeIn();
 
-        // Hide preloader
-         //$('.loader').fadeOut();
-
-         //Init Side nav
          $('.button-collapse').sideNav();
          $('.modal').modal();
 
-
-         // Init Select
-       $('select').material_select();
-
-
+         $('select').material_select();
 
          $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
@@ -64,6 +45,7 @@ $(document).ready(function(){
     }
   );
 
+ 
 });
 
 //main js

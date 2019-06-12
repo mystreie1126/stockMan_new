@@ -70,6 +70,20 @@ Route::post('/standard_replishment_list','replishmentController@standard_replish
 
 Route::post('/save_standard_replist','replishmentController@save_standard_replist');
 
+
+/* device management*/
+
+//new device stock in
+Route::post('/new_device_stockIn','DeviceController@new_device_saveToPool');
+
+//check avaialble deivce
+Route::get('/get_available_device_for_transfer','DeviceController@available_device_for_transfer');
+
+//transfer devices
+Route::post('/transfer_device','DeviceController@transfer_device');
+
+Route::post('/send_device','DeviceController@send_device')->name('sendDevice_to_branch');
+
 /*helper*/
 
 Route::get('/test_ref','helperController@test_ref');
@@ -77,6 +91,7 @@ Route::get('/test_ref','helperController@test_ref');
 Route::get('/pp','helperController@test_stockTake_refs');
 Route::get('/pa','helperController@getThis');
 
+Route::get('/stockCheck','helperController@stockTake_check');
 
 Route::get('/allshopSales','kerianController@allShopSalesQty_by_ref');
 
