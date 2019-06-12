@@ -4,7 +4,7 @@ namespace App\Model\Device;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DevicePool extends Model
+class Devicepool extends Model
 {
     protected $connection = 'mysql3';
     protected $table = 'sm_device_pool';

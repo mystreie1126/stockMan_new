@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Helper\Common;
-use App\Model\Device\DevicePool;
+use App\Model\Device\Devicepool;
 use App\Model\Device\Device_transfer;
 use App\Model\Partner\Shop;
 use App\Mail\DeviceSendEmail;
@@ -20,7 +20,7 @@ class DeviceController extends Controller
     }
 
     public function new_device_saveToPool(Request $request){
-        $devicepool = new DevicePool;
+        $devicepool = new Devicepool;
         $devicepool->order_number  = $request->order_id;
         $devicepool->IMEI          = $request->imei;
         $devicepool->brand         = $request->brand;
@@ -36,7 +36,7 @@ class DeviceController extends Controller
     }
 
     public function transfer_device_page(){
-        $devices = DevicePool::all();
+        $devices = Devicepool::all();
         $shops = DB::connection('mysql2')->table('ps_shop')
               ->select('id_shop','name')
               ->whereNotIn('id_shop',[1,35,42])
@@ -50,7 +50,7 @@ class DeviceController extends Controller
               ->groupBy('device_id')
               ->pluck('device_id')->toArray();
 
-        $devices = DevicePool::whereNotIn('device_id',$id)->get();
+        $devices = Devicepool::whereNotIn('device_id',$id)->get();
 
         return $devices;
     }
@@ -74,7 +74,7 @@ class DeviceController extends Controller
                    ->pluck('shop_id')->toArray();
         $lists = [];
 
-        //return DevicePool::find(2)->transfer;
+        //return Devicepool::find(2)->transfer;
         //return Device_transfer::where('shop_id',26)->shopname();
 
 
@@ -86,7 +86,7 @@ class DeviceController extends Controller
 
          //return $lists;
         return view('device.ready_to_send',compact('lists'));
-         //return DevicePool::with('transfer')->find(1);
+         //return Devicepool::with('transfer')->find(1);
     }
 
     public function send_device(Request $request){
