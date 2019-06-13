@@ -79,7 +79,7 @@ class DeviceController extends Controller
 
 
         foreach($shopIDs as $shop_id){
-            $devices = Device_transfer::with('shopname','record')->where('shop_id',$shop_id)->get();
+            $devices = Device_transfer::with('shopname','record')->where('shop_id',$shop_id)->where('send',0)->get();
             $devices->name = Shop::find($shop_id)->name;
             $lists[] = $devices;
         }
@@ -93,17 +93,18 @@ class DeviceController extends Controller
 
         $ids = $request->transfer_id;
 
-        foreach($ids as $id){
-            Device_transfer::find(intval($id))->update(['send'=>1]);
-        }
-
-        $query = Device_transfer::with('record')->where('shop_id',intval($request->shop_id))->get();
+        $query = Device_transfer::with('record')->where('shop_id',intval($request->shop_id))->where('send',0)->get();
         $shopname = Shop::find(intval($request->shop_id))->name;
+
 
         $email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',intval($request->shop_id))->value('shop_mail');
         //return new DeviceSendEmail($query,$shopname);
 
         Mail::to($email)->cc('warehouse@funtech.ie')->send(new DeviceSendEmail($query,$shopname));
+
+        foreach($ids as $id){
+            Device_transfer::find(intval($id))->update(['send'=>1]);
+        }
 
 
         return redirect()->route('sendDevice');
