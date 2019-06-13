@@ -9,6 +9,8 @@ use App\Model\Track\Parts_stock;
 use App\Model\Record\Branch_stock_standard as Branch_standard;
 use App\Model\Partner\BranchStock;
 use App\Helper\Common;
+use App\Model\Device\Devicepool;
+
 use DB;
 
 class helperController extends Controller
@@ -206,8 +208,20 @@ class helperController extends Controller
 
 
   public function getThis(){
-      $email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',26)->value('shop_mail');
-      return $email;
+      $query = DB::table('c1ft_stock_manager.sm_device_container')->get();
+      $pool = new Devicepool;
+      foreach($query as $q){
+          $pool = new Devicepool;
+          $pool->IMEI = $q->IMEI;
+          $pool->brand = $q->brand;
+          $pool->model = $q->model;
+          $pool->color = $q->color;
+          $pool->condition = 'NEW';
+          $pool->storage = " ";
+          $pool->by_user = 1;
+          $pool->save();
+      }
+      return 'done';
   }
 
 
