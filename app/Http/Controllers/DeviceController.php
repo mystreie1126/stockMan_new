@@ -100,10 +100,10 @@ class DeviceController extends Controller
         $query = Device_transfer::with('record')->where('shop_id',intval($request->shop_id))->get();
         $shopname = Shop::find(intval($request->shop_id))->name;
 
-
+        $email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',intval($request->shop_id))->value('shop_mail');
         //return new DeviceSendEmail($query,$shopname);
 
-        Mail::to('it@funtech.ie')->send(new DeviceSendEmail($query,$shopname));
+        Mail::to($email)->cc('warehouse@funtech.ie')->send(new DeviceSendEmail($query,$shopname));
 
 
         return redirect()->route('sendDevice');

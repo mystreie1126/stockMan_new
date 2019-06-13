@@ -310,15 +310,21 @@ class Common
 
     //7.get stock_in record by refs
 
-    public static function get_product_deliveredQty_to_Branch($ref){
+    public static function get_product_deliveredQty_to_Branch($ref,$shop_id,$from,$to){
         $qty = DB::table('c1ft_stock_manager.sm_all_replishment_history')
-
-
-               ->where('rep_by_standard',1)
+               ->select(DB::raw('sum(updated_quantity) as sendQty'))
+               ->where('uploaded',1)
+               ->where('shop_id',$shop_id)
                ->where('reference',$ref)
-               ->groupBy('reference')->value(DB::raw('sum(updated_quantity)'));
+               ->whereBetween('created_at',[$from,$to])
+               ->groupBy('reference')
+               ->get();
 
-               return intval($qty);
+           if($qty->count() == 1) {
+               return intval($qty[0]->sendQty);
+           }else{
+               return 0;
+           }
     }
 
     //8.get product catagory type by ref

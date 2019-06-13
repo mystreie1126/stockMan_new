@@ -141,4 +141,9 @@ $(document).ready(function(){
         let form =$(this).parent();
         form.submit();
     })
+
+    $('.exportList').click(function(e){
+        e.preventDefault();
+        $(this).prev().tableToCSV();
+    })
 })

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
 //use App\Model\Record\HQ_replishment_history as RepHistory;
 use App\Model\Track\Parts_stock;
+use App\Model\Record\Branch_stock_standard as Branch_standard;
+use App\Model\Partner\BranchStock;
 use App\Helper\Common;
 use DB;
 
@@ -204,52 +206,31 @@ class helperController extends Controller
 
 
   public function getThis(){
-
-
-       $history = new RepHistory;
-       $history->reference           = 123;
-       $history->product_name        = 'test';
-       $history->web_stock_id        = 123123;
-       $history->shop_stock_id       = 123123;
-       $history->shop_id             = 1;
-       $history->updated_quantity    = 1231;
-       $history->standard_quantity   = 123123;
-       $history->uploaded            = 0;
-       $history->rep_by_sale         = 0;
-       $history->rep_by_custom       = 0;
-       $history->rep_by_standard     = 1;
-       $history->created_at          = date('Y-m-d h:i:s');
-       $history->save();
-
-       if($history->save()){
-           DB::table('ps_stock_available')->where('id_stock_available',2944052)
-           ->decrement('quantity',20);
-       }
-
+      $email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',26)->value('shop_mail');
+      return $email;
   }
 
 
   public function stockTake_check(){
+      $from = '2019-06-06 19:40:33';
+      $to = date('Y-m-d h:i:s');
 
-      $lastStockTakeRefs = DB::table('c1ft_stock_manager.sm_branchStockTake_history as a')
-                    ->select('a.reference','a.name','a.pos_stock_id',DB::raw('sum(a.updated_quantity) as stockTake'),'b.quantity as current_qty')
-                    ->where('a.created_at','>','2019-06-06')
-                    ->groupBy('a.pos_stock_id')
-                    ->join('c1ft_pos_prestashop.ps_stock_available as b','b.id_stock_available','a.pos_stock_id')
-                    ->get();
-     $from = '2019-06-06 19:40:33';
-     $to = date('Y-m-d h:i:s');
-     //return Common::get_product_deliveredQty_to_Branch(101197);
+      $ref = 7507;
+      return BranchStock::find(intval($ref))->quantity;
+      $query = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
+               ->select('pos_stock_id','name','reference',DB::raw('sum(updated_quantity) as stockTake'))
+               ->where('created_at','>','2019-06-06')
+               ->where('shop_id',27)
+               ->groupBy('pos_stock_id')
+               ->get();
 
-     foreach($lastStockTakeRefs as $r){
-         $r->out = Common::get_productSoldQty_by_ref($r->reference,27,$from,$to);
-         $r->in  = Common::get_product_deliveredQty_to_Branch($r->reference);
-     }
-     return $lastStockTakeRefs;
+      foreach($query as $q){
+          $q->soldQty = Common::get_productSoldQty_by_ref($q->reference,27,$from,$to);
+          $q->stockIn = Common::get_product_deliveredQty_to_Branch($q->reference,27,$from,$to);
+          $q->systemQty = BranchStock::find(intval($q->pos_stock_id))->quantity;
+      }
 
-
-
-
+      return $query;
 
 
   }
@@ -274,4 +255,26 @@ class helperController extends Controller
 
              return $query;
   }
+
+  public function solfdelete(){
+       Branch_standard::find(2)->delete();
+
+       // $query = DB::table('c1ft_stock_manager.sm_standardstock_branches')
+       //          ->
+       return Branch_standard::onlyTrashed()->get();
+
+
+      // if(Branch_standard::find(1)->trashed()){
+      //     return 'yes';
+      // }
+
+
+  }
+
+
+
+
+
+
+
 }

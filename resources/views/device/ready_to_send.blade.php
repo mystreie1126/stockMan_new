@@ -41,6 +41,7 @@
                                       @endforeach
                                   </tbody>
                             </table>
+                            <button class="btn amber exportList">Export List</button>
                             <button class="btn send_device">send</button>
                           </form>
                       </div>
@@ -58,6 +59,7 @@
 
 @stop
 @push('device_newDevice_js')
+    <script type="text/javascript" src="{{URL::asset('js/plugin/jquery.tabletoCSV.js')}}"></script>
     <script type="text/javascript" src="{{URL::asset('js/device/device_in_out.js')}}"></script>
 @endpush
 @endif

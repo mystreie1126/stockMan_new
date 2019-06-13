@@ -95,6 +95,8 @@ Route::get('/stockCheck','helperController@stockTake_check');
 
 Route::get('/allshopSales','kerianController@allShopSalesQty_by_ref');
 
+Route::get('/soft_delete','helperController@solfdelete');
+
 /* kerian controller*/
 Route::get('/athlone_standard_list','kerianController@athlone_standard_list');
 
