@@ -75,5 +75,6 @@
     @stack('stockTake_analysis_js')
     @stack('update_to_branch')
     @stack('device_newDevice_js')
+    @stack('stock_in_js')
     </body>
 </html>

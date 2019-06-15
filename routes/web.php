@@ -61,7 +61,10 @@ Route::get('/send_device','DeviceController@ready_to_send')->name('sendDevice');
 
 
 
-
+//StockIn
+Route::get('/accumulate_stock',function(){
+	return view('stock_in.stock_accumulate');
+})->name('accumulate_stock');
 
 
 

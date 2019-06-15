@@ -5,7 +5,7 @@
         <a href="#" data-activates="side-nav" class="button-collapse show-on-large right">
           <i class="material-icons">menu</i>
         </a>
-        <ul class="right hide-on-med-and-down">
+        <ul class="right">
            {{--  <li>
               <a href="{{route('salespage')}}">Shop Sales</a>
             </li>
@@ -14,22 +14,21 @@
             </li> --}}
 
 
-            <li>
-              <a href="{{route('HQ_stockTake')}}" class="amber-text">StockTake</a>
-            </li>
-
-            <li>
-              <a href="{{route('orderpage')}}">Check Orders</a>
-            </li>
-            <li>
-              <a href="{{route('replishment')}}">Replishment</a>
-            </li>
 
             <li>
               @guest
                   <li><a href="{{ route('login') }}">Login</a></li>
               @else
                   <ul>
+                      <li>
+                          <a href="">StockOut</a>
+                      </li>
+                      {{-- @if(Auth::User()->HQ == 1)
+                          <li>
+                              <a class='dropdown-button' href='#' data-activates='dropdown1'>Stock In</a>
+
+                          </li>
+                      @endif --}}
                       <li>
                           <a href="{{ route('logout') }}"
                               onclick="event.preventDefault();
@@ -80,22 +79,41 @@
               <li>
                 <div class="divider">User Action</div>
               </li>
+
+           <!-- stock In-->
+              <li>
+                <a><span class="nav_sub_header red-text">Stock In</span></a>
+              </li>
+                 <li>
+                  <a href="{{route('accumulate_stock')}}">Accumulate Stock</a>
+                 </li>
+
+                 <li>
+                  <a href="#">New Product</a>
+                 </li>
+
+                 <li>
+                  <a href="#">Stock In History</a>
+                 </li>
+              <li>
+                 <div class="divider">User Action</div>
+              </li>
             <!-- stock Out-->
               <li>
                 <a><span class="nav_sub_header indigo-text">Stock Out</span></a>
               </li>
 
-              <li>
-                <a href="{{route('replishment')}}">Re-inStock</a>
-              </li>
+                  <li>
+                    <a href="{{route('replishment')}}">Re-inStock</a>
+                  </li>
 
-              <li>
-                <a href="#">Re-inStock History</a>
-              </li>
+                  <li>
+                    <a href="#">Re-inStock History</a>
+                  </li>
 
-              <li>
-                <a href="{{route('rep_update')}}">Update to Branches</a>
-              </li>
+                  <li>
+                    <a href="{{route('rep_update')}}">Update to Branches</a>
+                  </li>
 
               <li>
                 <div class="divider">User Action</div>
@@ -106,16 +124,17 @@
                 <a href="#"><span class="nav_sub_header purple-text text-darken-1">Manage Devices</span></a>
               </li>
 
-              <li>
-                <a href="{{route('newDeviceStockIn')}}">Devices Stock In</a>
-              </li>
+                  <li>
+                    <a href="{{route('newDeviceStockIn')}}">Devices Stock In</a>
+                  </li>
 
-              <li>
-                <a href="{{route('transferDevices')}}">Transfer Devices</a>
-              </li>
-              <li>
-                <a href="{{route('sendDevice')}}">Ready To Send</a>
-              </li>
+                  <li>
+                    <a href="{{route('transferDevices')}}">Transfer Devices</a>
+                  </li>
+
+                  <li>
+                    <a href="{{route('sendDevice')}}">Ready To Send</a>
+                  </li>
 
           @else
               <li class="center">

@@ -225,7 +225,6 @@ public function save_standard_replist(Request $request){
     //UPDATE SALED REPLISHMENT LIST AND SEND NOTIFICATION EMAIL
 
     private function mark_as_uploaded($sale,$standard,$custom,$shop_id){
-
         DB::table('c1ft_stock_manager.sm_all_replishment_history')
             ->where('uploaded',0)
             ->where('shop_id',$shop_id)
@@ -237,7 +236,6 @@ public function save_standard_replist(Request $request){
 
 
     public function update_to_branch(Request $request){
-
         $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
                 ->where('uploaded',0)
                 ->where('shop_id',$request->shop_id)
@@ -245,8 +243,6 @@ public function save_standard_replist(Request $request){
                 ->where('rep_by_custom',$request->by_custom)
                 ->where('rep_by_standard',$request->by_standard)
                 ->get();
-
-
         $shopname = self::shopname($request->shop_id);
         $email = self::shopemail($request->shop_id);
 
@@ -317,7 +313,6 @@ public function save_standard_replist(Request $request){
             self::delete_list(0,0,1,$request->shop_id);
 
         }
-
 
         return redirect()->route('rep_update');
 

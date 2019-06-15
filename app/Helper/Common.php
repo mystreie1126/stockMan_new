@@ -148,7 +148,7 @@ class Common
     public static function hq_inventory_list(){
 
     	$normal = DB::table('ps_stock_available as a')
-    		 ->select('p.reference as ref','a.id_stock_available as stock_id')
+    		 ->select('p.reference as ref','a.id_stock_available as stock_id','a.quantity')
     		 ->where('a.id_product_attribute',0)
     		 ->where('p.reference','!=','')
     		 ->whereNotIn('p.reference',['Athlone','Arthus Quay','Blackpool','Douglas','Galway Shop','Gorey','MarketCross','Parkway','Wexford','Millfield','Blackpool','Douglas','Mill','ClareHall','Ashleaf','Galway','Arthursquay','ArthrusQuay','Arthurs Quay','Athone','Market Cross'])
@@ -159,7 +159,7 @@ class Common
     	    ->join('ps_product as p','a.id_product','p.id_product');
 
     	$all = DB::table('ps_stock_available as a')
-    		->select('attr.reference as ref','a.id_stock_available as stock_id')
+    		->select('attr.reference as ref','a.id_stock_available as stock_id','a.quantity')
     		->where('a.id_product_attribute','!=',0)
     		->whereNotIn('attr.reference',['Mill','','Arthurs Quay'])
     		->join('ps_product_attribute as attr','attr.id_product_attribute','a.id_product_attribute')

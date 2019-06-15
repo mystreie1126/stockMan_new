@@ -40,8 +40,10 @@ Route::get('/allStockTake_records','inventoryController@allStockTake_records');
 Route::get('/stockTake_final_results','inventoryController@stockTake_final_results');
 
 
+//StockIn
 
-
+Route::get('/available_for_stockIn','StockInController@available_stock');
+Route::post('/save_update_stock','StockInController@save_and_update');
 
 
 /*get replishment sales list*/

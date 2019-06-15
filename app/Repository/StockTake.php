@@ -17,7 +17,8 @@ class StockTake{
             $arr[] = [
                   'web_stock_id' => $inve->stock_id,
                   'reference'    => $inve->ref,
-                  'name'         => Common::get_productName_by_ref($inve->ref)
+                  'name'         => Common::get_productName_by_ref($inve->ref),
+                  'warehouse_qty'=> $inve->quantity
                     ];
                 }
             }
@@ -31,6 +32,10 @@ class StockTake{
         return cache()->remember($cacheKey,Carbon::now()->addDays(1),function(){
             return self::HQ_stockTake_Results();
         });
+    }
+
+    public function stock_in_lists(){
+        return self::HQ_stockTake_Results();
     }
 
 

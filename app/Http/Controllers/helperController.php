@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
-//use App\Model\Record\HQ_replishment_history as RepHistory;
+//use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
+use App\Model\Record\HQ_replishment_history as RepHistory;
 use App\Model\Track\Parts_stock;
 use App\Model\Record\Branch_stock_standard as Branch_standard;
 use App\Model\Partner\BranchStock;
@@ -108,7 +108,7 @@ class helperController extends Controller
     }
 
    public function test_ref(){
-      $ref =   102356;
+      $ref =   '00000222';
       $shop_id = 27;
 
 
@@ -124,7 +124,7 @@ class helperController extends Controller
 
           else{
 
-            return Common::get_webStockID_by_ref($ref);
+            return 'webstockID'.Common::get_webStockID_by_ref($ref);
           }
 
 
@@ -208,20 +208,7 @@ class helperController extends Controller
 
 
   public function getThis(){
-      $query = DB::table('c1ft_stock_manager.sm_device_container')->get();
-      $pool = new Devicepool;
-      foreach($query as $q){
-          $pool = new Devicepool;
-          $pool->IMEI = $q->IMEI;
-          $pool->brand = $q->brand;
-          $pool->model = $q->model;
-          $pool->color = $q->color;
-          $pool->condition = 'NEW';
-          $pool->storage = " ";
-          $pool->by_user = 1;
-          $pool->save();
-      }
-      return 'done';
+      return Common::hq_inventory_list();
   }
 
 
