@@ -203,80 +203,76 @@ $('.list_action').on('click','.saveTo_standardList',function(e){
 /*================================custom sending list==============================================================*/
 
 
-$('.custom_stock_search').click(function(e){
-    let custom_shop_id = $('#selected_custom_stock_shop').val(),
-            custom_ref = $('#custom_stock_ref').val();
-    console.log(custom_shop_id,custom_ref);
-
-    $.ajax({
-        type:'post',
-        url:stockMan+'custom_replishment_search',
-        data:{
-            shop_id:custom_shop_id,
-            ref:custom_ref
-        },
-        success:function(res){
-            console.log(res)
-            console.log($('.custom_stock_search').next());
-            if(res.pass == 1){
-                let html ='<ul class="collection with-header">'+
-                    '<li class="collection-header indigo-text center">'+
-                           '<h5>'+res.result.ref+', '+res.result.name+', to'+res.result.shop_name+'</h6></li>'+
-                     '<li class="collection-item">'+
-                        '<div class="center">'+
-                            '<div class="input-field inline">'+
-                               '<input type="number" class="center custom_stock_input" placeholder="input quantity" required>'+
-                            '</div>'+
-                            '<button class="btn custom_stock_submit" style="transform:translate(10%,10%)">sumbit</button>'+
-                        '</div>'+
-                    '</li>'+
-                    '<input type="hidden" class="test_val" value='+res.result.ref+'>'+
-                    '<input type="hidden" value='+res.result.name+'>'+
-                    '<input type="hidden" value='+res.result.shop_name+'>'+
-
-                 '</ul>';
-                $('.custom_stock_search').next().html(html);
-                let detail = {branchStockID:res.result.branchStockID}
-
-                $('.custom_stock_search').next().on('click','.custom_stock_submit',function(e){
-                    e.preventDefault();
-                    submit_once(this,'loading......');
-                    submit_once($('.custom_stock_search'),'submiting..');
-
-                    let qty = $('.custom_stock_input').val();
-                    if(qty <= 0 || qty == " "){
-                        alert('You can not submit less or equal to 0 quantity!');
-                        reset_button(this,'submit');
-                        reset_button($('.custom_stock_search'),'search');
-                    }else if(qty > 0){
-                        $.ajax({
-                            type:'post',
-                            cache:false,
-                            data:{
-                                detail:$('.test_val').val(),
-
-                            },
-                            url:stockMan+'custom_replishment_save',
-                            success:function(e){
-
-                                reset_button($('.custom_stock_search'),'search');
-                                $('.custom_stock_search').next().empty();
-                                $('.custom_stock_search').next().html('');
-
-
-                                console.log(e);
-                            }
-                        })
+var custom_rep = new Vue({
+    el:'#custom_rep',
+    data:{
+        custom_lists:[],
+        search:''
+    },
+    methods:{
+        ajax_getStock:function(){
+            let shop_id = $('#selected_custom_stock_shop').val();
+            if(shop_id == null || shop_id == 41){
+                alert('Please select a valid shop');
+            }else{
+                axios({
+                    method:'post',
+                    url:stockMan+'custom_get_rep_data',
+                    data:{
+                        shop_id:shop_id,
+                        search:this.search
+                    }
+                }).then((res)=>{
+                    if(res.data.exsists == 1){
+                        console.log(res.data.result);
+                        this.custom_lists.push(res.data.result);
+                    }else{
+                        alert('can not find this item');
                     }
 
+
                 })
-
             }
+
+        },
+        submitThis:function(){
+            if(this.custom_lists.length > 0 && this.faultySend_qty.length == 0){
+                submit_once($('.save_custom_rep'),'saving....');
+                let list = JSON.stringify(this.custom_lists);
+                axios({
+                    method:'post',
+                    url:stockMan+'custom_rep_data_save',
+                    data:{
+                        list:list
+                    }
+                }).then((res)=>{
+                    console.log(res.data);
+                    this.custom_lists = [];
+                    reset_button($('.save_custom_rep'),'submit');
+                })
+            }else{
+                alert('list is empty!');
+            }
+        },
+        sortName:function(){
+            this.custom_lists.sort((a,b)=>(a.name > b.name)? -1:1);
+        },
+        sortRef:function(){
+            this.custom_lists.sort((a,b)=>(a.ref > b.ref)? 1: -1);
+        },
+        sortSend_qty:function(){
+            this.custom_lists.sort((a,b)=>(a.send > b.send)? 1: -1);
+        },
+        sortShop:function(){
+            this.custom_lists.sort((a,b)=>(a.shopname > b.shopname)? 1: -1);
+        },
+        deleteThis:function(index){
+            this.custom_lists.splice(index,1);
+        },
+    },
+    computed:{
+        faultySend_qty:function(){
+            return this.custom_lists.filter((e)=>Number(e.send <= 0));
         }
-    })
-
-
-
-
-
+    }
 });

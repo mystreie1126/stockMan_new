@@ -38,8 +38,7 @@ class Replishment{
            if(
                Common::get_webStockID_by_ref($ref) !== null &&
                Common::get_branchStockID_by_ref($ref,$shop_id) !== null &&
-               Common::get_productName_by_ref($ref) !== null &&
-               Common::get_productStandard_by_ref($ref) !== null
+               Common::get_productName_by_ref($ref) !== null
 
            ){
                $list[] = [

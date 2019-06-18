@@ -103,32 +103,56 @@
 
 
     {{-- custom restock --}}
-    {{-- <li>
+    <li>
       <div class="collapsible-header"><i class="material-icons">whatshot</i>Custom Restock (Any Time)</div>
-      <div class="collapsible-body">
+      <div class="collapsible-body" id="custom_rep">
 
         <div class="row" >
            <div class="col s12 m3 l3">
             <span class="indigo-text text-lighten-3">Select Branch:</span>
             <select id="selected_custom_stock_shop">
-              <option disabled selected>Choose a Shop</option>
-                @foreach($shops as $shop)
-                  <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
-                @endforeach
+                <option disabled selected>Choose a Shop</option>
+                    @foreach($shops as $shop)
+                      <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
+                    @endforeach
             </select>
             <label>Select Branches</label>
           </div>
         <div class="col s12 m6 l6 input-field" style="transform:translateY(10%)">
-            <input id="custom_stock_ref" type="text" >
-            <label for="custom_stock_ref">Reference</label>
+            <input type="text" v-model="search">
+            <label for="custom_stock_ref">Reference or Name</label>
         </div>
-
-            <button type="button" class="btn s12 m3 l3 blue custom_stock_search" style="transform:translateY(80%)">search</button>
-            <div class="col s12">
-
-            </div>
-      </div>
-    </li> --}}
+        <button class="btn s12 m3 l3 blue custom_stock_search" @click.prevent="ajax_getStock" style="transform:translateY(80%)">Search</button>
+        <div class="col s12">
+            <table class="centered striped">
+                <thead>
+                    <tr>
+                        <th @click="sortName">Name</th>
+                        <th @click="sortRef">Reference</th>
+                        <th @click="sortSend_qty">Send</th>
+                        <th @click="sortShop">Shop</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(list,index) in custom_lists">
+                        <td>@{{list.name}}</td>
+                        <td>@{{list.ref}}</td>
+                        <td>
+                            <input type="number" v-model="list.send" style="width:auto" class="center indigo-text">
+                        </td>
+                        <td>@{{list.shopname}}</td>
+                        <td>
+                            <button class="btn red" @click.prevent="deleteThis(index)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <button class="btn blue save_custom_rep" @click.prevent="submitThis">Submit</button>
+            </table>
+        </div>
+        </div>
+    </div>
+    </li>
 
   </ul>
   {{-- end of the whole list action form--}}

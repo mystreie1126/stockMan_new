@@ -359,5 +359,47 @@ class Common
         return array_merge($a,$branchStockTake_refs);
     }
 
+    public static function get_productSoldQty_by_ref_allShop($ref,$from,$to){
+
+        $pos_qty = DB::table('c1ft_pos_prestashop.ps_order_detail as detail')
+                  ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+                  ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
+                  ->whereBetween('order.date_add',[$from,$to])
+
+                  ->where('detail.product_reference',$ref)
+                  ->groupBy('detail.product_reference')
+                  ->value('soldQty');
+
+        if(in_array($ref,self::allCombinationRefs())){
+
+            $web_qty = DB::table('ps_product_attribute as attr')
+                        ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+                        ->where('attr.reference',$ref)
+                        ->join('ps_order_detail as detail','attr.id_product_attribute','detail.product_attribute_id')
+                        ->groupBy('detail.product_attribute_id')
+                        ->join('vr_confirm_payment as webSales','webSales.order_id','detail.id_order')
+                        ->where('webSales.device_order',0)
+
+                        ->whereBetween('webSales.created_at',[$from,$to])
+                        ->value('soldQty');
+
+            return intval($web_qty) + intval($pos_qty);
+
+        }else if(!in_array($ref,self::allCombinationRefs()) && in_array($ref,self::allExcludeCombinationRefs())){
+
+            $web_qty = DB::table('ps_order_detail as detail')
+                       ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+                       ->join('vr_confirm_payment as webSales','webSales.order_id','detail.id_order')
+                       ->where('webSales.device_order',0)
+
+                       ->whereBetween('webSales.created_at',[$from,$to])
+                       ->where('detail.product_reference',$ref)
+                       ->value('soldQty');
+            return intval($web_qty) + intval($pos_qty);
+
+        }else{
+            return 0;
+        }
+    }
 
 }

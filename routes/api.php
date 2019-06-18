@@ -62,8 +62,8 @@ Route::post('/delete_before_update_to_branch','replishmentController@delete_befo
 
 /* custom repishment */
 
-Route::post('/custom_replishment_search','replishmentController@custom_replishment_search');
-Route::post('/custom_replishment_save','replishmentController@custom_replishment_save');
+Route::post('/custom_get_rep_data','replishmentController@custom_get_rep_data');
+Route::post('/custom_rep_data_save','replishmentController@custom_rep_data_save');
 
 
 /* standard replishment*/
@@ -87,7 +87,7 @@ Route::post('/transfer_device','DeviceController@transfer_device');
 Route::post('/send_device','DeviceController@send_device')->name('sendDevice_to_branch');
 
 /*helper*/
-
+Route::get('/soldAll','helperController@soldAll');
 Route::get('/test_ref','helperController@test_ref');
 
 Route::get('/pp','helperController@test_stockTake_refs');

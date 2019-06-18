@@ -45,7 +45,10 @@ $(document).ready(function(){
     }
   );
 
- 
+
 });
 
+function caonima(){
+    conosle.log('caocacoaco');
+}
 //main js

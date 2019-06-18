@@ -108,8 +108,8 @@ class helperController extends Controller
     }
 
    public function test_ref(){
-      $ref =   '00000222';
-      $shop_id = 27;
+      $ref =   6958444966502;
+      $shop_id = 37;
 
 
           if(!Common::get_branchStockID_by_ref($ref,27)){
@@ -132,130 +132,65 @@ class helperController extends Controller
    }
 
 
-   public function test_ref_ifMatch(){
-       $sold_refs   = Common::totalSalesRefs_allshops();
-       $web_refs    = Common::webSalesRefs_allshops();
-       $record_refs = Common::updated_record_refs_allShops();
-
-       $a = Common::missingPart($sold_refs, $web_refs );
-
-       $b = array_merge($sold_refs,$a);// $sold_refs + $web_refs
-       $c = Common::missingPart($b,$record_refs);
-
-       $all = array_merge($b,$c);
-
-       $total_refs = DB::table('c1ft_pos_prestashop.ps_product')->pluck('reference')->toArray();
-
-       //return $total_refs;
-
-       $validate = [];
-       $invalidate = [];
-
-       foreach($total_refs as $r){
-         if(
-            Common::get_branchStockID_by_ref($r,26) !== null &&
-            Common::get_productName_by_ref($r) !== null &&
-            Common::get_webStockID_by_ref($r) !== null &&
-            Common::get_productStandard_by_ref($r)!== null
-        ){
-            array_push($validate,$r);
-        }else{
-            array_push($invalidate,$r);
-        }
-        }
-
-        $invalid_pos_stockId_ref =[];
-        $invalid_name_ref = [];
-        $invalid_web_stockId_ref = [];
-
-        $all_god = [];
-
-
-
-        if(count($invalidate) > 0){
-            foreach($invalidate as $ir){
-              if(!Common::get_branchStockID_by_ref($ir,26)){
-                array_push($invalid_pos_stockId_ref,$ir);
-              }
-              else if(!Common::get_productName_by_ref($ir)){
-                array_push($invalid_name_ref,$ir);
-              }
-              else if(!Common::get_webStockID_by_ref($ir)){
-                array_push($invalid_web_stockId_ref,$ir);
-              }
-
-              else{
-                array_push($all_god,$ir);
-              }
-
-            }
-        }
-
-        return response()->json([
-            'invalidPos' => $invalid_pos_stockId_ref,
-
-            'invalidName' => $invalid_name_ref,
-            'invalidWeb' => $invalid_web_stockId_ref
-
-        ]);
-
-
-
-   }
-
-
-
-
-
   public function getThis(){
-      return Common::hq_inventory_list();
+      $from = '2019-06-18'; $to="2019-06-18 23:00:00";
+      $shop_id = 37;
+      $ref = 6958444966502;
+      $arr=[];
+       $pos_sale_refs  = Common::totalSalesRefs($from,$to,$shop_id);
+      $web_sales_refs = Common::webSalesRefs($from,$to,$shop_id);
+      $missing_refs = Common::missingPart($pos_sale_refs,$web_sales_refs);
+
+       $sell_refs = array_merge($pos_sale_refs,$missing_refs);
+
+      
+       return Common::get_productStandard_by_ref($ref);
+       return $arr;
+
+      return $sell_refs;
+      return Common::webSalesRefs($from,$to,37);
+      return Common::totalSalesRefs($from,$to,37);
+      
+      
   }
 
 
   public function stockTake_check(){
-      $from = '2019-06-06 19:40:33';
-      $to = date('Y-m-d h:i:s');
+     $query = DB::table('c1ft_stock_manager.need_to_merge')->get();
+     $from = '2019-06-13 23:00:00';
+     $to = '2019-06-18';
 
-      $ref = 7507;
-      return BranchStock::find(intval($ref))->quantity;
-      $query = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
-               ->select('pos_stock_id','name','reference',DB::raw('sum(updated_quantity) as stockTake'))
-               ->where('created_at','>','2019-06-06')
-               ->where('shop_id',27)
-               ->groupBy('pos_stock_id')
-               ->get();
+     foreach($query as $q){
+        $q->stockId = Common::get_branchStockID_by_ref($q->ref,27);
+        $q->soldQty = Common::get_productSoldQty_by_ref($q->ref,27,$from,$to);
+        $q->stockIn_qty = Common::get_product_deliveredQty_to_Branch($q->ref,27,$from,$to);
 
-      foreach($query as $q){
-          $q->soldQty = Common::get_productSoldQty_by_ref($q->reference,27,$from,$to);
-          $q->stockIn = Common::get_product_deliveredQty_to_Branch($q->reference,27,$from,$to);
-          $q->systemQty = BranchStock::find(intval($q->pos_stock_id))->quantity;
+        $q->current_qty = intval($q->qty) - intval($q->soldQty) + intval($q->stockIn_qty);
+
+        DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->stockId)->update(['quantity'=>intval($q->current_qty)]);
+     }
+
+     return $query;
+  }
+
+  public function soldAll(){
+      $ref = 'KITS2BK';
+      $from="2019-06-15";
+      $to  ="2019-06-16";
+      //return $to;
+
+      $shops = DB::table('c1ft_pos_prestashop.ps_shop')->select('id_shop','name')->get();
+      $arr=[];
+      foreach($shops as $shop){
+          $arr[]=[
+              'name'=>$shop->name,
+              'sold'=>Common::get_productSoldQty_by_ref($ref,$shop->id_shop,$from,$to)
+          ];
       }
-
-      return $query;
-
-
+      return $arr;
+      return Common::get_productSoldQty_by_ref_allShop($ref,$from,$to);
   }
 
-  public function test_stockTake_refs(){
-      // $refs = DB::table('c1ft_stock_manager.sm_branchStockTake_history')->where('shop_id',27)->where('sealed',1)->pluck('reference')->toArray();
-      // $arr = [];
-      // foreach($refs as $ref){
-      //     if(!Common::get_webStockID_by_ref($ref)){
-      //         array_push($arr,$ref);
-      //     }
-      // }
-      //
-      // return $arr;
-
-      $query = DB::table('c1ft_store_prestashop.ps_stock_available as a')
-               ->select('a.web_stock_id','b.name','b.reference','a.quantity as current_quantity')
-               ->groupBy('a.web_stock_id')
-                ->where('b.sealed',1)
-               ->join('c1ft_stock_manager.sm_HQstockTake_history as b','a.id_stock_available','b.web_stock_id')
-                ->get();
-
-             return $query;
-  }
 
   public function solfdelete(){
        Branch_standard::find(2)->delete();
