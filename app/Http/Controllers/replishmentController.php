@@ -26,16 +26,19 @@ class replishmentController extends Controller
                         ->get();
 
    foreach($shops_by_sale as $shop){
-       $shop->detail = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
-                       ->select('a.shop_stock_id','a.reference as barcode','a.product_name','a.updated_quantity','b.name as shopname','a.selected_startDate','a.selected_endDate','a.created_at')
-                       ->where('a.shop_id',$shop->shop_id)
-                       ->where('a.uploaded',0)
-                       ->where('a.rep_by_sale',$by_sale)
-                       ->where('a.rep_by_custom',$by_custom)
-                       ->where('a.rep_by_standard',$by_standard)
-                       ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
-                       ->get();
-        }
+           $shop->detail = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
+                           ->select('a.shop_stock_id','a.reference as barcode','a.updated_quantity','b.name as shopname','a.selected_startDate','a.selected_endDate','a.created_at')
+                           ->where('a.shop_id',$shop->shop_id)
+                           ->where('a.uploaded',0)
+                           ->where('a.rep_by_sale',$by_sale)
+                           ->where('a.rep_by_custom',$by_custom)
+                           ->where('a.rep_by_standard',$by_standard)
+                           ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
+                           ->get();
+            foreach($shop->detail as $detail){
+                $detail->product_name = Common::get_productName_by_ref($detail->barcode);
+            }
+     }
 
         return  $shops_by_sale;
   }
@@ -63,9 +66,6 @@ class replishmentController extends Controller
 
      $need_upload = RepHistory::where('uploaded',0)->get();
 
-     foreach($need_upload as $upload){
-         $upload->product_name = Common::get_productName_by_ref($upload->reference);
-     }
      return view('stock_out/rep',compact('shops','need_upload'));
    }
 
