@@ -32,9 +32,6 @@ $('#createSalesList').click((e)=>{
                    {title:'Name',field:'name',width:300,align:"center"},
                    {title:'Barcode',field:'reference',width:200,align:"center"},
                    {title:'Sold',field:'soldQty',width:100,align:"center"},
-                   // {title:'Standard',field:'standard',width:100,align:"center",cssClass:"indigo-text"},
-                   // {title:'Correct Stock',field:'has_branch_stock',width:200,align:"center"},
-                   // {title:'Actual Quantity',field:'branch_stock_qty',width:200,align:"center",cssClass:"blue-text"},
                    {title:'Send',field:'suggest_send',width:100,editor:"number",align:"center",cssClass:'indigo-text'},
                    {title:'Shop Name',field:'shop_name',width:250,align:"center"},
                    {title:'selected_from',field:'selected_from',width:2,visible:false},
@@ -136,12 +133,11 @@ $('#createStandardList').click(function(e){
                     {title:'Name',field:'name',width:300,align:"center"},
                     {title:'Barcode',field:'reference',width:200,align:"center"},
                     {title:'Standard',field:'standard',width:100,align:"center",cssClass:"green-text"},
-                    {title:'Stock Qty',field:'quantity',width:200,align:"center",cssClass:"amber-text"},
                     {title:'Send',field:'send',width:100,editor:"number",align:"center",cssClass:'indigo-text'},
                     {title:'Shop Name',field:'shop_name',width:250,align:"center"},
                     {title:'webStockID',field:'webStockID',width:2,visible:false},
-                    {title:'posStockID',field:'branchStockID',width:2,visible:false}
-
+                    {title:'posStockID',field:'branchStockID',width:2,visible:false},
+                    {title:'shopID',field:'shop_id',width:2,visible:false}
                 ];
                 if(!$('.pre-loader').hasClass('hide')){
                     $('.pre-loader').addClass('hide');

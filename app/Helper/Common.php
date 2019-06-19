@@ -106,10 +106,9 @@ class Common
 
     public static function webSalesRefs($startDate,$endDate,$shop_id){
     	$query = DB::table('vr_confirm_payment as webSales')
-    	         ->select('detail.product_reference')
-    	         ->join('ps_order_detail as detail','detail.id_order','webSales.order_id')
-    	         ->whereBetween('webSales.created_at',[$startDate,$endDate])
     	         ->where('webSales.rockpos_shop_id',$shop_id)
+                 ->whereBetween('webSales.created_at',[$startDate,$endDate])
+    	         ->join('ps_order_detail as detail','detail.id_order','webSales.order_id')
     	         ->groupBy('detail.product_reference')
     	         ->pluck('detail.product_reference')->toArray();
     	return $query;
@@ -212,7 +211,7 @@ class Common
 
             return intval($web_qty) + intval($pos_qty);
 
-        }else if(!in_array($ref,self::allCombinationRefs()) && in_array($ref,self::allExcludeCombinationRefs())){
+        }else if(!in_array($ref,self::allCombinationRefs())){
 
             $web_qty = DB::table('ps_order_detail as detail')
                        ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
@@ -222,8 +221,8 @@ class Common
                        ->whereBetween('webSales.created_at',[$from,$to])
                        ->where('detail.product_reference',$ref)
                        ->value('soldQty');
-            return intval($web_qty) + intval($pos_qty);
 
+            return intval($web_qty) + intval($pos_qty);
         }else{
             return 0;
         }
@@ -296,7 +295,11 @@ class Common
                ->where('p.reference',$ref)
                ->where('stock.id_shop',$shop_id)
                ->get();
-        if($qty->count() == 1) return intval($qty[0]->quantity);
+        if($qty->count() == 1) {
+            return intval($qty[0]->quantity);
+        }else{
+            return 0;
+        }
 
     }
 

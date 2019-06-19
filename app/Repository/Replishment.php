@@ -7,30 +7,19 @@ use App\Helper\Common;
 use App\Model\Inventory\hqInventory_history as InvHistory;
 use App\record\RepHistory;
 use Carbon\Carbon;
+use App\Model\Standard\Standard_Branch;
+use App\Model\Partner\Shop;
 
 class Replishment{
 
     private function branch_replishmentWithDate_results($shop_id,$from,$to){
 
-        $updated_stock_refs = Common::updated_record_refs($shop_id);
             $pos_sale_refs  = Common::totalSalesRefs($from,$to,$shop_id);
             $web_sales_refs = Common::webSalesRefs($from,$to,$shop_id);
               $missing_refs = Common::missingPart($pos_sale_refs,$web_sales_refs);
 
        $sell_refs = array_merge($pos_sale_refs,$missing_refs);
-       $missing_updated_stock_refs = Common::missingPart($sell_refs,$updated_stock_refs);
-       $all_refs = array_merge($sell_refs,$missing_updated_stock_refs);
        $list = [];
-
-
-
-       // if(intval($shop_id) == 27){
-       //     $sell_refs = array_merge($pos_sale_refs,$missing_refs);
-       //     $extraRefs = Common::extraRefsAfterStockTake($shop_id);
-       //     $final_refs = array_merge($sell_refs, Common::missingPart($sell_refs,$extraRefs));
-       // }else{
-       //      $final_refs = $sell_refs;
-       // }
 
        $final_refs = $sell_refs;
 
@@ -47,10 +36,7 @@ class Replishment{
                    'pos_stockID' =>  Common::get_branchStockID_by_ref($ref,$shop_id),
                           'name' =>  Common::get_productName_by_ref($ref),
                      'reference' =>  $ref,
-                      'standard' =>  -1,
                        'soldQty' =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to),
-               'has_branch_stock'=>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ? "Yes":"No",
-               'branch_stock_qty'=> "Not Sure",
               'suggest_send'     =>  Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to),
                   'shop_name'    =>  Common::get_branch_name_by_shopID($shop_id),
                   'shop_id'      => $shop_id,
@@ -71,32 +57,37 @@ class Replishment{
 
 
     private function branch_replishmentbystandard($shop_id){
-        $query = DB::table('c1ft_stock_manager.sm_branch_standard_stock as standard')
-                 ->select('standard.reference','standard.standard_qty as standard','stock.quantity','name.name','stock.id_stock_available as branchStockID',
-                            DB::raw('(standard.standard_qty - stock.quantity) as send')
-                 )
-                 ->where('standard.shop_id',$shop_id)
-                 ->join('c1ft_pos_prestashop.ps_stock_available as stock','standard.branch_stock_id','stock.id_stock_available')
-                 ->join('c1ft_pos_prestashop.ps_product_lang as name','name.id_product','stock.id_product')
-                 ->where('name.id_shop',$shop_id)
-                 ->whereRaw('standard.standard_qty - stock.quantity > 0')
-                 ->get();
+        $query = Standard_Branch::where('shop_id',$shop_id)->whereNull('deleted_at')->get();
+        $standard_list = [];
 
         foreach($query as $q){
-
-                $q->webStockID = Common::get_webStockID_by_ref($q->reference) !== null ? Common::get_webStockID_by_ref($q->reference) : 0;
-                $q->shop_name = DB::table('c1ft_pos_prestashop.ps_shop')->where('id_shop',$shop_id)->value('name');
-                $q->shop_id   = $shop_id;
-
+          $q->send_qty = intval($q->standard_quantity) - intval($q->stock_qty());
+          if(
+               $q->send_qty > 0 &&
+               Common::get_webStockID_by_ref($q->reference) !== null &&
+               Common::get_branchStockID_by_ref($q->reference,$shop_id) !== null &&
+               Common::get_productName_by_ref($q->reference) !== null
+             ){
+              $standard_list[]=[
+                  'name'         => Common::get_productName_by_ref($q->reference),
+                  'reference'    => $q->reference,
+                  'send'         => $q->send_qty,
+                  'standard'     => $q->standard_quantity,
+                  'shop_name'    => Shop::find(intval($shop_id))->name,
+                  'webStockID'   => Common::get_webStockID_by_ref($q->reference),
+                  'branchStockID'=> Common::get_branchStockID_by_ref($q->reference,$shop_id),
+                  'shop_id'      => $shop_id
+              ];
+          }
         }
-        return $query;
+
+        return  $standard_list;
     }
 
 
     public function branch_replishmentWithDate($shop_id,$from,$to){
 
         $cacheKey = strtoupper($shop_id.$from.$to);
-
         //return $cacheKey;
         return cache()->remember($cacheKey,Carbon::now()->addDays(2),function() use($shop_id,$from,$to){
             return self::branch_replishmentWithDate_results($shop_id,$from,$to);

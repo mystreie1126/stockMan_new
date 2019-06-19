@@ -90,6 +90,8 @@ Route::post('/send_device','DeviceController@send_device')->name('sendDevice_to_
 Route::get('/soldAll','helperController@soldAll');
 Route::get('/test_ref','helperController@test_ref');
 
+Route::get('/standard','helperController@standard_model');
+
 Route::get('/pp','helperController@test_stockTake_refs');
 Route::get('/pa','helperController@getThis');
 

@@ -86,12 +86,10 @@ class replishmentController extends Controller
         foreach($data as $d){
             $history = new RepHistory;
             $history->reference           = $d['reference'];
-            $history->product_name        = $d['name'];
             $history->web_stock_id        = $d['web_stockID'];
             $history->shop_stock_id       = $d['pos_stockID'];
             $history->shop_id             = $d['shop_id'];
             $history->updated_quantity    = $d['suggest_send'];
-            $history->standard_quantity   = $d['standard'];
             $history->uploaded            = 0;
             $history->rep_by_sale         = 1;
             $history->rep_by_custom       = 0;
@@ -128,12 +126,10 @@ public function save_standard_replist(Request $request){
 
         $history = new RepHistory;
         $history->reference           = (string)$d['reference'];
-        $history->product_name        = (string)$d['name'];
         $history->web_stock_id        = intval($d['webStockID']);
         $history->shop_stock_id       = intval($d['branchStockID']);
         $history->shop_id             = intval($d['shop_id']);
         $history->updated_quantity    = intval($d['send']);
-        $history->standard_quantity   = intval($d['standard']);
         $history->uploaded            = 0;
         $history->rep_by_sale         = 0;
         $history->rep_by_custom       = 0;
@@ -190,12 +186,10 @@ public function save_standard_replist(Request $request){
 
             $history = new RepHistory;
             $history->reference           = (string)$d['ref'];
-            $history->product_name        = (string)$d['name'];
             $history->web_stock_id        = intval($d['web_stock_id']);
             $history->shop_stock_id       = intval($d['pos_stock_id']);
             $history->shop_id             = intval($d['shop_id']);
             $history->updated_quantity    = intval($d['send']);
-            $history->standard_quantity   = -1;
             $history->uploaded            = 0;
             $history->rep_by_sale         = 0;
             $history->rep_by_custom       = 1;

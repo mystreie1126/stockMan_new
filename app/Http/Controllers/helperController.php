@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 //use App\Model\Stage\stage_HQ_replishment_history as RepHistory;
 use App\Model\Record\HQ_replishment_history as RepHistory;
 use App\Model\Track\Parts_stock;
-use App\Model\Record\Branch_stock_standard as Branch_standard;
+//use App\Model\Record\Branch_stock_standard as Branch_standard;
 use App\Model\Partner\BranchStock;
 use App\Helper\Common;
 use App\Model\Device\Devicepool;
-
+use App\Model\Standard\Standard_Branch;
 use DB;
 
 class helperController extends Controller
@@ -143,15 +143,15 @@ class helperController extends Controller
 
        $sell_refs = array_merge($pos_sale_refs,$missing_refs);
 
-      
+
        return Common::get_productStandard_by_ref($ref);
        return $arr;
 
       return $sell_refs;
       return Common::webSalesRefs($from,$to,37);
       return Common::totalSalesRefs($from,$to,37);
-      
-      
+
+
   }
 
 
@@ -198,16 +198,40 @@ class helperController extends Controller
        // $query = DB::table('c1ft_stock_manager.sm_standardstock_branches')
        //          ->
        return Branch_standard::onlyTrashed()->get();
-
-
       // if(Branch_standard::find(1)->trashed()){
       //     return 'yes';
       // }
 
-
   }
 
+  public function standard_model(){
+      $shop_id = 26;
+      $from = '2019-06-17 00:00:00';
+      $to = '2019-06-19 23:59:59';
+      $ref = "6958444955292";
 
+      $pos_qty = DB::table('c1ft_pos_prestashop.ps_order_detail as detail')
+                ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+                ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
+                ->whereBetween('order.date_add',[$from,$to])
+                ->where('detail.id_shop',$shop_id)
+                ->where('detail.product_reference',$ref)
+                ->groupBy('detail.product_reference')
+                ->value('soldQty');
+
+                $web_qty = DB::table('ps_product_attribute as attr')
+                            ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+                            ->where('attr.reference',$ref)
+                            ->join('ps_order_detail as detail','attr.id_product_attribute','detail.product_attribute_id')
+                            ->groupBy('detail.product_attribute_id')
+                            ->join('vr_confirm_payment as webSales','webSales.order_id','detail.id_order')
+                            ->where('webSales.device_order',0)
+                            ->where('webSales.rockpos_shop_id',$shop_id)
+                            ->whereBetween('webSales.created_at',[$from,$to])
+                            ;
+
+        return intval($pos_qty);
+  }
 
 
 

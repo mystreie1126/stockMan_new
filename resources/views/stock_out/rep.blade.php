@@ -35,7 +35,7 @@
 <ul class="collapsible" data-collapsible="accordion">
 
     <li>
-      <div class="collapsible-header"><i class="material-icons green-text">whatshot</i>Standard Restock(Athlone only)</div>
+      <div class="collapsible-header"><i class="material-icons green-text">whatshot</i>Standard Restock</div>
       <div class="collapsible-body">
 
         <div class="row" >
@@ -44,6 +44,7 @@
             <select id="selected_standard_stock_shop">
               <option disabled selected>Choose a Shop</option>
                   <option value="27">Athlone</option>
+                  <option value="26">Mill</option>
             </select>
           </div>
 
