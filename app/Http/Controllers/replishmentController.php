@@ -63,6 +63,9 @@ class replishmentController extends Controller
 
      $need_upload = RepHistory::where('uploaded',0)->get();
 
+     foreach($need_upload as $upload){
+         $upload->product_name = Common::get_productName_by_ref($upload->reference);
+     }
      return view('stock_out/rep',compact('shops','need_upload'));
    }
 
