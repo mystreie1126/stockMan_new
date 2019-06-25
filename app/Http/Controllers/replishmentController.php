@@ -256,27 +256,27 @@ public function save_standard_replist(Request $request){
         $email = self::shopemail($request->shop_id);
 
         foreach($query as $q){
-            DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
-                ->increment('quantity',intval($q->updated_quantity));
+            $q->product_name = Common::get_productName_by_ref($q->reference);
         }
 
         if(intval($request->by_sale) == 1){
-
             self::mark_as_uploaded(1,0,0,$request->shop_id);
 
         }else if(intval($request->by_standard) == 1){
-
             self::mark_as_uploaded(0,1,0,$request->shop_id);
 
         }else if(intval($request->by_custom) == 1){
-
             self::mark_as_uploaded(0,0,1,$request->shop_id);
-
         }
 
         //return new replishmentEmail($query,$shopname);
 
         Mail::to($email)->send(new replishmentEmail($query,$shopname));
+
+        foreach($query as $q){
+            DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
+                ->increment('quantity',intval($q->updated_quantity));
+        }
 
         return redirect()->route('rep_update');
     }

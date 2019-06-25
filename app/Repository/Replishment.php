@@ -41,7 +41,8 @@ class Replishment{
                   'shop_name'    =>  Common::get_branch_name_by_shopID($shop_id),
                   'shop_id'      => $shop_id,
                   'selected_from'=> $from,
-                  'selected_to'  => $to
+                  'selected_to'  => $to,
+                  'retail_price' => Common::get_retail_price_by_ref($ref)
                   // 'suggest_send' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?
                   // (Common::get_productStandard_by_ref($ref) - Common::get_branchStockQty_by_ref($ref,$shop_id)):"TBD",
                   // 'branch_stock_qty' =>  Common::ifhasBranchStock(Common::get_branchStockID_by_ref($ref,$shop_id)) ?  (Common::get_branchStockQty_by_ref($ref,$shop_id)):"Not Sure"
@@ -76,7 +77,8 @@ class Replishment{
                   'shop_name'    => Shop::find(intval($shop_id))->name,
                   'webStockID'   => Common::get_webStockID_by_ref($q->reference),
                   'branchStockID'=> Common::get_branchStockID_by_ref($q->reference,$shop_id),
-                  'shop_id'      => $shop_id
+                  'shop_id'      => $shop_id,
+                  'retail_price' => Common::get_retail_price_by_ref($ref)
               ];
           }
         }

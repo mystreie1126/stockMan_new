@@ -44,7 +44,7 @@
             <select id="selected_standard_stock_shop">
               <option disabled selected>Choose a Shop</option>
                   <option value="27">Athlone</option>
-                  <option value="26">Mill</option>
+                  <option value="30">Gorey</option>
             </select>
           </div>
 

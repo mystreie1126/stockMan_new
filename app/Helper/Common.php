@@ -331,19 +331,23 @@ class Common
     }
 
     //8.get product catagory type by ref
-
-
     public static function get_qty_lastStockTake($ref,$shop_id){
         $qty = DB::table('c1ft_stock_manager.sm_branchStockTake_history')
-
                ->where('shop_id',$shop_id)
                ->where('sealed',1)
                ->where('reference',$ref)
                ->groupBy('reference')->value(DB::raw('sum(updated_quantity)'));
-
-               return intval($qty);
+        return intval($qty);
     }
 
+
+    //9.get product price by ref
+
+    public static function get_retail_price_by_ref($ref){
+        $price = DB::table('c1ft_pos_prestashop.ps_product')->where('reference',$ref)->value('price');
+
+        return floatval($price);
+    }
 
     /*============================================================================================== */
 
@@ -368,7 +372,6 @@ class Common
                   ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
                   ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
                   ->whereBetween('order.date_add',[$from,$to])
-
                   ->where('detail.product_reference',$ref)
                   ->groupBy('detail.product_reference')
                   ->value('soldQty');
@@ -382,7 +385,6 @@ class Common
                         ->groupBy('detail.product_attribute_id')
                         ->join('vr_confirm_payment as webSales','webSales.order_id','detail.id_order')
                         ->where('webSales.device_order',0)
-
                         ->whereBetween('webSales.created_at',[$from,$to])
                         ->value('soldQty');
 
@@ -394,15 +396,17 @@ class Common
                        ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
                        ->join('vr_confirm_payment as webSales','webSales.order_id','detail.id_order')
                        ->where('webSales.device_order',0)
-
                        ->whereBetween('webSales.created_at',[$from,$to])
                        ->where('detail.product_reference',$ref)
                        ->value('soldQty');
+
             return intval($web_qty) + intval($pos_qty);
 
         }else{
             return 0;
         }
     }
+
+
 
 }

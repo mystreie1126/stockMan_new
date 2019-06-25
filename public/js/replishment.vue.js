@@ -29,6 +29,7 @@ $('#createSalesList').click((e)=>{
                $('.list_action').html('<button class="saveTo_salesList btn">Submit</button>');
                $('.download').html('<button class="btn right download_btn">Export CSV</button>')
                var columns = [
+                   {title:"Retail Price",field:'retail_price',width:200,align:"center",cssClass:'blue-text'},
                    {title:'Name',field:'name',width:300,align:"center"},
                    {title:'Barcode',field:'reference',width:200,align:"center"},
                    {title:'Sold',field:'soldQty',width:100,align:"center"},
@@ -40,7 +41,7 @@ $('#createSalesList').click((e)=>{
                    {title:'posStockID',field:'pos_stockID',width:2,visible:false}
 
                ];
-
+               
                table.setColumns(columns);
                table.setData(res.list);
                //$('.message').text(`Replishment By Sale - selected ${shop_name} with sales from ${startTime} to ${endTime}`);

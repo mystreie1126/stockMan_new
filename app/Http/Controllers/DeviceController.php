@@ -11,7 +11,8 @@ use App\Mail\DeviceSendEmail;
 use Mail;
 use DB;
 
-
+use App\Model\Devices\Device_pool as Device;
+use App\Model\Devices\Issues_desc;
 
 class DeviceController extends Controller
 {
@@ -109,5 +110,22 @@ class DeviceController extends Controller
 
         return redirect()->route('sendDevice');
     }
+
+
+    public function checking_device(){
+
+        $devices = Device::with('type')->where('new_device',1)->get();
+        $issues_desc = Issues_desc::all();
+
+         
+
+        return view('device.checking_device',compact('devices','issues_desc'));
+    }
+
+
+
+
+
+
 
 }

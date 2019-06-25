@@ -66,22 +66,6 @@
 </div>
 @push('export_topSale')
 
-
-
-
-	<div class="fixed-action-btn">
-	    <a class="btn-floating btn-large red">
-	      <i class="material-icons">mode_edit</i>
-	    </a>
-	    <ul>
-	      <li>
-	        <a href="#export_topSale_csv" class="modal-trigger btn-floating blue sell_page_editing">
-	          <i class="material-icons">cloud_download</i>
-	        </a>
-	      </li>
-	    </ul>
-	  </div>
-
 		<div id="export_topSale_csv" class="modal">
     <div class="modal-content export_qty_modal row">
 			<div class="col s3 m3 l3">

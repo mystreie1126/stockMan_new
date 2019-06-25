@@ -6,44 +6,22 @@
           <i class="material-icons">menu</i>
         </a>
         <ul class="right">
-           {{--  <li>
-              <a href="{{route('salespage')}}">Shop Sales</a>
-            </li>
-            <li>
-              <a href="{{route('stockpage')}}">Check Stock</a>
-            </li> --}}
-
-
 
             <li>
               @guest
                   <li><a href="{{ route('login') }}">Login</a></li>
               @else
-                  <ul>
-                      <li>
-                          <a href="">StockOut</a>
-                      </li>
-                      {{-- @if(Auth::User()->HQ == 1)
-                          <li>
-                              <a class='dropdown-button' href='#' data-activates='dropdown1'>Stock In</a>
-
-                          </li>
-                      @endif --}}
-                      <li>
-                          <a href="{{ route('logout') }}"
-                              onclick="event.preventDefault();
-                                       document.getElementById('logout-form').submit();">
-                              Logout
-                          </a>
-
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                              {{ csrf_field() }}
-                          </form>
-                      </li>
-                  </ul>
+                  <li>
+                    <a href="{{route('salespage')}}">Shop Sales</a>
+                  </li>
+                  <li>
+                    <a href="{{route('stockpage')}}">Check Stock</a>
+                  </li>
               @endguest
             </li>
         </ul>
+
+
         <!-- Side nav -->
 
         <ul id="side-nav" class="side-nav">
@@ -60,8 +38,8 @@
                <a class="indigo-text">Login As: {{Auth::User()->name}}</a>
              </li>
 
-              <li>
-                <a><span class="nav_sub_header amber-text">StockTake</span></a>
+              <li class="amber">
+                <a><span class="nav_sub_header white-text">StockTake</span></a>
               </li>
 
               <li>
@@ -81,8 +59,8 @@
               </li>
 
            <!-- stock In-->
-              <li>
-                <a><span class="nav_sub_header red-text">Stock In</span></a>
+              <li class="red">
+                <a><span class="nav_sub_header white-text">Stock In</span></a>
               </li>
                  <li>
                   <a href="{{route('accumulate_stock')}}">Accumulate Stock</a>
@@ -99,8 +77,8 @@
                  <div class="divider">User Action</div>
               </li>
             <!-- stock Out-->
-              <li>
-                <a><span class="nav_sub_header indigo-text">Stock Out</span></a>
+              <li class="indigo">
+                <a><span class="nav_sub_header white-text">Stock Out</span></a>
               </li>
 
                   <li>
@@ -120,8 +98,8 @@
               </li>
 
               <!-- Manage Devices -->
-              <li>
-                <a href="#"><span class="nav_sub_header purple-text text-darken-1">Manage Devices</span></a>
+              <li class="purple darken-1">
+                <a href="#"><span class="nav_sub_header white-text">Manage Devices</span></a>
               </li>
 
                   <li>
@@ -134,6 +112,23 @@
 
                   <li>
                     <a href="{{route('sendDevice')}}">Ready To Send</a>
+                  </li>
+
+                  <li>
+                    <div class="divider">User Action</div>
+                  </li>
+
+
+                  <li>
+                      <a href="{{ route('logout') }}" class="btn"
+                          onclick="event.preventDefault();
+                                   document.getElementById('logout-form').submit();">
+                          LOG OUT
+                      </a>
+
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                          {{ csrf_field() }}
+                      </form>
                   </li>
 
           @else

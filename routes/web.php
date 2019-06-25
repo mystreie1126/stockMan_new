@@ -59,6 +59,11 @@ Route::get('/deviceTransfer','DeviceController@transfer_device_page')->name('tra
 
 Route::get('/send_device','DeviceController@ready_to_send')->name('sendDevice');
 
+/* checking device*/
+
+Route::get('/checking_device','DeviceController@checking_device')->name('checking_device')->middleware('auth');
+
+
 
 
 //StockIn

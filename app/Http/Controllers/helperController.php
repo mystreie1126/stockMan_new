@@ -108,9 +108,20 @@ class helperController extends Controller
     }
 
    public function test_ref(){
-      $ref =   6958444966502;
-      $shop_id = 37;
+      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->pluck('reference')->toArray();
+      $shop_id = 30;
 
+
+      $no_name =[];
+
+      foreach($refs as $ref){
+          if(!Common::get_productName_by_ref($ref)){
+              array_push($no_name,$ref);
+              //return 'this dosent have pos stock id ' . $ref;
+          }
+      }
+
+      return  $no_name;
 
           if(!Common::get_branchStockID_by_ref($ref,27)){
             return 'this dosent have pos stock id ' . $ref;
@@ -123,9 +134,10 @@ class helperController extends Controller
           }
 
           else{
-
             return 'webstockID'.Common::get_webStockID_by_ref($ref);
           }
+
+
 
 
 
@@ -133,25 +145,8 @@ class helperController extends Controller
 
 
   public function getThis(){
-      $from = '2019-06-18'; $to="2019-06-18 23:00:00";
-      $shop_id = 37;
-      $ref = 6958444966502;
-      $arr=[];
-       $pos_sale_refs  = Common::totalSalesRefs($from,$to,$shop_id);
-      $web_sales_refs = Common::webSalesRefs($from,$to,$shop_id);
-      $missing_refs = Common::missingPart($pos_sale_refs,$web_sales_refs);
-
-       $sell_refs = array_merge($pos_sale_refs,$missing_refs);
-
-
-       return Common::get_productStandard_by_ref($ref);
-       return $arr;
-
-      return $sell_refs;
-      return Common::webSalesRefs($from,$to,37);
-      return Common::totalSalesRefs($from,$to,37);
-
-
+      $ref = '100012';
+       return Common::get_retail_price_by_ref($ref);
   }
 
 
@@ -232,6 +227,7 @@ class helperController extends Controller
 
         return intval($pos_qty);
   }
+
 
 
 

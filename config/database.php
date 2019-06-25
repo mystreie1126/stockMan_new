@@ -112,6 +112,24 @@ return [
           ]
       ],
 
+      'mysql5' => [
+         'driver' => 'mysql',
+         'host' => env('DB_HOST_FIFTH'),
+         'port' => env('DB_PORT_FIFTH'),
+         'database' => env('DB_DATABASE_FIFTH'),
+         'username' => env('DB_USERNAME_FIFTH'),
+         'password' => env('DB_PASSWORD_FIFTH'),
+         'unix_socket' => env('DB_SOCKET_FIFTH'),
+         'charset' => 'utf8mb4',
+         'collation' => 'utf8mb4_unicode_ci',
+         'prefix' => '',
+         'strict' => false,
+         'engine' => null,
+         'options' =>[
+              PDO::ATTR_EMULATE_PREPARES => true,
+         ]
+     ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

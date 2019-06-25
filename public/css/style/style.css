@@ -248,3 +248,11 @@ nav{
 .device_storage option{
 	color:red !important;
 }
+
+#checking_device_step .tab a{
+	color:black;
+}
+
+#main .tabs .indicator{
+	background-color:#757575;
+}
