@@ -59,7 +59,9 @@ Route::get('/deviceTransfer','DeviceController@transfer_device_page')->name('tra
 
 Route::get('/send_device','DeviceController@ready_to_send')->name('sendDevice');
 
-/* checking device*/
+/* new device action*/
+
+Route::get('/device_stockIn','DeviceController@device_stockIn')->middleware('auth');
 
 Route::get('/checking_device','DeviceController@checking_device')->name('checking_device')->middleware('auth');
 

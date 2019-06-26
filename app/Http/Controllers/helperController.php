@@ -108,20 +108,21 @@ class helperController extends Controller
     }
 
    public function test_ref(){
-      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->pluck('reference')->toArray();
+      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',30)->pluck('reference')->toArray();
       $shop_id = 30;
 
 
-      $no_name =[];
+      $no_web =[];
+
 
       foreach($refs as $ref){
-          if(!Common::get_productName_by_ref($ref)){
-              array_push($no_name,$ref);
+          if(!Common::get_webStockID_by_ref($ref)){
+              array_push($no_web,$ref);
               //return 'this dosent have pos stock id ' . $ref;
           }
       }
 
-      return  $no_name;
+      return  $no_web;
 
           if(!Common::get_branchStockID_by_ref($ref,27)){
             return 'this dosent have pos stock id ' . $ref;

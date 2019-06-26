@@ -112,12 +112,17 @@ class DeviceController extends Controller
     }
 
 
+    public function device_stockIn(){
+        return view('device.device_stockIn');
+    }
+
+
     public function checking_device(){
 
         $devices = Device::with('type')->where('new_device',1)->get();
         $issues_desc = Issues_desc::all();
 
-         
+
 
         return view('device.checking_device',compact('devices','issues_desc'));
     }
