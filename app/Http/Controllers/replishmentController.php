@@ -86,6 +86,7 @@ class replishmentController extends Controller
 
         $data = json_decode($request->sheetData,true);
 
+
         foreach($data as $d){
             $history = new RepHistory;
             $history->reference           = $d['reference'];
@@ -101,7 +102,7 @@ class replishmentController extends Controller
             $history->selected_endDate    = $d['selected_to'];
             $history->created_at          = date('Y-m-d H:i:s');
 
-             //$history->save();
+
             if($history->save()){
                 DB::table('ps_stock_available')->where('id_stock_available', $d['web_stockID'])
                 ->decrement('quantity',$d['suggest_send']);
@@ -139,7 +140,7 @@ public function save_standard_replist(Request $request){
         $history->rep_by_standard     = 1;
         $history->created_at          = date('Y-m-d H:i:s');
 
-        //$history->save();
+        // $history->save();
 
         if($history->save()){
             DB::table('ps_stock_available')->where('id_stock_available', $d['webStockID'])

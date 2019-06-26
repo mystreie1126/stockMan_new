@@ -23,7 +23,7 @@
           }
         </style>
     <body>
-      
+
 
     @include('_includes/navbar')
     <div id="main">
@@ -47,6 +47,45 @@
       var reset_button = function(e,btn_text){
           $(e).removeAttr('disabled');
           $(e).text(btn_text);
+      }
+
+      var removeHide = function(e){
+          if($(e).hasClass('hide')){
+              $(e).removeClass('hide');
+          }
+      }
+
+      var addHide = function(e){
+          if(!$(e).hasClass('hide')){
+              $(e).addClass('hide');
+          }
+      }
+
+      var objectToCSV = function(data){
+          var csvRows = [];
+          var headers = Object.keys(data[0]);
+          csvRows.push(headers.join(','));
+
+         for(var row of data){
+             var values = headers.map(header =>{
+                 var escaped = (''+row[header]).replace(/"/g, '\\"');
+                 return `"${escaped}"`;
+             })
+             csvRows.push(values.join(','));
+         }
+         return  csvRows.join('\n');
+      }
+
+      var downloadList = function(data){
+          var blob = new Blob([data],{type:'text/csv'});
+          var url  = window.URL.createObjectURL(blob);
+          var  a   = document.createElement('a');
+          a.setAttribute('hidden','');
+          a.setAttribute('href',url);
+          a.setAttribute('download','download.csv')
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
       }
 
     </script>

@@ -8,27 +8,7 @@
 
 <div id="replishmentLists" style="margin:20px">
 
-<div class="preloader-wrapper big active pre-loader hide">
-  <div class="spinner-layer spinner-red-only">
-    <div class="circle-clipper left">
-      <div class="circle"></div>
-    </div><div class="gap-patch">
-      <div class="circle"></div>
-    </div><div class="circle-clipper right">
-      <div class="circle"></div>
-    </div>
-  </div>
-</div>
-
-@if($need_upload->count() > 0)
-    <div class="fixed-action-btn horizontal">
-        <a class="btn btn-floating pulse red"><i class="material-icons">priority_high</i></a>
-        <ul>
-          <li><a class="red-text">There are remaining data needs to be uploaded</a></li>
-        </ul>
-    </div>
-
-@endif
+<div class="lds-spinner spinner-loader hide"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 
   <h3></h3>
   <h5>Re Stock Options:</h5>
@@ -36,7 +16,7 @@
 
     <li>
       <div class="collapsible-header"><i class="material-icons green-text">whatshot</i>Standard Restock</div>
-      <div class="collapsible-body">
+      <div class="collapsible-body" id="standard_rep">
 
         <div class="row" >
            <div class="col s12 m4 l4">
@@ -48,7 +28,38 @@
             </select>
           </div>
 
-          <button class="green btn col s6 m2 l2" id="createStandardList" style="transform:translate(10%,80%)">Create List</button>
+          <button class="green btn col s6 m2 l2" @click.prevent="get_standard_list" style="transform:translate(10%,80%)">Create List</button>
+
+          <div class="list_showcase">
+               <table class="centered striped">
+                   <thead>
+                       <tr>
+                           <th>Product Name</th>
+                           <th>Reference</th>
+                           <th>Retail Price</th>
+                           <th>standard</th>
+                           <th>send</th>
+                           <th>Total Retail</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <tr v-for="(list,index) in standard_list">
+                           <td>@{{list.name}}</td>
+                           <td>@{{list.reference}}</td>
+                           <td>@{{list.retail_price}} &euro;</td>
+                           <td>@{{list.standard}}</td>
+                           <td>
+                               <input type="number" v-model="list.send" style="width:40%" class="center indigo-text">
+                           </td>
+                           <td>
+                               <input type="number" v-model="list.send * list.retail_price" style="width:40%" class="center green-text" disabled>
+                           </td>
+                       </tr>
+                   </tbody>
+                   <button class="btn amber right" v-if="showbtn" @click.prevent="exportList">Export to CSV</button>
+               </table>
+          </div>
+          <button class="btn blue submitStandardList" v-if="showbtn" @click.prevent="submitStandardList">Submit</button>
       </div>
     </li>
 
@@ -57,47 +68,65 @@
 
 <li>
   <div class="collapsible-header"><i class="material-icons teal-text">filter_drama</i>Re-stock by Sales</div>
-  <div class="collapsible-body">
+  <div class="collapsible-body" id="sale_rep">
 
-    <div class="sales_rep_form">
+    <div id="sales_rep_form">
       <span class="flow-text  cyan-text text-darken-3 ">Re-Stock by Sales</span>
-      <div id="sales_rep_form" class="row" >
-         <div class="col s12 m3 l3">
-          <span class="indigo-text text-lighten-3">Select From:</span>
-          <select id="selected_shop">
-            <option disabled selected>Choose a Shop</option>
-              @foreach($shops as $shop)
-                <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
-              @endforeach
-          </select>
-          <label>Select Branches</label>
-        </div>
-      <div class="col s12 m3 l3" class="datetime">
-           <span class="indigo-text text-lighten-3">Start datetime:</span>
-           <input type="date" id="selected_start_date">
+      <div class="row" >
+              <div class="col s12 m3 l3">
+                  <span class="indigo-text text-lighten-3">Select From:</span>
+                  <select id="selected_shop">
+                    <option disabled selected>Choose a Shop</option>
+                      @foreach($shops as $shop)
+                        <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
+                      @endforeach
+                  </select>
+                  <label>Select Branches</label>
+               </div>
+               <div class="col s12 m3 l3" class="datetime">
+                   <span class="indigo-text text-lighten-3">Start datetime:</span>
+                   <input type="date" id="selected_start_date">
+               </div>
+               <div class="col s12 m3 l3" class="datetime">
+                   <span class="indigo-text text-lighten-3">End datetime:</span>
+                   <input type="date" id="selected_end_date">
+               </div>
+                <button type="button" v-on:click.prevent="getsalesList" class="btn s12 m3 l3" id="createSalesList" style="transform:translateY(80%)">Create List</button>
       </div>
-      <div class="col s12 m3 l3" class="datetime">
-           <span class="indigo-text text-lighten-3">End datetime:</span>
-           <input type="date" id="selected_end_date">
+
+      <div class="list_showcase">
+          <table class="centered striped">
+              <thead>
+                  <tr>
+                      <th>Product Name</th>
+                      <th>Reference</th>
+                      <th>Retail</th>
+                      <th>Send</th>
+                      <th>Total Retail</th>
+                      <th>Shop</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(list,index) in sales_list">
+                      <td>@{{list.name}}</td>
+                      <td>@{{list.reference}}</td>
+                      <td>@{{list.retail_price}} &euro;</td>
+                      <td>
+                          <input type="number" v-model="list.suggest_send" style="width:50%" class="center indigo-text">
+                      </td>
+                      <td>
+                          <input type="number" v-model="list.suggest_send * list.retail_price" style="width:40%" class="center green-text" disabled>
+                      </td>
+                      <td>@{{list.shop_name}}</td>
+                  </tr>
+              </tbody>
+              <button class="btn amber exportSalesBtn" v-if="showbtn" @click.prevent="exportList">Export to CSV</button>
+          </table>
       </div>
-      <button type="button" v-on:click.prevent="getList" class="btn s12 m3 l3" id="createSalesList" style="transform:translateY(80%)">Create List</button>
-      </div>
+      <button class="btn blue submitSaleList" v-if="showbtn" @click.prevent="submitSaleList">Submit</button>
     </div>
 
-    <div class="regular_list_action hide row">
-        <div class="col s12" style="display:flex">
-          <p class="bold"></p>
-          <a class='dropdown-button btn right' style="transform:translate(20%,20%)" data-activates='dropdown1'>Download</a>
-           <ul id='dropdown1' class='dropdown-content'>
-             <li><a id="downloadExcel">EXCEL </a></li>
-           </ul>
-       </div>
-      <input type="text" value="" placeholder="Search by name" id="filter-name" class="col s4">
-      <span class="col s1 center" style="transform:translateY(40%)">OR</span>
-      <input type="text" value="" placeholder="search by reference" id="filter-barcode" class="col s4">
-
-      <button type="button" class="blue btn col s2" id="regular_list_submit" style="transform:translate(10%,10%)">Submit</button>
-    </div>
 
   </div>
 </li>
@@ -175,5 +204,6 @@
 @stop
 
 @push('replishment_js')
-<script type="text/javascript" src="{{URL::asset('js/replishment.vue.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/plugin/jquery.tabletoCSV.js')}}"></script>
+    <script type="text/javascript" src="{{URL::asset('js/replishment.vue.js')}}"></script>
 @endpush

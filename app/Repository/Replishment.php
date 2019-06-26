@@ -78,7 +78,7 @@ class Replishment{
                   'webStockID'   => Common::get_webStockID_by_ref($q->reference),
                   'branchStockID'=> Common::get_branchStockID_by_ref($q->reference,$shop_id),
                   'shop_id'      => $shop_id,
-                  'retail_price' => Common::get_retail_price_by_ref($ref)
+                  'retail_price' => Common::get_retail_price_by_ref($q->reference)
               ];
           }
         }

@@ -349,6 +349,10 @@ class Common
         return floatval($price);
     }
 
+    // public static function get_wholesale_price_by_ref($ref){
+    //     $price = DB::table('c1ft_store_prestashop.')
+    // }
+
     /*============================================================================================== */
 
     public static function extraRefsAfterStockTake($shop_id){
