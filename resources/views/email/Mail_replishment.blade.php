@@ -54,7 +54,8 @@
 
         @endforeach
         </table>
-        <p>Total Retail is: {{$total_retail}} and Total Wholesale price is: {{$total_wholesale}}</p>
+        <p>Total <span class="bold">Retail</span> is: <span class="bold">{{$total_retail}} &euro;</span></p>
+        <p>Total <span class="bold">Wholesale price</span> is: {{$total_wholesale}} &euro;</p>
         <p>Best Regards,</p>
         <p>warehouse@funtech.ie</p>
         @endif

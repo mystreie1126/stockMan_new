@@ -266,13 +266,13 @@ public function save_standard_replist(Request $request){
             array_push($wholesale,Common::get_wholesale_price_by_ref($q->reference));
 
             if(Common::get_retail_price_by_ref($q->reference) !== 0){
-                $q->retail = Common::get_retail_price_by_ref($q->reference);
+                $q->retail = round(Common::get_retail_price_by_ref($q->reference),2);
             }else{
                 $q->retail = "Don't have";
             }
 
             if(Common::get_wholesale_price_by_ref($q->reference) !== 0){
-                $q->wholesale = Common::get_wholesale_price_by_ref($q->reference);
+                $q->wholesale = rount(Common::get_wholesale_price_by_ref($q->reference),2);
             }else{
                 $q->wholesale = "Don't have";
             }
