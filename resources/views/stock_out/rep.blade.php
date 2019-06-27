@@ -36,23 +36,29 @@
                        <tr>
                            <th>Product Name</th>
                            <th>Reference</th>
-                           <th>Retail Price</th>
                            <th>standard</th>
                            <th>send</th>
-                           <th>Total Retail</th>
+                           <th class="teal-text">Retail Price</th>
+                           <th class="cyan-text">Wholesale Price</th>
+                           <th class="teal-text">Total Retail</th>
+                           <th class="cyan-text">Total Wholesale</th>
                        </tr>
                    </thead>
                    <tbody>
                        <tr v-for="(list,index) in standard_list">
                            <td>@{{list.name}}</td>
                            <td>@{{list.reference}}</td>
-                           <td>@{{list.retail_price}} &euro;</td>
                            <td>@{{list.standard}}</td>
                            <td>
-                               <input type="number" v-model="list.send" style="width:40%" class="center indigo-text">
+                              <input type="number" v-model="list.send" style="width:40%" class="center indigo-text">
                            </td>
-                           <td>
+                           <td class="teal-text">@{{list.retail_price}} &euro;</td>
+                           <th class="cyan-text center">@{{list.wholesale}} &euro;</th>
+                           <td class="teal-text text-darken-2">
                                <input type="number" v-model="list.send * list.retail_price" style="width:40%" class="center green-text" disabled>
+                           </td>
+                           <td class="cyan-text text-accent-3">
+                               <input type="number" v-model="list.send * list.wholesale" style="width:40%" class="center teal-text" disabled>
                            </td>
                        </tr>
                    </tbody>
@@ -100,23 +106,29 @@
                   <tr>
                       <th>Product Name</th>
                       <th>Reference</th>
-                      <th>Retail</th>
-                      <th>Send</th>
-                      <th>Total Retail</th>
+                      <th class="indigo-text">Send</th>
+                      <th class="teal-text">Retail Price</th>
+                      <th class="cyan-text">Wholesale Price</th>
+                      <th class="teal-text">Total Retail</th>
+                      <th class="cyan-text">Total Wholesale</th>
                       <th>Shop</th>
-                      <th></th>
+
                   </tr>
               </thead>
               <tbody>
                   <tr v-for="(list,index) in sales_list">
                       <td>@{{list.name}}</td>
                       <td>@{{list.reference}}</td>
-                      <td>@{{list.retail_price}} &euro;</td>
                       <td>
                           <input type="number" v-model="list.suggest_send" style="width:50%" class="center indigo-text">
                       </td>
-                      <td>
-                          <input type="number" v-model="list.suggest_send * list.retail_price" style="width:40%" class="center green-text" disabled>
+                      <td class="teal-text">@{{list.retail_price}} &euro;</td>
+                      <td class="cyan-text">@{{list.wholesale}} &euro;</td>
+                      <td class="teal-text text-darken-2">
+                          <input type="number" v-model="list.suggest_send * list.retail_price" style="width:40%" class="center amber-text" disabled>
+                      </td>
+                      <td class="cyan-text text-accent-3">
+                          <input type="number" v-model="list.suggest_send * list.wholesale" style="width:40%" class="center teal-text" disabled>
                       </td>
                       <td>@{{list.shop_name}}</td>
                   </tr>
@@ -160,6 +172,10 @@
                         <th @click="sortName">Name</th>
                         <th @click="sortRef">Reference</th>
                         <th @click="sortSend_qty">Send</th>
+                        <th class="teal-text">Retail Price</th>
+                        <th class="cyan-text">Wholesale Price</th>
+                        <th class="teal-text">Total Retail</th>
+                        <th class="cyan-text">Total Wholesale</th>
                         <th @click="sortShop">Shop</th>
                         <th></th>
                     </tr>
@@ -170,6 +186,14 @@
                         <td>@{{list.ref}}</td>
                         <td>
                             <input type="number" v-model="list.send" style="width:auto" class="center indigo-text">
+                        </td>
+                        <td>@{{list.retail_price}}</td>
+                        <td>@{{list.wholesale}}</td>
+                        <td class="teal-text text-darken-2">
+                            <input type="number" v-model="list.send * list.retail_price" style="width:40%" class="center" disabled>
+                        </td>
+                        <td class="cyan-text text-accent-4">
+                            <input type="number" v-model="list.send * list.wholesale" style="width:40%" class="center" disabled>
                         </td>
                         <td>@{{list.shopname}}</td>
                         <td>

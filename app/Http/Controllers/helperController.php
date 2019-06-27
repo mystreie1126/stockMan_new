@@ -146,8 +146,9 @@ class helperController extends Controller
 
 
   public function getThis(){
-      $ref = '100012';
-       return Common::get_retail_price_by_ref($ref);
+      // return Common::allCombinationRefs();
+      $ref = 300018;
+      return Common::get_wholesale_price_by_ref($ref);
   }
 
 

@@ -20,10 +20,12 @@ class replishmentEmail extends Mailable
     public $sendList;
     public $shopname;
 
-    public function __construct($query,$shopname)
+    public function __construct($query,$shopname,$total_retail,$total_wholesale)
     {
          $this->sendList = $query;
          $this->shopname = $shopname;
+         $this->total_retail = $total_retail;
+         $this->total_wholesale = $total_wholesale;
     }
 
     /**
@@ -36,7 +38,9 @@ class replishmentEmail extends Mailable
         $lists = $this->sendList;
         $shopname =  $this->shopname;
         $date = date('Y-m-d');
+        $total_retail = $this->total_retail;
+        $total_wholesale = $this->total_wholesale;
 
-        return $this->view('email.Mail_replishment',compact('lists','shopname','date'));
+        return $this->view('email.Mail_replishment',compact('lists','shopname','date','total_retail','total_wholesale'));
     }
 }

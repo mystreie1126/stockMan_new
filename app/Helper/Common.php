@@ -349,9 +349,42 @@ class Common
         return floatval($price);
     }
 
-    // public static function get_wholesale_price_by_ref($ref){
-    //     $price = DB::table('c1ft_store_prestashop.')
-    // }
+    public static function get_wholesale_price_by_ref($ref){
+        if(in_array($ref,self::allCombinationRefs()) && !in_array($ref,self::allExcludeCombinationRefs())){
+            $price = DB::table('ps_product_attribute as a')
+                   ->select('b.price as retail','a.price as impact','c.reduction')
+                   ->where('a.reference',$ref)
+                   ->join('ps_product as b','a.id_product','b.id_product')
+                   ->join('ps_specific_price as c','c.id_product','a.id_product')
+                   ->where('c.id_shop',11)
+                   ->where('c.id_group',5)
+                   ->get();
+
+                   if($price->count() == 1){
+                       return floatval($price[0]->retail) + floatval($price[0]->impact) - floatval($price[0]->reduction);
+                   }else{
+                       return 0;
+                   }
+
+        }else if(!in_array($ref,self::allCombinationRefs()) && in_array($ref,self::allExcludeCombinationRefs())){
+              $price = DB::table('ps_product as a')
+                    ->select('a.price','b.reduction',DB::raw('(a.price-b.reduction) as wholesale') )
+                    ->where('a.reference',$ref)
+                    ->join('ps_specific_price as b','a.id_product','b.id_product')
+                    ->where('b.id_shop',11)
+                    ->where('b.id_group',5)
+                    ->get();
+
+                    if($price->count() == 1){
+                        return floatval($price[0]->wholesale);
+                    }else{
+                        return 0;
+                    }
+        }else{
+            return 0;
+        }
+
+    }
 
     /*============================================================================================== */
 

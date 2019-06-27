@@ -8,7 +8,6 @@
 <h4 class="center">Stock In NEW DEVICE</h4>
 <div id="newDevice">
 <input type="hidden" value="{{Auth::User()->id}}" class="staffID">
-        {{-- first row.... --}}
 
 
     <div class="first-line device_details_line row">
@@ -17,7 +16,7 @@
 
              </div>
 
-             <div class="input-field col s6">
+             <div class="input-field col s3">
                  <input id="supplier_order" type="text" class="validate">
                  <label for="supplier_order">Supplier Order ID</label>
               </div>

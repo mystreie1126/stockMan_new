@@ -33,11 +33,14 @@
 
         @if(count($lists) > 0)
         {{-- {{$lists}} --}}
+
         <table>
             <tr>
                 <th>Barcode</th>
                 <th>Name</th>
                 <th>Send</th>
+                <th>Retail Price</th>
+                <th>Wholesale Price</th>
             </tr>
         @foreach($lists as $list)
 
@@ -45,11 +48,13 @@
                 <td>{{$list->reference}}</td>
                 <td>{{$list->product_name}}</td>
                 <td>{{$list->updated_quantity}}</td>
+                <td>{{$list->retail}}</td>
+                <td>{{$list->wholesale}}</td>
             </tr>
 
         @endforeach
         </table>
-
+        <p>Total Retail is: {{$total_retail}} and Total Wholesale price is: {{$total_wholesale}}</p>
         <p>Best Regards,</p>
         <p>warehouse@funtech.ie</p>
         @endif

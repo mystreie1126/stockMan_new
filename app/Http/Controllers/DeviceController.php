@@ -113,6 +113,7 @@ class DeviceController extends Controller
 
 
     public function device_stockIn(){
+        
         return view('device.device_stockIn');
     }
 

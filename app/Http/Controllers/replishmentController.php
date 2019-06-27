@@ -102,7 +102,7 @@ class replishmentController extends Controller
             $history->selected_endDate    = $d['selected_to'];
             $history->created_at          = date('Y-m-d H:i:s');
 
-
+            //$history->save();
             if($history->save()){
                 DB::table('ps_stock_available')->where('id_stock_available', $d['web_stockID'])
                 ->decrement('quantity',$d['suggest_send']);
@@ -140,8 +140,7 @@ public function save_standard_replist(Request $request){
         $history->rep_by_standard     = 1;
         $history->created_at          = date('Y-m-d H:i:s');
 
-        // $history->save();
-
+        //$history->save();
         if($history->save()){
             DB::table('ps_stock_available')->where('id_stock_available', $d['webStockID'])
             ->decrement('quantity',$d['send']);
@@ -166,13 +165,15 @@ public function save_standard_replist(Request $request){
             $name = $search_result->name;
             if(Common::get_webStockID_by_ref($ref) !== null && Common::get_branchStockID_by_ref($ref,$request->shop_id) !== null){
                 return response()->json(['exsists'=>1,'result'=>[
-                        'ref'=>$ref,
-                        'name'=>$name,
-                        'pos_stock_id'=>Common::get_branchStockID_by_ref($ref,$request->shop_id),
-                        'web_stock_id'=>Common::get_webStockID_by_ref($ref),
-                        'shopname'    =>Shop::find(intval($request->shop_id))->name,
-                        'shop_id'     =>$request->shop_id,
-                        'send'        =>''
+                        'ref'          =>$ref,
+                        'name'         =>$name,
+                        'pos_stock_id' =>Common::get_branchStockID_by_ref($ref,$request->shop_id),
+                        'web_stock_id' =>Common::get_webStockID_by_ref($ref),
+                        'shopname'     =>Shop::find(intval($request->shop_id))->name,
+                        'shop_id'      =>$request->shop_id,
+                        'send'         =>'',
+                        'retail_price' => Common::get_retail_price_by_ref($ref),
+                        'wholesale'    => Common::get_wholesale_price_by_ref($ref)
                     ]]);
             }else{
                 return response()->json(['exsists'=>0]);
@@ -256,9 +257,29 @@ public function save_standard_replist(Request $request){
         $shopname = self::shopname($request->shop_id);
         $email = self::shopemail($request->shop_id);
 
+        $retail = [];
+        $wholesale = [];
+
         foreach($query as $q){
             $q->product_name = Common::get_productName_by_ref($q->reference);
+            array_push($retail,Common::get_retail_price_by_ref($q->reference));
+            array_push($wholesale,Common::get_wholesale_price_by_ref($q->reference));
+
+            if(Common::get_retail_price_by_ref($q->reference) !== 0){
+                $q->retail = Common::get_retail_price_by_ref($q->reference);
+            }else{
+                $q->retail = "Don't have";
+            }
+
+            if(Common::get_wholesale_price_by_ref($q->reference) !== 0){
+                $q->wholesale = Common::get_wholesale_price_by_ref($q->reference);
+            }else{
+                $q->wholesale = "Don't have";
+            }
         }
+
+        $total_retail    = array_sum($retail);
+        $total_wholesale = array_sum($wholesale);
 
         if(intval($request->by_sale) == 1){
             self::mark_as_uploaded(1,0,0,$request->shop_id);
@@ -270,9 +291,7 @@ public function save_standard_replist(Request $request){
             self::mark_as_uploaded(0,0,1,$request->shop_id);
         }
 
-        //return new replishmentEmail($query,$shopname);
-
-        Mail::to($email)->send(new replishmentEmail($query,$shopname));
+        Mail::to($email)->send(new replishmentEmail($query,$shopname,$total_retail,$total_wholesale));
 
         foreach($query as $q){
             DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
