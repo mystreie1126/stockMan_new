@@ -291,7 +291,9 @@ public function save_standard_replist(Request $request){
             self::mark_as_uploaded(0,0,1,$request->shop_id);
         }
 
-        Mail::to($email)->send(new replishmentEmail($query,$shopname,$total_retail,$total_wholesale));
+        Mail::to($email)
+        ->cc(['warehouse@funtech.ie','info@funtech.ie'])
+        ->send(new replishmentEmail($query,$shopname,$total_retail,$total_wholesale));
 
         foreach($query as $q){
             DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->shop_stock_id)
