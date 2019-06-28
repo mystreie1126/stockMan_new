@@ -272,7 +272,7 @@ public function save_standard_replist(Request $request){
             }
 
             if(Common::get_wholesale_price_by_ref($q->reference) !== 0){
-                $q->wholesale = rount(Common::get_wholesale_price_by_ref($q->reference),2);
+                $q->wholesale = round(Common::get_wholesale_price_by_ref($q->reference),2);
             }else{
                 $q->wholesale = "Don't have";
             }
