@@ -33,9 +33,9 @@
     @stack('product_editing')
     @stack('export_topSale')
     <script type="text/javascript">
-      //const stockMan = 'http://localhost/project/laravel/newStockApi/public/api/';
+      const stockMan = 'http://localhost/project/laravel/newStockApi/public/api/';
       //const api = 'http://localhost/project/laravel/stockManager_api/public/api';
-     var stockMan = 'http://stockangryman.funtech.ie/api/';
+     //var stockMan = 'http://stockangryman.funtech.ie/api/';
       //var stockMan = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
       //var stockMan = 'http://localhost/project/laravel/stockManager_api/public/api/';
 
@@ -92,12 +92,9 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.2.7/dist/js/tabulator.min.js"></script>
-    {{-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/4.2.7/js/jquery_wrapper.min.js"></script> --}}
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js
 "></script>
-{{-- <script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script> --}}
- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script>
 
 
     <script type="text/javascript" src="{{URL::asset('js/script.js')}}"></script>
@@ -113,5 +110,11 @@
     @stack('update_to_branch')
     @stack('device_newDevice_js')
     @stack('stock_in_js')
+
+    {{-- device js... --}}
+    @stack('device_pool_js')
+    @stack('deviceTest_js')
+    {{--barcode js--}}
+    @stack('barcode_js')
     </body>
 </html>

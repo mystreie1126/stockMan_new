@@ -344,9 +344,16 @@ class Common
     //9.get product price by ref
 
     public static function get_retail_price_by_ref($ref){
-        $price = DB::table('c1ft_pos_prestashop.ps_product')->where('reference',$ref)->value('price');
 
-        return floatval($price);
+            $price = DB::table('c1ft_pos_prestashop.ps_product')
+                     ->where('reference',$ref)
+                     ->value('price');
+
+            return floatval($price);
+
+        //$price = DB::table('c1ft_pos_prestashop.ps_product')->where('reference',$ref)->value('price');
+
+
     }
 
     public static function get_wholesale_price_by_ref($ref){

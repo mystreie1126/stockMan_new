@@ -11,11 +11,15 @@ use App\Mail\DeviceSendEmail;
 use Mail;
 use DB;
 
-use App\Model\Devices\Device_pool as Device;
+use App\Model\Devices\Pool;
 use App\Model\Devices\Issues_desc;
+use App\Model\Devices\Device_pool_desc_ps as Jiance;
 
 class DeviceController extends Controller
 {
+    const pre_own_category_id   = 394;
+    const brand_new_category_id = 1451;
+
     public function new_device_page(){
         return view('device.newDevice');
     }
@@ -81,9 +85,17 @@ class DeviceController extends Controller
 
         foreach($shopIDs as $shop_id){
             $devices = Device_transfer::with('shopname','record')->where('shop_id',$shop_id)->where('send',0)->get();
-            $devices->name = Shop::find($shop_id)->name;
+            if($shop_id == 0){
+                $devices->name = 'wholesellers';
+            }else{
+                $devices->name = Shop::find($shop_id)->name;
+            }
+
+
             $lists[] = $devices;
         }
+
+        //return $lists;
 
          //return $lists;
         return view('device.ready_to_send',compact('lists'));
@@ -113,21 +125,64 @@ class DeviceController extends Controller
 
 
     public function device_stockIn(){
-        
+
         return view('device.device_stockIn');
     }
 
 
-    public function checking_device(){
-
-        $devices = Device::with('type')->where('new_device',1)->get();
-        $issues_desc = Issues_desc::all();
-
-
-
-        return view('device.checking_device',compact('devices','issues_desc'));
+/*new devices actions start here*/
+    private function get_category_by_parent($parent){
+        $query = DB::table('ps_category as a')
+                 ->select('a.id_category','b.name')
+                 ->join('ps_category_lang as b','a.id_category','b.id_category')
+                 ->where('a.id_parent',$parent)
+                 ->where('a.active',1)
+                 ->groupBy('a.id_category')
+                 ->get();
+        return $query;
     }
 
+    public function device_stockIn_pool(){
+
+        $preown_models   = self::get_category_by_parent(self::pre_own_category_id);
+        $brandnew_models = self::get_category_by_parent(self::brand_new_category_id);
+        return view('devices.device_pool',compact('types','preown_models','brandnew_models'));
+    }
+
+    public function save_mobileDevice_inPool(Request $request){
+
+        $device = new Pool;
+        $device->supply_order_id   = $request->supplier_order_id;
+        $device->device_type       = $request->device_type;
+        $device->pre_own           = $request->preOwn;
+        $device->brand_new         = $request->brandNew;
+        $device->user_created      = $request->staff_id;
+        $device->created_at        = date('Y-m-d H:i:s');
+
+        if($device->save()){
+            $jiance = new Jiance;
+            $jiance->device_id            = $device->id;
+            $jiance->brand_ps_category_id = $request->model_category_id;
+            $jiance->brand_name           = $request->brand_name;
+            $jiance->model_name           = $request->model_name;
+            $jiance->save();
+
+            return 'saved';
+        }
+    }
+
+    public function device_awaiting_update(){
+
+        $awaiting_update_devices = DB::table('c1ft_device_manager.dm_jiance_device_desc_ps as a')
+                         ->select('b.id','a.brand_ps_category_id','a.brand_name','a.model_name','b.pre_own')
+                         ->join('c1ft_device_manager.dm_device_pool as b','a.device_id','b.id')
+                         ->whereNull('b.serial_number')
+                         ->orderBy('b.id','desc')
+                         ->get();
+        return $awaiting_update_devices;
+
+        //return view('devices.deviceTest',compact('check_devices'));
+    }
 
 
 

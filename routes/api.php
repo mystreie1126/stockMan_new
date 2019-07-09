@@ -86,6 +86,25 @@ Route::post('/transfer_device','DeviceController@transfer_device');
 
 Route::post('/send_device','DeviceController@send_device')->name('sendDevice_to_branch');
 
+
+
+/* new device stock in actions.....*/
+
+Route::post('/create_mobile_device','DeviceController@save_mobileDevice_inPool');
+
+Route::get('/check_awaiting_update_devices','DeviceController@device_awaiting_update');
+/*barcode..*/
+
+Route::get('/parts_with_barcodes','BarcodeController@barcode');
+
+Route::get('/check_parts_barcodes','BarcodeController@check_parts_barcode');
+
+Route::get('/get_parts_brand','BarcodeController@parts_brand');
+
+Route::post('/get_parts_model','BarcodeController@parts_model');
+
+Route::post('/setbarcode_topartsref','BarcodeController@set_barcode_parts_ref');
+
 /*helper*/
 Route::get('/soldAll','helperController@soldAll');
 Route::get('/test_ref','helperController@test_ref');
@@ -105,5 +124,3 @@ Route::get('/soft_delete','helperController@solfdelete');
 Route::get('/athlone_standard_list','kerianController@athlone_standard_list');
 
 Route::get('/allShopSalesQty_by_ref','kerianController@allShopSalesQty_by_ref');
-
-Route::get('/pas','kerianController@product_without_imageSold');

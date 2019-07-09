@@ -340,3 +340,16 @@ nav{
     opacity: 0;
   }
 }
+
+#device_pool_stockIn .select-wrapper input.select-dropdown{
+	display: none;
+}
+
+#device_pool_stockIn .select-wrapper .caret{
+	display: none;
+}
+
+.flexx{
+	display: flex;
+	align-items: center;
+}

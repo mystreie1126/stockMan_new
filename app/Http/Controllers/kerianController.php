@@ -84,29 +84,22 @@ class kerianController extends Controller
          return $sold_refs;
      }
 
+
     public function allShopSalesQty_by_ref(){
-        $from = '2019-05-27 00:00:00';
-        $to   = '2019-06-02 23:00:00';
-        $shop_id = 27;
+        $from = '2019-06-05';
+        $to   = '2019-07-06';
 
-        $pos_sale_refs  = Common::totalSalesRefs($from,$to,$shop_id);
-        $web_sales_refs = Common::webSalesRefs($from,$to,$shop_id);
-        $missing_refs = Common::missingPart($pos_sale_refs,$web_sales_refs);
-
-        $sell_refs = array_merge($pos_sale_refs,$missing_refs);
-
-        $result = [];
-
-
-        foreach($sell_refs as $r){
-            $result[] = [
-                'name' => Common::get_productName_by_ref($r),
-                'reference'=> $r,
-                'sold_qty' => Common::get_productSoldQty_by_ref($r,$shop_id,$from,$to)
+        $refs = self::get_sales_refs($from,$to);
+        $arr = [];
+        foreach($refs as $ref){
+            $arr[] = [
+                'ref' => $ref,
+                'name' =>Common::get_productName_by_ref($ref),
+                'sold' => self::get_productSoldQty_by_ref_allshops($ref,$from,$to)
             ];
         }
+        return $arr;
 
-        return $result;
 
     }
 

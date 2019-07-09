@@ -11,6 +11,8 @@ use App\Model\Partner\BranchStock;
 use App\Helper\Common;
 use App\Model\Device\Devicepool;
 use App\Model\Standard\Standard_Branch;
+
+use App\tt;
 use DB;
 
 class helperController extends Controller
@@ -108,21 +110,25 @@ class helperController extends Controller
     }
 
    public function test_ref(){
-      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',30)->pluck('reference')->toArray();
-      $shop_id = 30;
 
+      $query = DB::table('c1ft_stock_manager.athlone_pos_deduct')->get();
 
-      $no_web =[];
+      foreach($query as $q){
+          DB::table('c1ft_pos_prestashop.ps_stock_available')
+          ->where('id_stock_available',intval($q->stock_id))
+          ->decrement('quantity',$q->qty);
+      }
+
+      return 'sss';
 
 
       foreach($refs as $ref){
           if(!Common::get_webStockID_by_ref($ref)){
-              array_push($no_web,$ref);
+              array_push($no_name,$ref);
               //return 'this dosent have pos stock id ' . $ref;
           }
       }
-
-      return  $no_web;
+      $name = [];
 
           if(!Common::get_branchStockID_by_ref($ref,27)){
             return 'this dosent have pos stock id ' . $ref;
@@ -146,10 +152,24 @@ class helperController extends Controller
 
 
   public function getThis(){
-      // return Common::allCombinationRefs();
-      $ref = 300018;
-      //return Common::get_wholesale_price_by_ref($ref);
-      return round(Common::get_wholesale_price_by_ref($ref),2);
+      //
+      // $query = DB::table('ps_specific_price as a')
+      //          ->select('a.id_product','a.reduction','b.price',DB::raw('(b.price - a.reduction)*7.5/7'),DB::raw('b.price-((b.price - a.reduction)*7.5/7) as new_reduction'))
+      //          ->where('a.id_shop',11)
+      //          ->where('a.id_group',1)
+      //          ->where('a.reduction_tax','>',0)
+      //          ->join('ps_product as b','a.id_product','b.id_product')
+      //          ->where(DB::raw('(b.price - a.reduction)*7.5/7'),'>','0')
+      //          ->get();
+      //
+      // foreach($query as $q){
+      //     DB::table('ps_specific_price')->where('id_product',$q->id_product)->where('id_shop',11)->where('id_group',1)
+      //     ->update(['reduction'=>$q->new_reduction]);
+      // }
+      //
+      // return 'done';
+
+      return $query;
   }
 
 

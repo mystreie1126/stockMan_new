@@ -12,10 +12,7 @@
                   <li><a href="{{ route('login') }}">Login</a></li>
               @else
                   <li>
-                    <a href="{{route('salespage')}}">Shop Sales</a>
-                  </li>
-                  <li>
-                    <a href="{{route('stockpage')}}">Check Stock</a>
+                    <a href="{{route('parts_barcode')}}">Add Barcode on Parts</a>
                   </li>
               @endguest
             </li>

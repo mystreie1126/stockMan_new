@@ -63,8 +63,21 @@ Route::get('/send_device','DeviceController@ready_to_send')->name('sendDevice');
 
 Route::get('/device_stockIn','DeviceController@device_stockIn')->middleware('auth');
 
-Route::get('/checking_device','DeviceController@checking_device')->name('checking_device')->middleware('auth');
+// Route::get('/checking_device','DeviceController@checking_device')->name('checking_device')->middleware('auth');
 
+// Route::get('/create_new_device',function(){
+// 	return view('devices.device_pool');
+// });
+
+Route::get('/create_new_device','DeviceController@device_stockIn_pool');
+
+Route::get('/test_device',function(){
+	return view('devices.device_awaiting_update');
+});
+
+
+/* barcode */
+Route::get('/barcode_page','BarcodeController@barcode')->name('parts_barcode');
 
 
 
@@ -72,6 +85,11 @@ Route::get('/checking_device','DeviceController@checking_device')->name('checkin
 Route::get('/accumulate_stock',function(){
 	return view('stock_in.stock_accumulate');
 })->name('accumulate_stock');
+
+
+
+
+
 
 
 

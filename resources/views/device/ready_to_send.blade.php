@@ -9,7 +9,13 @@
             {{-- <h5 class="center">{{$list[0]->shopname->name}}</h5> --}}
                 <ul class="collapsible" data-collapsible="accordion">
                     <li>
-                      <div class="collapsible-header"><i class="material-icons">smartphone</i>{{$list[0]->shopname->name}}</div>
+                      <div class="collapsible-header"><i class="material-icons">smartphone</i>
+                          @if($list[0]->shop_id > 0)
+                               {{$list[0]->shopname->name}}
+                          @else
+                              wholeseller
+                          @endif
+                      </div>
                       <div class="collapsible-body">
                           <form class="" action="{{route('sendDevice_to_branch')}}" method="post">
                               <table class="centered">
@@ -27,11 +33,16 @@
                                   <tbody>
                                       @foreach($list as $send_device)
                                           <tr>
+
                                               <td>{{$send_device->record->brand.' '.$send_device->record->model}}</td>
                                               <td class="teal-text text-darken-3">{{$send_device->record->storage}}</td>
                                               <td>{{$send_device->record->color}}</td>
                                               <td class="indigo-text">{{$send_device->record->IMEI}}</td>
-                                              <td class="red-text text-accent-3">{{$send_device->shopname->name}}</td>
+                                              @if($send_device->shop_id > 0)
+                                                  <td class="red-text text-accent-3">{{$send_device->shopname->name}}</td>
+                                              @else
+                                                  <td class="red-text">wholesale</td>
+                                              @endif
                                               <td>{{$send_device->notes}}</td>
                                               <td>
                                                   <input type="hidden" name="transfer_id[]" value="{{$send_device->transfer_id}}">
