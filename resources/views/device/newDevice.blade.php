@@ -14,7 +14,7 @@
     <div class="first-line device_details_line row">
         <h5 class="indigo-text right">Staff: <span class="red-text">{{Auth::User()->name}}</span></h5>
               <div class="switch col s12" style="margin-bottom:20px">
-                
+
              </div>
 
              <div class="input-field col s6">
