@@ -33,10 +33,7 @@
     @stack('product_editing')
     @stack('export_topSale')
     <script type="text/javascript">
-      //const stockMan = 'http://localhost/project/laravel/newStockApi/public/api/';
-      //const api = 'http://localhost/project/laravel/stockManager_api/public/api';
      var stockMan = 'http://stockangryman.funtech.ie/api/';
-      //var stockMan = 'https://calm-anchorage-96610.herokuapp.com/http://stockmangagerapi.funtech.ie/api/';
       //var stockMan = 'http://localhost/project/laravel/stockManager_api/public/api/';
 
       var submit_once = function(e,btn_text){

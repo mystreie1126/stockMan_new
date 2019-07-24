@@ -111,14 +111,15 @@ Route::get('/test_ref','helperController@test_ref');
 
 Route::get('/standard','helperController@standard_model');
 
-Route::get('/pp','helperController@test_stockTake_refs');
+Route::get('/pp','helperController@check_earphone');
 Route::get('/pa','helperController@getThis');
+Route::get('/pb','helperController@getThat');
 
 Route::get('/stockCheck','helperController@stockTake_check');
 
 Route::get('/allshopSales','kerianController@allShopSalesQty_by_ref');
 
-Route::get('/soft_delete','helperController@solfdelete');
+Route::get('/soft_delete','helperController@delete_standard');
 
 /* kerian controller*/
 Route::get('/athlone_standard_list','kerianController@athlone_standard_list');

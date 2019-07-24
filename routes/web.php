@@ -87,8 +87,11 @@ Route::get('/accumulate_stock',function(){
 })->name('accumulate_stock');
 
 
+//Order
 
+Route::get('/partner_orders','OrderController@pos_partner_order')->name('partner_order');
 
+Route::post('/order_to_pos','OrderController@order_to_pos')->name('order_to_pos');
 
 
 

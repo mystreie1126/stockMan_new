@@ -35,6 +35,18 @@
                <a class="indigo-text">Login As: {{Auth::User()->name}}</a>
              </li>
 
+             <li class="teal">
+               <a><span class="nav_sub_header white-text">Partner Order</span></a>
+             </li>
+
+             <li>
+               <a href="{{route('partner_order')}}">Partner Order</a>
+             </li>
+
+             <li>
+               <div class="divider">User Action</div>
+             </li>
+
               <li class="amber">
                 <a><span class="nav_sub_header white-text">StockTake</span></a>
               </li>

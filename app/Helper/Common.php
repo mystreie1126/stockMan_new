@@ -311,6 +311,11 @@ class Common
         return $name;
     }
 
+    public static function standard_refs($shop_id){
+        $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',$shop_id)->pluck('reference')->toArray();
+        return $refs;
+    }
+
     //7.get stock_in record by refs
 
     public static function get_product_deliveredQty_to_Branch($ref,$shop_id,$from,$to){

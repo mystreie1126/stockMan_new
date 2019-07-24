@@ -18,10 +18,11 @@ class Replishment{
             $web_sales_refs = Common::webSalesRefs($from,$to,$shop_id);
               $missing_refs = Common::missingPart($pos_sale_refs,$web_sales_refs);
 
-       $sell_refs = array_merge($pos_sale_refs,$missing_refs);
+       $sell_refs     = array_merge($pos_sale_refs,$missing_refs);
+       $standard_refs = Common::standard_refs($shop_id);
        $list = [];
-
-       $final_refs = $sell_refs;
+       //$final_refs = $sell_refs;
+       $final_refs = Common::missingPart($standard_refs,$sell_refs );
 
        foreach($final_refs as $ref){
            if(

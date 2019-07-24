@@ -11,6 +11,7 @@ use App\Model\Partner\BranchStock;
 use App\Helper\Common;
 use App\Model\Device\Devicepool;
 use App\Model\Standard\Standard_Branch;
+use App\Model\Standard\new_standard;
 
 use App\tt;
 use DB;
@@ -111,25 +112,27 @@ class helperController extends Controller
 
    public function test_ref(){
 
-      $query = DB::table('c1ft_stock_manager.athlone_pos_deduct')->get();
+      // $query = DB::table('c1ft_stock_manager.athlone_pos_deduct')->get();
+      //
+      // foreach($query as $q){
+      //     DB::table('c1ft_pos_prestashop.ps_stock_available')
+      //     ->where('id_stock_available',intval($q->stock_id))
+      //     ->decrement('quantity',$q->qty);
+      // }
+      //
+      // return 'sss';
+      //
+      //
+      // foreach($refs as $ref){
+      //     if(!Common::get_webStockID_by_ref($ref)){
+      //         array_push($no_name,$ref);
+      //         //return 'this dosent have pos stock id ' . $ref;
+      //     }
+      // }
+      // $name = [];
+      $ref = 600001;
 
-      foreach($query as $q){
-          DB::table('c1ft_pos_prestashop.ps_stock_available')
-          ->where('id_stock_available',intval($q->stock_id))
-          ->decrement('quantity',$q->qty);
-      }
-
-      return 'sss';
-
-
-      foreach($refs as $ref){
-          if(!Common::get_webStockID_by_ref($ref)){
-              array_push($no_name,$ref);
-              //return 'this dosent have pos stock id ' . $ref;
-          }
-      }
-      $name = [];
-
+      //return Common::get_productName_by_ref($ref);
           if(!Common::get_branchStockID_by_ref($ref,27)){
             return 'this dosent have pos stock id ' . $ref;
           }
@@ -145,114 +148,233 @@ class helperController extends Controller
           }
 
 
-
-
-
    }
 
 
+
   public function getThis(){
+
+
+      $refs = [
+
+];
+
+
+      $no_wholesale =[];
+      $valid_tax = [8,9];
+      $no_tax = [];
+
+      // $id_group = 1;
+      // $wholesale_price = 2.14;
+
+      $query = DB::table('c1ft_stock_manager.wholesale')->get();
+
+
+      foreach($query as $q){
+          self::get_reduction_price($q->ref,$q->wholesale,5);
+      }
+
+      return 'finished';
+
+      foreach($refs as $ref){
+          if(!in_array(self::check_has_tax($ref),$valid_tax)){
+              array_push($no_tax,$ref);
+          }
+      }
+
+      foreach($refs as $ref){
+          if(self::check_wholesale_price($ref,$id_group) == NULL){
+               array_push($no_wholesale,$ref);
+          }
+      }
+
+
+      //return response()->json(['no_tax'=>$no_tax,'no_wholesale'=>$no_wholesale]);
+
+      // foreach($refs as $ref){
+      //     self::get_reduction_price($ref,$wholesale_price,$id_group);
       //
-      // $query = DB::table('ps_specific_price as a')
-      //          ->select('a.id_product','a.reduction','b.price',DB::raw('(b.price - a.reduction)*7.5/7'),DB::raw('b.price-((b.price - a.reduction)*7.5/7) as new_reduction'))
-      //          ->where('a.id_shop',11)
-      //          ->where('a.id_group',1)
-      //          ->where('a.reduction_tax','>',0)
-      //          ->join('ps_product as b','a.id_product','b.id_product')
-      //          ->where(DB::raw('(b.price - a.reduction)*7.5/7'),'>','0')
-      //          ->get();
-      //
-      // foreach($query as $q){
-      //     DB::table('ps_specific_price')->where('id_product',$q->id_product)->where('id_shop',11)->where('id_group',1)
-      //     ->update(['reduction'=>$q->new_reduction]);
       // }
-      //
-      // return 'done';
+      return 'done';
 
-      return $query;
+
+
+     // $id_group = 1;
+     // $wholesale_price = 4.82;
+     // $id = 183611;
+     //
+     //   return self::get_reduction_price_byID($id,$wholesale_price,$id_group);
+
+
+
   }
 
+  public function getThat(){
 
-  public function stockTake_check(){
-     $query = DB::table('c1ft_stock_manager.need_to_merge')->get();
-     $from = '2019-06-13 23:00:00';
-     $to = '2019-06-18';
+      $refs = [
+         
+];
 
-     foreach($query as $q){
-        $q->stockId = Common::get_branchStockID_by_ref($q->ref,27);
-        $q->soldQty = Common::get_productSoldQty_by_ref($q->ref,27,$from,$to);
-        $q->stockIn_qty = Common::get_product_deliveredQty_to_Branch($q->ref,27,$from,$to);
 
-        $q->current_qty = intval($q->qty) - intval($q->soldQty) + intval($q->stockIn_qty);
 
-        DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_stock_available',$q->stockId)->update(['quantity'=>intval($q->current_qty)]);
-     }
+    foreach($refs as $ref){
+        $device = new Devicepool;
+        $device->IMEI  = $ref;
+        $device->brand = 'MISC';
+        $device->model = 'Haiyu H1';
+        $device->condition = 'NEW';
+        $device->storage = '2GB';
+        $device->by_user = 1;
+        $device->created_at = date('Y-m-d H:i:s');
+        $device->save();
+    }
 
-     return $query;
-  }
+    return 'done';
 
-  public function soldAll(){
-      $ref = 'KITS2BK';
-      $from="2019-06-15";
-      $to  ="2019-06-16";
-      //return $to;
+      $athlone = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',27)->get();
+      $gorey   = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',30)->get();
 
-      $shops = DB::table('c1ft_pos_prestashop.ps_shop')->select('id_shop','name')->get();
-      $arr=[];
-      foreach($shops as $shop){
-          $arr[]=[
-              'name'=>$shop->name,
-              'sold'=>Common::get_productSoldQty_by_ref($ref,$shop->id_shop,$from,$to)
+      //return $athlone;
+
+
+
+
+      $valid_refs = DB::table('c1ft_stock_manager.sm_standard_branch')->groupBy('reference')->pluck('reference')->toArray();
+
+
+
+      return Common::missingPart($valid_refs,$refs);
+
+      $new_standard = new new_standard;
+
+
+
+
+
+      return $athlone;
+      //athlone has gorey none
+      $athlone_has_gorey_none = Common::missingPart($gorey,$athlone);
+      $gorey_has_athlone_none = Common::missingPart($athlone,$gorey);
+
+      $gorey_miss = [];
+      $athlone_miss = [];
+
+      foreach($athlone_has_gorey_none as $ref){
+           $gorey_miss[]=[
+              'name'=>Common::get_productName_by_ref($ref),
+              'ref'=>$ref
           ];
       }
-      return $arr;
-      return Common::get_productSoldQty_by_ref_allShop($ref,$from,$to);
+
+      foreach($gorey_has_athlone_none as $ref){
+          $athlone_miss[]=[
+              'name' => Common::get_productName_by_ref($ref),
+              'ref'  => $ref
+          ];
+      }
+      //return  $athlone_miss;
+      return  $gorey_miss;
+
+
+      return $query;
+      return count($gorey);
+
+
+
+
+
+  }
+
+  private function get_id($ref){
+    $query = DB::table('ps_product')->select('id_product')->where('reference',$ref)->value('id_product');
+    return $query;
+  }
+
+  private function check_wholesale_price($ref,$id_group){
+      $price = DB::table('ps_product as a')
+               ->select('a.price',DB::raw('a.price - b.reduction as new_wholesale'))
+               ->where('a.reference',$ref)
+               ->join('ps_specific_price as b','a.id_product','b.id_product')
+               ->where('b.id_shop',11)
+               ->where('b.id_group',$id_group)
+               ->get();
+      if($price->count() == 1){
+          return number_format($price[0]->new_wholesale, 2);
+      }
+      // return $price;
   }
 
 
-  public function solfdelete(){
-       Branch_standard::find(2)->delete();
+  private function check_has_tax($ref){
+      $price = DB::table('ps_product')->select('id_tax_rules_group')->where('reference',$ref)->get();
 
-       // $query = DB::table('c1ft_stock_manager.sm_standardstock_branches')
-       //          ->
-       return Branch_standard::onlyTrashed()->get();
-      // if(Branch_standard::find(1)->trashed()){
-      //     return 'yes';
-      // }
-
-  }
-
-  public function standard_model(){
-      $shop_id = 26;
-      $from = '2019-06-17 00:00:00';
-      $to = '2019-06-19 23:59:59';
-      $ref = "6958444955292";
-
-      $pos_qty = DB::table('c1ft_pos_prestashop.ps_order_detail as detail')
-                ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
-                ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
-                ->whereBetween('order.date_add',[$from,$to])
-                ->where('detail.id_shop',$shop_id)
-                ->where('detail.product_reference',$ref)
-                ->groupBy('detail.product_reference')
-                ->value('soldQty');
-
-                $web_qty = DB::table('ps_product_attribute as attr')
-                            ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
-                            ->where('attr.reference',$ref)
-                            ->join('ps_order_detail as detail','attr.id_product_attribute','detail.product_attribute_id')
-                            ->groupBy('detail.product_attribute_id')
-                            ->join('vr_confirm_payment as webSales','webSales.order_id','detail.id_order')
-                            ->where('webSales.device_order',0)
-                            ->where('webSales.rockpos_shop_id',$shop_id)
-                            ->whereBetween('webSales.created_at',[$from,$to])
-                            ;
-
-        return intval($pos_qty);
+      if($price->count() == 1)
+      return intval($price[0]->id_tax_rules_group);
   }
 
 
+  private function get_reduction_price($ref,$wholesale,$id_group){
+      $price = DB::table('ps_product')->where('reference',$ref)->value('price');
+      $id = DB::table('ps_product')->where('reference',$ref)->value('id_product');
 
+
+      if($price){
+          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
+          ->update(['reduction' => $price - $wholesale]);
+
+          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
+          ->update(['reduction_tax' => 0]);
+
+          return 'lol';
+      }
+
+      return 'done';
+  }
+
+  private function get_reduction_price_byID($id,$wholesale,$id_group){
+      $price = DB::table('ps_product')->where('id_product',$id)->value('price');
+
+      if($price){
+          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
+          ->update(['reduction' => $price - $wholesale]);
+
+          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
+          ->update(['reduction_tax' => 0]);
+
+          return 'lol';
+      }
+
+      return 'done';
+  }
+
+  public function check_earphone(){
+      $ref = 6958444966502;
+      $from = '2019-06-07 12:57:00';
+      $to  = '2019-07-12 00:00:00';
+
+      $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
+             ->select(DB::raw('sum(updated_quantity) as send'),'shop_id','reference as ref')
+             ->where('reference',$ref)
+             ->groupBy('shop_id')
+             ->get();
+
+      foreach($query as $q){
+          $q->sold = Common::get_productSoldQty_by_ref($ref,$q->shop_id,$from,$to);
+      }
+
+      return $query;
+
+  }
+
+  public function delete_standard(){
+      $ref = [];
+
+      new_standard::find(1)->delete();
+
+      //Standard_Branch::whereIn('reference',$ref)->delete();
+
+      return 'done';
+  }
 
 
 

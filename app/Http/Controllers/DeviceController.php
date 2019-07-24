@@ -146,7 +146,7 @@ class DeviceController extends Controller
 
         $preown_models   = self::get_category_by_parent(self::pre_own_category_id);
         $brandnew_models = self::get_category_by_parent(self::brand_new_category_id);
-        return view('devices.device_pool',compact('types','preown_models','brandnew_models'));
+        return view('devices.device_pool',compact('preown_models','brandnew_models'));
     }
 
     public function save_mobileDevice_inPool(Request $request){
