@@ -292,7 +292,7 @@ public function save_standard_replist(Request $request){
         }
 
         Mail::to($email)
-        ->cc(['warehouse@funtech.ie','info@funtech.ie'])
+        ->cc(['warehouse@funtech.ie','hq@funtech.ie'])
         ->send(new replishmentEmail($query,$shopname,$total_retail,$total_wholesale));
 
         foreach($query as $q){
