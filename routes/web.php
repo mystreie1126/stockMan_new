@@ -71,6 +71,8 @@ Route::get('/device_stockIn','DeviceController@device_stockIn')->middleware('aut
 
 Route::get('/create_new_device','DeviceController@device_stockIn_pool');
 
+Route::get('/device_awaiting_check','DeviceController@device_awaiting_update');
+
 Route::get('/test_device',function(){
 	return view('devices.device_awaiting_update');
 });

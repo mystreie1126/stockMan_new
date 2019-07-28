@@ -23,9 +23,9 @@
             <span class="green-text text-lighten-3">Select Branch:</span>
             <select id="selected_standard_stock_shop">
               <option disabled selected>Choose a Shop</option>
-                  <option value="27">Athlone</option>
-                  <option value="30">Gorey</option>
-                  <option value="34">MarketCross</option>
+                  @foreach($shops as $shop)
+                    <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
+                  @endforeach
             </select>
           </div>
 

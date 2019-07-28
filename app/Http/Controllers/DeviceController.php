@@ -173,15 +173,16 @@ class DeviceController extends Controller
 
     public function device_awaiting_update(){
 
-        $awaiting_update_devices = DB::table('c1ft_device_manager.dm_jiance_device_desc_ps as a')
+        $awaiting_devices = DB::table('c1ft_device_manager.dm_jiance_device_desc_ps as a')
                          ->select('b.id','a.brand_ps_category_id','a.brand_name','a.model_name','b.pre_own')
                          ->join('c1ft_device_manager.dm_device_pool as b','a.device_id','b.id')
                          ->whereNull('b.serial_number')
                          ->orderBy('b.id','desc')
                          ->get();
-        return $awaiting_update_devices;
 
-        //return view('devices.deviceTest',compact('check_devices'));
+        //return $awaiting_update_devices;
+
+        return view('devices.device_awaiting_check',compact('awaiting_devices'));
     }
 
 

@@ -110,43 +110,114 @@ class helperController extends Controller
 
     }
 
+
+
    public function test_ref(){
 
-      // $query = DB::table('c1ft_stock_manager.athlone_pos_deduct')->get();
-      //
-      // foreach($query as $q){
-      //     DB::table('c1ft_pos_prestashop.ps_stock_available')
-      //     ->where('id_stock_available',intval($q->stock_id))
-      //     ->decrement('quantity',$q->qty);
-      // }
-      //
-      // return 'sss';
-      //
-      //
-      // foreach($refs as $ref){
-      //     if(!Common::get_webStockID_by_ref($ref)){
-      //         array_push($no_name,$ref);
-      //         //return 'this dosent have pos stock id ' . $ref;
-      //     }
-      // }
-      // $name = [];
-      $ref = 600001;
+      $refs = [
+          "1028630",
+"1028600",
+"1028641",
+"1028640",
+"1028631",
+"102977",
+"1028561",
+"1028550",
+"1028571",
+"1028010",
+"1028570",
+"1028451",
+"102849",
+"1028450",
+"6959297700765",
+"6959297700961",
+"1028580",
+"1028531",
+"1028640",
+"1028580",
+"103019",
+"6958444966670",
+"6958444949659",
+"10277268",
+"6958444999319",
+"6958444952697",
+"SHB4805DC",
+"SHB4205BK",
+"SHQ1400CL",
+"6958444961606",
+"6958444961590",
+"TA20UBEBLKB",
+"101869",
+"6958444961545",
+"6958444944029",
+"6958444960647",
+"6958444956657",
+"6958444964553",
+"6958444959283",
+"6958444959238",
+"6958444952536",
+"6958444949239",
+"101473",
+"102591",
+"6958444962627",
+"6958444956817",
+"222",
+"221",
+"6958444963624",
+"6958444937519",
+"6958444958194",
+"102445",
+"6958444952703",
+"6958444950235",
+"6958444962894",
+"6958444965635",
+"6958444958873",
+"6958444956800",
+"100480",
+"6958444951232",
+"6958444996875",
+"6958444996882",
+"2904003475224",
+"6958444967776",
+"6958444967820",
+"6958444958163",
+"6958444956213",
+"6958444958989",
+"6958444936277"
+];
 
-      //return Common::get_productName_by_ref($ref);
-          if(!Common::get_branchStockID_by_ref($ref,27)){
-            return 'this dosent have pos stock id ' . $ref;
-          }
-          else if(!Common::get_productName_by_ref($ref)){
-            return 'this dosent have proper name ' . $ref;
-          }
-          else if(!Common::get_webStockID_by_ref($ref)){
-            return 'this dosent have webStock id ' . $ref;
-          }
+$no_branchStockID = [];
+$no_name = [];
+$no_webstock = [];
+$pass = [];
 
-          else{
-            return 'webstockID'.Common::get_webStockID_by_ref($ref);
-          }
 
+     $standard_refs_gorey = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',27)->pluck('reference')->toArray();
+
+     return Common::missingPart($standard_refs_gorey,$refs);
+
+
+
+
+      foreach($refs as $ref){
+          if(!Common::get_branchStockID_by_ref($ref,33)){
+              array_push($no_branchStockID,$ref);
+          }
+          // else if(!Common::get_productName_by_ref($ref)){
+          //      array_push($no_name,$ref);
+          // }
+          // else if(!Common::get_webStockID_by_ref($ref)){
+          //     array_push($no_webstock,$ref);
+          // }
+          // else{
+          //     array_push($pass ,$ref);
+          // }
+
+      }
+
+      return $no_branchStockID;
+
+    return response()->json(['nobranchstock' => $no_branchStockID, 'noname'=>$no_name, 'nowebstock' => $no_webstock,'allpass'=>$pass]);
 
    }
 
@@ -154,15 +225,30 @@ class helperController extends Controller
 
   public function getThis(){
 
+      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',30)->pluck('reference')->toArray();
 
-      $refs = [
+      $lists = [];
+      foreach($refs as $ref){
+          $lists[] = [
+              'name' => Common::get_productName_by_ref($ref),
+              'barcode' => $ref
+          ];
+      }
 
-];
+      return $lists;
 
 
-      $no_wholesale =[];
-      $valid_tax = [8,9];
-      $no_tax = [];
+      // $ref      = 6958444949659;
+      // $shop_id  = 30;
+      // $from     = '2019-07-25 00:00:00';
+      // $to       = '2019-07-25';
+      // return Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to);
+      //
+      //
+      //
+      // $no_wholesale =[];
+      // $valid_tax = [8,9];
+      // $no_tax = [];
 
       // $id_group = 1;
       // $wholesale_price = 2.14;
@@ -212,7 +298,7 @@ class helperController extends Controller
   public function getThat(){
 
       $refs = [
-         
+
 ];
 
 
