@@ -90,9 +90,24 @@ Route::post('/send_device','DeviceController@send_device')->name('sendDevice_to_
 
 /* new device stock in actions.....*/
 
+Route::post('/get_device_details_by_id','DeviceController@device_details_by_id');
+
 Route::post('/create_mobile_device','DeviceController@save_mobileDevice_inPool');
 
 Route::get('/check_awaiting_update_devices','DeviceController@device_awaiting_update');
+
+Route::get('/get_device_issues','DeviceController@device_issues');
+
+Route::post('/save_device_issues','DeviceController@save_device_issues');
+
+
+/* partner order prices */
+
+Route::post('/get_partner_order_by_date','PriceController@partner_all_delivery');
+
+
+
+
 /*barcode..*/
 
 Route::get('/parts_with_barcodes','BarcodeController@barcode');

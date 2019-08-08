@@ -35,6 +35,18 @@
                <a class="indigo-text">Login As: {{Auth::User()->name}}</a>
              </li>
 
+             <li class="green">
+               <a><span class="nav_sub_header white-text">Delivery Cost</span></a>
+             </li>
+
+             <li>
+               <a href="{{route('partner_delivery_prices')}}">View Price</a>
+             </li>
+
+             <li>
+               <div class="divider">User Action</div>
+             </li>
+
              <li class="teal">
                <a><span class="nav_sub_header white-text">Partner Order</span></a>
              </li>

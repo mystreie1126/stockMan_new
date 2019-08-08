@@ -262,8 +262,8 @@ public function save_standard_replist(Request $request){
 
         foreach($query as $q){
             $q->product_name = Common::get_productName_by_ref($q->reference);
-            array_push($retail,Common::get_retail_price_by_ref($q->reference));
-            array_push($wholesale,Common::get_wholesale_price_by_ref($q->reference));
+            array_push($retail,Common::get_retail_price_by_ref($q->reference)*intval($q->send));
+            array_push($wholesale,Common::get_wholesale_price_by_ref($q->reference)*intval($q->send));
 
             if(Common::get_retail_price_by_ref($q->reference) !== 0){
                 $q->retail = round(Common::get_retail_price_by_ref($q->reference),2);
@@ -280,15 +280,17 @@ public function save_standard_replist(Request $request){
 
         $total_retail    = array_sum($retail);
         $total_wholesale = array_sum($wholesale);
-
+        $subject = '';
         if(intval($request->by_sale) == 1){
             self::mark_as_uploaded(1,0,0,$request->shop_id);
+
 
         }else if(intval($request->by_standard) == 1){
             self::mark_as_uploaded(0,1,0,$request->shop_id);
 
         }else if(intval($request->by_custom) == 1){
             self::mark_as_uploaded(0,0,1,$request->shop_id);
+
         }
 
         Mail::to($email)

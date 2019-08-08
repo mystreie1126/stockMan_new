@@ -15,6 +15,7 @@ use App\Model\Standard\new_standard;
 
 use App\tt;
 use DB;
+use PDF;
 
 class helperController extends Controller
 {
@@ -114,108 +115,55 @@ class helperController extends Controller
 
    public function test_ref(){
 
-      $refs = [
-          "1028630",
-"1028600",
-"1028641",
-"1028640",
-"1028631",
-"102977",
-"1028561",
-"1028550",
-"1028571",
-"1028010",
-"1028570",
-"1028451",
-"102849",
-"1028450",
-"6959297700765",
-"6959297700961",
-"1028580",
-"1028531",
-"1028640",
-"1028580",
-"103019",
-"6958444966670",
-"6958444949659",
-"10277268",
-"6958444999319",
-"6958444952697",
-"SHB4805DC",
-"SHB4205BK",
-"SHQ1400CL",
-"6958444961606",
-"6958444961590",
-"TA20UBEBLKB",
-"101869",
-"6958444961545",
-"6958444944029",
-"6958444960647",
-"6958444956657",
-"6958444964553",
-"6958444959283",
-"6958444959238",
-"6958444952536",
-"6958444949239",
-"101473",
-"102591",
-"6958444962627",
-"6958444956817",
-"222",
-"221",
-"6958444963624",
-"6958444937519",
-"6958444958194",
-"102445",
-"6958444952703",
-"6958444950235",
-"6958444962894",
-"6958444965635",
-"6958444958873",
-"6958444956800",
-"100480",
-"6958444951232",
-"6958444996875",
-"6958444996882",
-"2904003475224",
-"6958444967776",
-"6958444967820",
-"6958444958163",
-"6958444956213",
-"6958444958989",
-"6958444936277"
-];
 
-$no_branchStockID = [];
-$no_name = [];
-$no_webstock = [];
-$pass = [];
+//
+// $no_branchStockID = [];
+// $no_name = [];
+// $no_webstock = [];
+// $pass = [];
+//
+// $final_lists = [];
+//     foreach($refs as $ref){
+//         $final_lists[]=[
+//             'name' => (Common::get_productName_by_ref($ref)!== null) ? Common::get_productName_by_ref($ref) :"no name",
+//             'ref'  => $ref,
+//             'standard_gorey' => (Common::get_standardQty_by_ref($ref,30)!==null) ? Common::get_standardQty_by_ref($ref,30) :'Need Standard',
+//             'standard_athlone' => (Common::get_standardQty_by_ref($ref,27)!==null) ? Common::get_standardQty_by_ref($ref,27) :'Need Standard',
+//             'standard_mill'  => (Common::get_standardQty_by_ref($ref,26)!==null) ? Common::get_standardQty_by_ref($ref,26) :'Need Standard',
+//             'standrd_marketcross' => (Common::get_standardQty_by_ref($ref,34)!==null) ? Common::get_standardQty_by_ref($ref,34) :'Need Standard',
+//             'standard_millfield' => (Common::get_standardQty_by_ref($ref,37)!==null) ? Common::get_standardQty_by_ref($ref,37) :'Need Standard'
+//         ];
+//     }
+//
+//     return $final_lists;
+//
+//      $standard_refs = DB::table('c1ft_stock_manager.sm_standard_branch')->groupBy('reference')->pluck('reference')->toArray();
+//
+//      return Common::missingPart($standard_refs,$refs);
 
 
-     $standard_refs_gorey = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',27)->pluck('reference')->toArray();
+    $ref = 6958444967806;
 
-     return Common::missingPart($standard_refs_gorey,$refs);
-
-
-
-
-      foreach($refs as $ref){
+      // foreach($refs as $ref){
           if(!Common::get_branchStockID_by_ref($ref,33)){
-              array_push($no_branchStockID,$ref);
+              //array_push($no_branchStockID,$ref);
+              return 'no branchstock';
           }
-          // else if(!Common::get_productName_by_ref($ref)){
-          //      array_push($no_name,$ref);
-          // }
-          // else if(!Common::get_webStockID_by_ref($ref)){
-          //     array_push($no_webstock,$ref);
-          // }
-          // else{
-          //     array_push($pass ,$ref);
-          // }
+          else if(!Common::get_productName_by_ref($ref)){
+               //array_push($no_name,$ref);
+               return 'no name';
+          }
+          else if(!Common::get_webStockID_by_ref($ref)){
+              //array_push($no_webstock,$ref);
+               return 'no webstock';
+          }
+          else{
+              //array_push($pass ,$ref);
+              return 'all pass';
+          }
 
-      }
+      // }
 
-      return $no_branchStockID;
 
     return response()->json(['nobranchstock' => $no_branchStockID, 'noname'=>$no_name, 'nowebstock' => $no_webstock,'allpass'=>$pass]);
 
@@ -224,18 +172,22 @@ $pass = [];
 
 
   public function getThis(){
-
-      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',30)->pluck('reference')->toArray();
-
-      $lists = [];
+      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',27)->pluck('reference')->toArray();
+      $ns = [];
       foreach($refs as $ref){
-          $lists[] = [
+          $ns[] = [
               'name' => Common::get_productName_by_ref($ref),
-              'barcode' => $ref
+              'code' => $ref
           ];
       }
+      return $ns;
 
-      return $lists;
+
+      $shop_id = 26;
+
+      return Common::get_standardQty_by_ref($ref,$shop_id);
+
+      return 'done';
 
 
       // $ref      = 6958444949659;
@@ -303,41 +255,12 @@ $pass = [];
 
 
 
-    foreach($refs as $ref){
-        $device = new Devicepool;
-        $device->IMEI  = $ref;
-        $device->brand = 'MISC';
-        $device->model = 'Haiyu H1';
-        $device->condition = 'NEW';
-        $device->storage = '2GB';
-        $device->by_user = 1;
-        $device->created_at = date('Y-m-d H:i:s');
-        $device->save();
-    }
-
-    return 'done';
-
-      $athlone = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',27)->get();
-      $gorey   = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',30)->get();
-
-      //return $athlone;
-
-
-
-
-      $valid_refs = DB::table('c1ft_stock_manager.sm_standard_branch')->groupBy('reference')->pluck('reference')->toArray();
-
-
-
-      return Common::missingPart($valid_refs,$refs);
-
-      $new_standard = new new_standard;
+      return PDF;
 
 
 
 
 
-      return $athlone;
       //athlone has gorey none
       $athlone_has_gorey_none = Common::missingPart($gorey,$athlone);
       $gorey_has_athlone_none = Common::missingPart($athlone,$gorey);

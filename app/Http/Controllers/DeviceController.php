@@ -119,7 +119,6 @@ class DeviceController extends Controller
             Device_transfer::find(intval($id))->update(['send'=>1]);
         }
 
-
         return redirect()->route('sendDevice');
     }
 
@@ -171,22 +170,36 @@ class DeviceController extends Controller
         }
     }
 
+    public function device_details_by_id(Request $request){
+        
+    }
+
     public function device_awaiting_update(){
 
         $awaiting_devices = DB::table('c1ft_device_manager.dm_jiance_device_desc_ps as a')
-                         ->select('b.id','a.brand_ps_category_id','a.brand_name','a.model_name','b.pre_own')
-                         ->join('c1ft_device_manager.dm_device_pool as b','a.device_id','b.id')
-                         ->whereNull('b.serial_number')
-                         ->orderBy('b.id','desc')
-                         ->get();
-
-        //return $awaiting_update_devices;
-
+                ->select('a.brand_name','a.model_name','a.device_id',
+                         'b.pre_own','b.brand_new','b.serial_number','b.tested','b.user_created','b.created_at')
+                ->join('c1ft_device_manager.dm_device_pool as b','a.device_id','b.id')
+                ->get();
+        return $awaiting_devices;
         return view('devices.device_awaiting_check',compact('awaiting_devices'));
     }
 
 
+    public function device_issues(){
+        $issues = DB::table('c1ft_device_manager.dm_issue_description')->get();
 
+        return response()->json(['issues'=>$issues]);
+    }
+
+    // public function test_device_by_id($device_id){
+    //     $issues = DB::table('c1ft_device_manager.dm_issue_description')->get();
+    //     return view('devices.devices_technicals_test',compact('issues','device_id'));
+    // }
+
+    public function save_device_issues(Request $request){
+
+    }
 
 
 

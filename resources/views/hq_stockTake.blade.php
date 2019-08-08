@@ -52,10 +52,6 @@
       </div>
 
 
-
-
-
-
       <div v-if="stocks.length > 0" v-for="(stock,index) in filterStocks" v-bind:style="{'border':'1px dotted teal'}">
         <div class="test_1">
             <div @style="styleObj" class="row">

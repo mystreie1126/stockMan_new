@@ -345,6 +345,17 @@ class Common
         return intval($qty);
     }
 
+    public static function get_standardQty_by_ref($ref,$shop_id){
+        $standard = DB::table('c1ft_stock_manager.sm_standard_branch')
+                 ->where('reference',$ref)
+                 ->where('shop_id',$shop_id)
+                 ->value('standard_quantity');
+        if($standard){
+            return intval($standard);
+        }
+
+    }
+
 
     //9.get product price by ref
 
@@ -358,6 +369,23 @@ class Common
 
         //$price = DB::table('c1ft_pos_prestashop.ps_product')->where('reference',$ref)->value('price');
 
+    }
+
+    public static function get_cost_price_by_ref($ref){
+        if(in_array($ref,self::allCombinationRefs())){
+            $price = DB::table('ps_product_attribute as a')
+                     ->join('ps_product as b','a.id_product,b.id_product')
+                     ->where('a.reference',$ref)
+                     ->value('b.wholesale_price');
+            return floatval($price);
+
+        }else if(!in_array($ref,self::allCombinationRefs())){
+            $price = DB::table('ps_product')->where('reference',$ref)->value('wholesale_price');
+            return floatval($price);
+
+        }else{
+            return 0;
+        }
 
     }
 

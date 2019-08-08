@@ -71,11 +71,17 @@ Route::get('/device_stockIn','DeviceController@device_stockIn')->middleware('aut
 
 Route::get('/create_new_device','DeviceController@device_stockIn_pool');
 
-Route::get('/device_awaiting_check','DeviceController@device_awaiting_update');
+Route::get('/device_awaiting_check',function(){
+	return view('devices.device_awaiting_check');
+});
 
 Route::get('/test_device',function(){
 	return view('devices.device_awaiting_update');
 });
+//'DeviceController@test_device_by_id'
+Route::get('/test_device/{device_id}',function($device_id){
+	return view('devices.devices_technicals_test',compact('device_id'));
+})->name('test_device_by_id');
 
 
 /* barcode */
@@ -98,7 +104,18 @@ Route::post('/order_to_pos','OrderController@order_to_pos')->name('order_to_pos'
 
 
 
-//clear cache:
+//Price
+
+Route::get('/partner_delivery_prices','PriceController@partner_order_with_price_page')->name('partner_delivery_prices');
+
+
+
+
+
+
+
+
+
 // Clear application cache:
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');

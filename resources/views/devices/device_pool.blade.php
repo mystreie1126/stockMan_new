@@ -85,7 +85,6 @@
 </div>
 
 
-
 @stop
 @push('device_pool_js')
     <script src="{{URL::asset('js/device/device_pool.js')}}"></script>

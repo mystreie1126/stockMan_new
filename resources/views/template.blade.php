@@ -113,5 +113,6 @@
     @stack('deviceTest_js')
     {{--barcode js--}}
     @stack('barcode_js')
+    @stack('partner_order_price')
     </body>
 </html>
