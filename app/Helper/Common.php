@@ -365,7 +365,7 @@ class Common
                      ->where('reference',$ref)
                      ->value('price');
 
-            return floatval($price);
+            return number_format($price, 2);
 
         //$price = DB::table('c1ft_pos_prestashop.ps_product')->where('reference',$ref)->value('price');
 
@@ -377,11 +377,11 @@ class Common
                      ->join('ps_product as b','a.id_product,b.id_product')
                      ->where('a.reference',$ref)
                      ->value('b.wholesale_price');
-            return floatval($price);
+            return number_format($price, 2);
 
         }else if(!in_array($ref,self::allCombinationRefs())){
             $price = DB::table('ps_product')->where('reference',$ref)->value('wholesale_price');
-            return floatval($price);
+            return number_format($price, 2);
 
         }else{
             return 0;
@@ -401,7 +401,7 @@ class Common
                    ->get();
 
                    if($price->count() == 1){
-                       return floatval($price[0]->retail) + floatval($price[0]->impact) - floatval($price[0]->reduction);
+                       return number_format(floatval($price[0]->retail) + floatval($price[0]->impact) - floatval($price[0]->reduction),2);
                    }else{
                        return 0;
                    }
@@ -416,7 +416,7 @@ class Common
                     ->get();
 
                     if($price->count() == 1){
-                        return floatval($price[0]->wholesale);
+                        return number_format(floatval($price[0]->wholesale),2);
                     }else{
                         return 0;
                     }
@@ -484,6 +484,131 @@ class Common
         }
     }
 
+    public static function productSoldQty_by_refInPos($ref,$from,$to){
+        $qty = DB::table('c1ft_pos_prestashop.ps_order_detail as detail')
+              ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+              ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
+              ->whereBetween('order.date_add',[$from,$to])
+              ->whereIn('order.current_state',[5])
+              ->where('detail.product_reference',$ref)
+              ->groupBy('detail.product_reference')
+              ->value('soldQty');
+       return intval($qty);
+    }
 
+    public static function total_stockIn($ref,$from,$to){
+        $qty = DB::table('c1ft_stock_manager.sm_stock_in_history')
+               ->select(DB::raw('sum(quantity) as qty'))
+               ->whereBetween('created_at',[$from,$to])
+               ->where('reference',$ref)
+               ->groupBy('reference')
+               ->value('qty');
+       return intval($qty);
+    }
+
+    public static function total_send($ref,$from,$to){
+        $qty  = DB::table('c1ft_stock_manager.sm_all_replishment_history')
+               ->select(DB::raw('sum(updated_quantity) as qty'))
+               ->whereBetween('created_at',[$from,$to])
+               ->where('reference',$ref)
+               ->groupBy('reference')
+               ->value('qty');
+
+        $order_qty = DB::table('c1ft_store_prestashop.ps_order_detail as detail')
+              ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+              ->join('c1ft_store_prestashop.ps_orders as order','order.id_order','detail.id_order')
+              ->whereBetween('order.date_add',[$from,$to])
+              ->whereIn('order.current_state',[4,5])
+              ->where('detail.product_reference',$ref)
+              ->where('order.id_shop',11)
+              ->groupBy('detail.product_reference')
+              ->value('soldQty');
+
+        return intval($qty) + intval($order_qty);
+    }
+
+    public static function product_onlineSold_by_ref($ref,$from,$to){
+        $qty = DB::table('ps_order_detail as detail')
+              ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+              ->join('ps_orders as order','order.id_order','detail.id_order')
+              ->whereBetween('order.date_add',[$from,$to])
+              ->whereIn('order.current_state',[2,4,5,9,30,26,36,35,34,29,25])
+              ->where('detail.product_reference',$ref)
+              ->groupBy('detail.product_reference')
+              ->value('soldQty');
+       return intval($qty);
+    }
+
+    public static function temp_glassRefs(){
+
+        $refs = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
+                ->join('c1ft_pos_prestashop.ps_product as b','a.id_product','b.id_product')
+                ->select('b.reference')
+                ->where('a.name','like','%'.'glass'.'%')
+                ->where('a.name','like','%'.'temp'.'%')
+                ->where('b.reference','<>','')
+                ->groupBy('a.name')
+                ->pluck('reference')->toArray();
+        return $refs;
+    }
+
+    public static function leather_caseRefs(){
+        $refs = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
+                ->join('c1ft_pos_prestashop.ps_product as b','a.id_product','b.id_product')
+                ->select('b.reference')
+                ->where('a.name','like','%'.'leather'.'%')
+                ->where('a.name','like','%'.'case'.'%')
+                ->where('b.reference','<>','')
+                ->where('b.reference','not like','6'.'%')
+                ->groupBy('a.name')
+                ->orderBy('b.reference','desc')
+                ->pluck('reference')->toArray();
+        return $refs;
+    }
+
+    public static function usams_refs(){
+        $refs = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
+                ->join('c1ft_pos_prestashop.ps_product as b','a.id_product','b.id_product')
+                ->select('b.reference')
+                ->where('a.name','like','%'.'usams'.'%')
+                ->groupBy('a.name')
+                ->pluck('reference')->toArray();
+        return $refs;
+    }
+
+    public static function warehouse_Standard_qty_formular($send_eachWeek,$stock_arrival_period){
+        /*
+        $send_eachWeek = 5 weeks total send /5
+        $stock_arrival_period :
+                (temp glass   = 2 weeks
+                leather case = 5 weeks
+                usams = 3 weeks
+                other = 2 weeks)
+        */
+        // self::total_send($ref,$from,$to)
+        return intval($send_eachWeek * $stock_arrival_period);
+    }
+
+    public static function warehouse_standard($ref){
+        // with 5 weeks period
+        $five_weeks_before = date('Y-m-d H:i:s',strtotime("-5 week"));
+        $now = date('Y-m-d H:i:s');
+        if(in_array($ref,self::usams_refs())){
+            //usams
+            return round(self::total_send($ref,$five_weeks_before,$now)/5) * 3;
+
+        }else if(in_array($ref,self::temp_glassRefs())){
+            //temp glass
+            return round(self::total_send($ref,$five_weeks_before,$now)/5) * 2;
+
+        }else if(in_array($ref,self::leather_caseRefs())){
+            //leather cases
+            return round(self::total_send($ref,$five_weeks_before,$now)/5) * 5;
+
+        }else{
+            //all other products
+            return round(self::total_send($ref,$five_weeks_before,$now)/5) * 2;
+        }
+    }
 
 }

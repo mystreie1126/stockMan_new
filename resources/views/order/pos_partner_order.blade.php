@@ -24,7 +24,8 @@
                         <div class="collapsible-body">
                             <form class="row" method="post" action="{{route('order_to_pos')}}">
                                 <input type="hidden" name="order_id" value="{{$order->id_order}}">
-                                <input type="hidden" name="pos_shop_id" value="{{$order->customer_detail->rockpos_shop_id}}">
+                                <input type="hidden" name="pos_shop_id"    value="{{$order->customer_detail->rockpos_shop_id}}">
+                                <input type="hidden" name="ps_customer_id" value="{{$order->customer_detail->ps_customer_id}}">
                                 @foreach($order->detail as $detail)
                                     <span class="col s8 indigo-text">{{$detail->product_name}}</span>
                                     <span class="col s2 indigo-text">{{$detail->product_reference}}</span>
@@ -37,7 +38,7 @@
                                     @foreach($order->message as $msg)
                                         <p>{{$msg->message}}</p>
                                     @endforeach
-                                    
+
                                 </p>
                             </form>
                         </div>

@@ -12,6 +12,7 @@ use Mail;
 use App\Mail\replishmentEmail;
 use App\Model\Partner\Shop;
 
+
 class replishmentController extends Controller
 {
   private function make_uploadList($by_sale = 0,$by_standard = 0,$by_custom = 0){
@@ -63,10 +64,10 @@ class replishmentController extends Controller
            ->select('id_shop','name')
            ->whereNotIn('id_shop',[1,35,42])
            ->get();
-
+     $manufactors = DB::table('ps_manufacturer')->select('id_manufacturer','name')->whereIn('id_manufacturer',[334])->get();
      $need_upload = RepHistory::where('uploaded',0)->get();
 
-     return view('stock_out/rep',compact('shops','need_upload'));
+     return view('stock_out/rep',compact('shops','need_upload','manufactors'));
    }
 
    /*
@@ -77,7 +78,6 @@ class replishmentController extends Controller
 
   /*=============1. REPLISHMENT BY SALE ACTION================================================================================================  */
 
-
     public function salesList(Request $request){
         return Replishment::branch_replishmentWithDate($request->shop_id,$request->start_time,$request->end_time);
     }
@@ -85,7 +85,6 @@ class replishmentController extends Controller
     public function save_repList(Request $request){
 
         $data = json_decode($request->sheetData,true);
-
 
         foreach($data as $d){
             $history = new RepHistory;
@@ -102,15 +101,12 @@ class replishmentController extends Controller
             $history->selected_endDate    = $d['selected_to'];
             $history->created_at          = date('Y-m-d H:i:s');
 
-            //$history->save();
             if($history->save()){
                 DB::table('ps_stock_available')->where('id_stock_available', $d['web_stockID'])
                 ->decrement('quantity',$d['suggest_send']);
             }
         }
-
         return response()->json('saved');
-
     }
 
 
@@ -262,8 +258,8 @@ public function save_standard_replist(Request $request){
 
         foreach($query as $q){
             $q->product_name = Common::get_productName_by_ref($q->reference);
-            array_push($retail,Common::get_retail_price_by_ref($q->reference)*intval($q->send));
-            array_push($wholesale,Common::get_wholesale_price_by_ref($q->reference)*intval($q->send));
+            array_push($retail,Common::get_retail_price_by_ref($q->reference)*intval($q->updated_quantity));
+            array_push($wholesale,Common::get_wholesale_price_by_ref($q->reference)*intval($q->updated_quantity));
 
             if(Common::get_retail_price_by_ref($q->reference) !== 0){
                 $q->retail = round(Common::get_retail_price_by_ref($q->reference),2);
@@ -350,48 +346,6 @@ public function save_standard_replist(Request $request){
         return redirect()->route('rep_update');
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -109,7 +109,14 @@ Route::post('/order_to_pos','OrderController@order_to_pos')->name('order_to_pos'
 Route::get('/partner_delivery_prices','PriceController@partner_order_with_price_page')->name('partner_delivery_prices');
 
 
+//Tracking Stock
+Route::get('/track_stock_record',function(){
+	return view('tracking.stockTracking');
+})->name('track_stock_record');
 
+Route::get('/topselling',function(){
+	return view('tracking.topselling');
+})->name('topselling');
 
 
 

@@ -34,7 +34,6 @@ class OrderController extends Controller
                ->get();
 
         //return $orders;
-
         return view('order.pos_partner_order',compact('orders'));
     }
 
@@ -46,7 +45,7 @@ class OrderController extends Controller
 
         $order_ref = DB::table('ps_orders')->where('id_order',intval($request->order_id))->value('reference');
         $email     = DB::table('c1ft_stock_manager.sm_pos_partners')->where('rockpos_shop_id',$request->pos_shop_id)->value('email');
-        $shop_name = DB::table('c1ft_pos_prestashop.ps_shop')->where('id_shop',$request->pos_shop_id)->value('name');
+        $shop_name = DB::table('c1ft_stock_manager.sm_pos_partners')->where('ps_customer_id',$request->ps_customer_id)->value('name');
 
          $no_pass   = [];
          $wholesale = [];

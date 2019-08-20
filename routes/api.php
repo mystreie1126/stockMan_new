@@ -106,6 +106,13 @@ Route::post('/save_device_issues','DeviceController@save_device_issues');
 Route::post('/get_partner_order_by_date','PriceController@partner_all_delivery');
 
 
+/* tracking stocks */
+
+Route::post('/track_stock_by_brand','TrackStockController@trackStockByBrand');
+
+Route::post('/trackStockBy_singleProduct','TrackStockController@trackStockBy_singleProduct');
+
+Route::post('/trackStockBy_category','TrackStockController@trackStockBy_category');
 
 
 /*barcode..*/

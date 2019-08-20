@@ -86,8 +86,8 @@ class kerianController extends Controller
 
 
     public function allShopSalesQty_by_ref(){
-        $from = '2019-06-05';
-        $to   = '2019-07-06';
+        $from = '2019-07-09';
+        $to   = '2019-08-14';
 
         $refs = self::get_sales_refs($from,$to);
         $arr = [];
@@ -95,7 +95,8 @@ class kerianController extends Controller
             $arr[] = [
                 'ref' => $ref,
                 'name' =>Common::get_productName_by_ref($ref),
-                'sold' => self::get_productSoldQty_by_ref_allshops($ref,$from,$to)
+                'sold' => self::get_productSoldQty_by_ref_allshops($ref,$from,$to),
+                
             ];
         }
         return $arr;

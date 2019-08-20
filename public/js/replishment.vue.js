@@ -65,10 +65,6 @@ var standard_rep = new Vue({
 
 
 
-
-
-
-
 var sale_rep = new Vue({
     el:'#sale_rep',
     data:{
@@ -133,7 +129,6 @@ var sale_rep = new Vue({
 })
 
 
-
 /*================================custom sending list==============================================================*/
 
 
@@ -163,11 +158,8 @@ var custom_rep = new Vue({
                     }else{
                         alert('can not find this item');
                     }
-
-
                 })
             }
-
         },
         submitThis:function(){
             if(this.custom_lists.length > 0 && this.faultySend_qty.length == 0){
@@ -210,3 +202,156 @@ var custom_rep = new Vue({
         }
     }
 });
+
+
+/*====================================Tracking by Manufactors==============================================================*/
+
+var tracking_by_manufacturer = new Vue({
+    el:'#tracking_by_manufacturer',
+    data:{
+        product_lists:[],
+        startTime:'',
+        endTime:'',
+    },
+    computed:{
+        prefix_startTime:function(){
+            return `${this.startTime} 00:00:00`;
+        },
+        prefix_endTime:function(){
+            return `${this.endTime} 23:50:00`;
+        }
+    },
+    methods:{
+        getBrandProcutList:function(){
+            console.log(this.prefix_endTime);
+            console.log(document.getElementById('manufactors').value);
+            if(this.startTime !== '' && this.endTime !== ''){
+                removeHide($('.preloader_teal'));
+                axios({
+                    method:'post',
+                    url:stockMan+'track_stock_by_brand',
+                    data:{
+                        from:this.prefix_startTime,
+                        to  :this.prefix_endTime,
+                        manufactor_id:document.getElementById('manufactors').value
+                    }
+                }).then((res)=>{
+                    res.data.forEach((e)=>{
+                        e.total_sold      = Number(e.branch_sold) + Number(e.online_order);
+                        e.total_wholesale = Number(e.total_sold * e.wholesale).toFixed(2);
+                        e.total_retail    = Number(e.total_sold * e.retail).toFixed(2);
+                    })
+                    this.product_lists = res.data;
+                    addHide($('.preloader_teal'));
+                    console.log(res.data);
+                });
+
+            }
+        },
+        exportList:function(){
+          let csv = objectToCSV(this.product_lists);
+          downloadList(csv);
+       }
+    }
+
+});
+
+
+var tracking_by_singleProduct = new Vue({
+    el:'#tracking_by_singleProduct',
+    data:{
+        search:'',
+        product_lists:[],
+        startTime:'',
+        endTime:''
+    },
+    computed:{
+        prefix_startTime:function(){
+            return `${this.startTime} 00:00:00`;
+        },
+        prefix_endTime:function(){
+            return `${this.endTime} 23:50:00`;
+        }
+    },
+    methods:{
+        getSingleProductInfo:function(){
+            this.product_lists = [];
+             if(this.startTime !== '' && this.endTime !== ''){
+                 removeHide($('.preloader_yellow'));
+                 axios({
+                     method:'post',
+                     url:stockMan+'trackStockBy_singleProduct',
+                     data:{
+                         search:this.search.replace(/\s/g, ''),
+                         from:this.startTime,
+                         to:this.endTime
+                     }
+                 }).then((res)=>{
+
+                     if(res.data.pass == 1){
+                         res.data.product.forEach((e)=>{
+                             e.total_sold      = Number(e.store_sold) + Number(e.online_order);
+                             e.total_wholesale = Number(e.total_sold * e.wholesale).toFixed(2);
+                             e.total_retail    = Number(e.total_sold * e.retail).toFixed(2);
+                         })
+                         this.product_lists = res.data.product;
+                          addHide($('.preloader_yellow'));
+                     }else{
+                         alert('can not find this product');
+                          addHide($('.preloader_yellow'));
+                     }
+                     console.log(res.data);
+                 });
+             }
+        }
+    }
+});
+
+var tracking_by_category = new Vue({
+    el:'#tracking_by_category',
+    data:{
+        product_lists:[],
+        startTime:'',
+        endTime:''
+    },
+    computed:{
+        prefix_startTime:function(){
+            return `${this.startTime} 00:00:00`;
+        },
+        prefix_endTime:function(){
+            return `${this.endTime} 23:50:00`;
+        }
+    },
+    methods:{
+        getProductInfoByCategory:function(){
+
+             let cate_id = document.getElementById('categories').value;
+
+             if(this.startTime !== '' && this.endTime !== ''){
+                 removeHide($('.preloader_blue'));
+                 axios({
+                     method:'post',
+                     data:{
+                         from:this.startTime,
+                         to:this.endTime,
+                         cate_id:cate_id
+                     },
+                     url:stockMan+'trackStockBy_category'
+                 }).then((res)=>{
+                     res.data.forEach((e)=>{
+                         e.total_sold      = Number(e.store_sold) + Number(e.online_order);
+                         e.total_wholesale = Number(e.total_sold * e.wholesale).toFixed(2);
+                         e.total_retail    = Number(e.total_sold * e.retail).toFixed(2);
+                     });
+                     this.product_lists = res.data;
+                     addHide($('.preloader_blue'));
+                 })
+             }
+
+        },
+        exportList:function(){
+          let csv = objectToCSV(this.product_lists);
+          downloadList(csv);
+       }
+    }
+})

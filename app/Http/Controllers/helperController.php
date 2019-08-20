@@ -12,6 +12,7 @@ use App\Helper\Common;
 use App\Model\Device\Devicepool;
 use App\Model\Standard\Standard_Branch;
 use App\Model\Standard\new_standard;
+use Nexmo\Laravel\Facade\Nexmo;
 
 use App\tt;
 use DB;
@@ -115,54 +116,43 @@ class helperController extends Controller
 
    public function test_ref(){
 
-
-//
-// $no_branchStockID = [];
-// $no_name = [];
-// $no_webstock = [];
-// $pass = [];
-//
-// $final_lists = [];
-//     foreach($refs as $ref){
-//         $final_lists[]=[
-//             'name' => (Common::get_productName_by_ref($ref)!== null) ? Common::get_productName_by_ref($ref) :"no name",
-//             'ref'  => $ref,
-//             'standard_gorey' => (Common::get_standardQty_by_ref($ref,30)!==null) ? Common::get_standardQty_by_ref($ref,30) :'Need Standard',
-//             'standard_athlone' => (Common::get_standardQty_by_ref($ref,27)!==null) ? Common::get_standardQty_by_ref($ref,27) :'Need Standard',
-//             'standard_mill'  => (Common::get_standardQty_by_ref($ref,26)!==null) ? Common::get_standardQty_by_ref($ref,26) :'Need Standard',
-//             'standrd_marketcross' => (Common::get_standardQty_by_ref($ref,34)!==null) ? Common::get_standardQty_by_ref($ref,34) :'Need Standard',
-//             'standard_millfield' => (Common::get_standardQty_by_ref($ref,37)!==null) ? Common::get_standardQty_by_ref($ref,37) :'Need Standard'
-//         ];
-//     }
-//
-//     return $final_lists;
-//
-//      $standard_refs = DB::table('c1ft_stock_manager.sm_standard_branch')->groupBy('reference')->pluck('reference')->toArray();
-//
-//      return Common::missingPart($standard_refs,$refs);
+     $no_branchStockID = [];
+     $no_name = [];
+     $no_webstock = [];
+     $pass = [];
+     $refs = [6958444962634,
+6958444962627,
+6958444996882,
+6958444996875,
+6958444958972,
+6958444958989,
+6958444956213,
+6958444956206,
+6958444956800,
+6958444956817,
+6958444956664,
+6958444956657];
 
 
-    $ref = 6958444967806;
-
-      // foreach($refs as $ref){
+     foreach($refs as $ref){
           if(!Common::get_branchStockID_by_ref($ref,33)){
-              //array_push($no_branchStockID,$ref);
-              return 'no branchstock';
+              array_push($no_branchStockID,$ref);
+              //return 'no branchstock';
           }
           else if(!Common::get_productName_by_ref($ref)){
-               //array_push($no_name,$ref);
-               return 'no name';
+               array_push($no_name,$ref);
+               //return 'no name';
           }
           else if(!Common::get_webStockID_by_ref($ref)){
-              //array_push($no_webstock,$ref);
-               return 'no webstock';
+              array_push($no_webstock,$ref);
+               //return 'no webstock';
           }
           else{
-              //array_push($pass ,$ref);
-              return 'all pass';
+              array_push($pass ,$ref);
+              //return 'all pass';
           }
 
-      // }
+      }
 
 
     return response()->json(['nobranchstock' => $no_branchStockID, 'noname'=>$no_name, 'nowebstock' => $no_webstock,'allpass'=>$pass]);
@@ -172,218 +162,47 @@ class helperController extends Controller
 
 
   public function getThis(){
-      $refs = DB::table('c1ft_stock_manager.sm_standard_branch')->where('shop_id',27)->pluck('reference')->toArray();
-      $ns = [];
-      foreach($refs as $ref){
-          $ns[] = [
-              'name' => Common::get_productName_by_ref($ref),
-              'code' => $ref
-          ];
-      }
-      return $ns;
-
-
-      $shop_id = 26;
-
-      return Common::get_standardQty_by_ref($ref,$shop_id);
-
-      return 'done';
-
-
-      // $ref      = 6958444949659;
-      // $shop_id  = 30;
-      // $from     = '2019-07-25 00:00:00';
-      // $to       = '2019-07-25';
-      // return Common::get_productSoldQty_by_ref($ref,$shop_id,$from,$to);
+      // $search_result = DB::table('c1ft_pos_prestashop.ps_product as a')
+      //                ->select('a.reference','b.name',DB::raw('concat(a.reference,replace(b.name,' ','')) as str'))
+      //                ->join('c1ft_pos_prestashop.ps_product_lang as b','a.id_product','b.id_product')
+      //                ->where('b.id_shop',26)
       //
+      //                ->get();
+      // $c = '100';
       //
+      //   $a = DB::select(
+      //       "select b.reference,concat(b.reference,'',replace(a.name,' ',''))
+      //       from c1ft_pos_prestashop.ps_product_lang as a
+      //       join c1ft_pos_prestashop.ps_product as b
+      //       on a.id_product = b.id_product
+      //       where a.name like '%$c%'
+      //       group by a.id_product
+      //       limit 1");
       //
-      // $no_wholesale =[];
-      // $valid_tax = [8,9];
-      // $no_tax = [];
-
-      // $id_group = 1;
-      // $wholesale_price = 2.14;
-
-      $query = DB::table('c1ft_stock_manager.wholesale')->get();
-
-
-      foreach($query as $q){
-          self::get_reduction_price($q->ref,$q->wholesale,5);
-      }
-
-      return 'finished';
-
-      foreach($refs as $ref){
-          if(!in_array(self::check_has_tax($ref),$valid_tax)){
-              array_push($no_tax,$ref);
-          }
-      }
-
-      foreach($refs as $ref){
-          if(self::check_wholesale_price($ref,$id_group) == NULL){
-               array_push($no_wholesale,$ref);
-          }
-      }
-
-
-      //return response()->json(['no_tax'=>$no_tax,'no_wholesale'=>$no_wholesale]);
-
-      // foreach($refs as $ref){
-      //     self::get_reduction_price($ref,$wholesale_price,$id_group);
-      //
-      // }
-      return 'done';
-
-
-
-     // $id_group = 1;
-     // $wholesale_price = 4.82;
-     // $id = 183611;
-     //
-     //   return self::get_reduction_price_byID($id,$wholesale_price,$id_group);
-
-
+      //       if(count($a) == 0) {
+      //           return 'yes';
+      //       }
+      //   return $a;
 
   }
+
+
 
   public function getThat(){
 
-      $refs = [
+         $query =
+         DB::select("select a.issue_id from
+            c1ft_track_repair.issue_history a,
+            c1ft_track_repair.issue_history b
+            where a.issue_id = b.issue_id
+            and subDate(a.created_at,10) = b.created_at
+            AND b.id - a.id = 1;");
 
-];
-
-
-
-      return PDF;
-
-
-
-
-
-      //athlone has gorey none
-      $athlone_has_gorey_none = Common::missingPart($gorey,$athlone);
-      $gorey_has_athlone_none = Common::missingPart($athlone,$gorey);
-
-      $gorey_miss = [];
-      $athlone_miss = [];
-
-      foreach($athlone_has_gorey_none as $ref){
-           $gorey_miss[]=[
-              'name'=>Common::get_productName_by_ref($ref),
-              'ref'=>$ref
-          ];
-      }
-
-      foreach($gorey_has_athlone_none as $ref){
-          $athlone_miss[]=[
-              'name' => Common::get_productName_by_ref($ref),
-              'ref'  => $ref
-          ];
-      }
-      //return  $athlone_miss;
-      return  $gorey_miss;
-
-
-      return $query;
-      return count($gorey);
-
-
-
-
+            return $query;
 
   }
 
-  private function get_id($ref){
-    $query = DB::table('ps_product')->select('id_product')->where('reference',$ref)->value('id_product');
-    return $query;
-  }
 
-  private function check_wholesale_price($ref,$id_group){
-      $price = DB::table('ps_product as a')
-               ->select('a.price',DB::raw('a.price - b.reduction as new_wholesale'))
-               ->where('a.reference',$ref)
-               ->join('ps_specific_price as b','a.id_product','b.id_product')
-               ->where('b.id_shop',11)
-               ->where('b.id_group',$id_group)
-               ->get();
-      if($price->count() == 1){
-          return number_format($price[0]->new_wholesale, 2);
-      }
-      // return $price;
-  }
-
-
-  private function check_has_tax($ref){
-      $price = DB::table('ps_product')->select('id_tax_rules_group')->where('reference',$ref)->get();
-
-      if($price->count() == 1)
-      return intval($price[0]->id_tax_rules_group);
-  }
-
-
-  private function get_reduction_price($ref,$wholesale,$id_group){
-      $price = DB::table('ps_product')->where('reference',$ref)->value('price');
-      $id = DB::table('ps_product')->where('reference',$ref)->value('id_product');
-
-
-      if($price){
-          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
-          ->update(['reduction' => $price - $wholesale]);
-
-          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
-          ->update(['reduction_tax' => 0]);
-
-          return 'lol';
-      }
-
-      return 'done';
-  }
-
-  private function get_reduction_price_byID($id,$wholesale,$id_group){
-      $price = DB::table('ps_product')->where('id_product',$id)->value('price');
-
-      if($price){
-          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
-          ->update(['reduction' => $price - $wholesale]);
-
-          DB::table('ps_specific_price')->where('id_product',$id)->where('id_shop',11)->where('id_group',$id_group)
-          ->update(['reduction_tax' => 0]);
-
-          return 'lol';
-      }
-
-      return 'done';
-  }
-
-  public function check_earphone(){
-      $ref = 6958444966502;
-      $from = '2019-06-07 12:57:00';
-      $to  = '2019-07-12 00:00:00';
-
-      $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
-             ->select(DB::raw('sum(updated_quantity) as send'),'shop_id','reference as ref')
-             ->where('reference',$ref)
-             ->groupBy('shop_id')
-             ->get();
-
-      foreach($query as $q){
-          $q->sold = Common::get_productSoldQty_by_ref($ref,$q->shop_id,$from,$to);
-      }
-
-      return $query;
-
-  }
-
-  public function delete_standard(){
-      $ref = [];
-
-      new_standard::find(1)->delete();
-
-      //Standard_Branch::whereIn('reference',$ref)->delete();
-
-      return 'done';
-  }
 
 
 

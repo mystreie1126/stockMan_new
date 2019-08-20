@@ -353,3 +353,7 @@ nav{
 	display: flex;
 	align-items: center;
 }
+
+.light-bg{
+	background-color:#e0d4d3;
+}

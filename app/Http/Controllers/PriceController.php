@@ -32,6 +32,7 @@ class PriceController extends Controller
                      ->whereBetween('date_add',[$request->startTime,$request->endTime])
                      ->whereIn('current_state',[4,5])
                      ->where('id_shop',11)
+                     ->where('id_customer',$customer_id)
                      ->pluck('id_order')->toArray();
 
         foreach($order_ids as $id){
