@@ -79,10 +79,6 @@ class DeviceController extends Controller
                    ->pluck('shop_id')->toArray();
         $lists = [];
 
-        //return Devicepool::find(2)->transfer;
-        //return Device_transfer::where('shop_id',26)->shopname();
-
-
         foreach($shopIDs as $shop_id){
             $devices = Device_transfer::with('shopname','record')->where('shop_id',$shop_id)->where('send',0)->get();
             if($shop_id == 0){
@@ -91,15 +87,10 @@ class DeviceController extends Controller
                 $devices->name = Shop::find($shop_id)->name;
             }
 
-
             $lists[] = $devices;
         }
 
-        //return $lists;
-
-         //return $lists;
         return view('device.ready_to_send',compact('lists'));
-         //return Devicepool::with('transfer')->find(1);
     }
 
     public function send_device(Request $request){
@@ -171,7 +162,7 @@ class DeviceController extends Controller
     }
 
     public function device_details_by_id(Request $request){
-        
+
     }
 
     public function device_awaiting_update(){
@@ -191,11 +182,6 @@ class DeviceController extends Controller
 
         return response()->json(['issues'=>$issues]);
     }
-
-    // public function test_device_by_id($device_id){
-    //     $issues = DB::table('c1ft_device_manager.dm_issue_description')->get();
-    //     return view('devices.devices_technicals_test',compact('issues','device_id'));
-    // }
 
     public function save_device_issues(Request $request){
 

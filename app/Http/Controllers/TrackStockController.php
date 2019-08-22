@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Helper\Common;
 use Nexmo\Laravel\Facade\Nexmo;
+use Mail;
+use App\Mail\warehouseStandardCheck;
 use DB;
 
 class TrackStockController extends Controller
@@ -70,12 +72,6 @@ class TrackStockController extends Controller
 
         $refs = [];
         $list = [];
-
-        Nexmo::message()->send([
-              'to'   => '00353873904445',
-              'from' => 'stockMan',
-              'text' => 'this is the test message hahahah.'
-        ]);
         /*
             cate_id = 1 tempglass
             cate_id = 2 leather case
@@ -104,5 +100,52 @@ class TrackStockController extends Controller
         }
     }
 
+    private function sendMissMatchEmail($refs,$subject){
+        $query = DB::table('c1ft_pos_prestashop.ps_product as a')
+                 ->select('b.name','a.reference as barcode')
+                 ->join('c1ft_pos_prestashop.ps_product_lang as b','a.id_product','b.id_product')
+                 ->groupBy('b.name')
+                 ->whereIn('a.reference',$refs)
+                 ->get();
 
+        if($query->count() > 0){
+            foreach($query as $q){
+                $q->standard  = Common::warehouse_standard($q->barcode);
+                $q->stock_qty = Common::get_webStock_qty_by_ref($q->barcode);
+            }
+            $email = 'qq139413520@outlook.com';
+            Mail::to($email)
+            ->cc(['qq139413520@gmail.com','jianqilu1126@gmail.com'])
+            ->send(new warehouseStandardCheck($query,$subject));
+
+            return response()->json(['send' => 1]);
+        }
+    }
+
+    public function trackStockBy_stockCheck(Request $request){
+
+
+        if(intval($request->cate_id) == 1){
+            //temp glass
+            $refs = Common::temp_glassRefs();
+            $subject = 'Tempered glass missmatches';
+            self::sendMissMatchEmail($refs,$subject);
+
+        }else if(intval($request->cate_id) == 2){
+            //leather case
+            $refs = Common::leather_caseRefs();
+            $subject = 'Leather Case missmatches';
+            self::sendMissMatchEmail($refs,$subject);
+
+        }else if(intval($request->cate_id) == 3){
+            //usams
+            $refs = Common::usams_refs();
+            $subject = 'USAMS missmatches';
+            self::sendMissMatchEmail($refs,$subject);
+
+        }
+
+        return 'email sent';
+
+    }
 }

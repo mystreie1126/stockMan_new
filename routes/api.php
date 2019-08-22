@@ -114,6 +114,9 @@ Route::post('/trackStockBy_singleProduct','TrackStockController@trackStockBy_sin
 
 Route::post('/trackStockBy_category','TrackStockController@trackStockBy_category');
 
+Route::post('/trackStockBy_topSelling','TrackStockController@trackStockBy_topSelling');
+
+Route::post('/trackStockBy_stockCheck','TrackStockController@trackStockBy_stockCheck');
 
 /*barcode..*/
 

@@ -611,4 +611,28 @@ class Common
         }
     }
 
+    public static function get_webStock_qty_by_ref($ref){
+        if(in_array($ref,self::allCombinationRefs())){
+            $query = DB::table('ps_product_attribute as attr')
+                ->join('ps_stock_available as stock','stock.id_product_attribute','attr.id_product_attribute')
+                ->where('attr.reference',$ref)
+                ->value('stock.quantity');
+
+                return intval($query);
+
+                // if($query->count() == 1){
+                //     return $query[0]->quantity;
+                // }else
+
+            }else{
+                $query = DB::table('ps_product')
+                    ->join('ps_stock_available as stock','stock.id_product','ps_product.id_product')
+                    ->where('ps_product.reference',$ref)
+                    ->value('stock.quantity');
+                return intval($query);
+
+                //if($query->count() == 1) return $query[0]->id_stock_available;
+        }
+    }
+
 }

@@ -116,74 +116,57 @@ class helperController extends Controller
 
    public function test_ref(){
 
-     $no_branchStockID = [];
-     $no_name = [];
-     $no_webstock = [];
-     $pass = [];
-     $refs = [6958444962634,
-6958444962627,
-6958444996882,
-6958444996875,
-6958444958972,
-6958444958989,
-6958444956213,
-6958444956206,
-6958444956800,
-6958444956817,
-6958444956664,
-6958444956657];
+      $ref = 6970244527561;
+     // foreach($refs as $ref){
+     //      if(!Common::get_branchStockID_by_ref($ref,33)){
+     //          array_push($no_branchStockID,$ref);
+     //      }
+     //      else if(!Common::get_productName_by_ref($ref)){
+     //           array_push($no_name,$ref);
+     //      }
+     //      else if(!Common::get_webStockID_by_ref($ref)){
+     //          array_push($no_webstock,$ref);
+     //      }
+     //      else{
+     //          array_push($pass ,$ref);
+     //      }
+     //
+     //  }
 
+           if(!Common::get_branchStockID_by_ref($ref,26)){
+               return 'no branchstock';
+           }
+           else if(!Common::get_productName_by_ref($ref)){
+                return 'no name';
+           }
+           else if(!Common::get_webStockID_by_ref($ref)){
+                return 'no webstock';
+           }
+           else{
+               return 'all pass';
+           }
 
-     foreach($refs as $ref){
-          if(!Common::get_branchStockID_by_ref($ref,33)){
-              array_push($no_branchStockID,$ref);
-              //return 'no branchstock';
-          }
-          else if(!Common::get_productName_by_ref($ref)){
-               array_push($no_name,$ref);
-               //return 'no name';
-          }
-          else if(!Common::get_webStockID_by_ref($ref)){
-              array_push($no_webstock,$ref);
-               //return 'no webstock';
-          }
-          else{
-              array_push($pass ,$ref);
-              //return 'all pass';
-          }
-
-      }
-
-
-    return response()->json(['nobranchstock' => $no_branchStockID, 'noname'=>$no_name, 'nowebstock' => $no_webstock,'allpass'=>$pass]);
 
    }
 
 
 
   public function getThis(){
-      // $search_result = DB::table('c1ft_pos_prestashop.ps_product as a')
-      //                ->select('a.reference','b.name',DB::raw('concat(a.reference,replace(b.name,' ','')) as str'))
-      //                ->join('c1ft_pos_prestashop.ps_product_lang as b','a.id_product','b.id_product')
-      //                ->where('b.id_shop',26)
-      //
-      //                ->get();
-      // $c = '100';
-      //
-      //   $a = DB::select(
-      //       "select b.reference,concat(b.reference,'',replace(a.name,' ',''))
-      //       from c1ft_pos_prestashop.ps_product_lang as a
-      //       join c1ft_pos_prestashop.ps_product as b
-      //       on a.id_product = b.id_product
-      //       where a.name like '%$c%'
-      //       group by a.id_product
-      //       limit 1");
-      //
-      //       if(count($a) == 0) {
-      //           return 'yes';
-      //       }
-      //   return $a;
 
+      $arr = [];
+
+      for($i = 0; $i<2;$i++){
+          $arr[] = [
+              'name' => 'jian'.$i,
+              'age' =>$i
+          ];
+      }
+      //$result = (string)$arr;
+
+      $result = json_encode($arr);
+    
+
+      return view('test',compact('result'));
   }
 
 
@@ -203,7 +186,28 @@ class helperController extends Controller
   }
 
 
+  public function merge_stock(){
+      $query = DB::select(
+          "
+          SELECT id_product FROM c1ft_store_prestashop.ps_stock_available
 
+          group by id_product
+
+          having count(id_product) > 1");
+          $arr = [];
+        foreach($query as $q){
+            $sum_qty = DB::table('ps_stock_available')
+                    ->where('id_product',$q->id_product)->where('id_product_attribute','>',0)
+                    ->sum('quantity');
+            if($sum_qty){
+                DB::table('ps_stock_available')
+                ->where('id_product',$q->id_product)->where('id_product_attribute',0)->update(['quantity'=>$sum_qty]);
+            }
+
+        }
+        return 'done';
+
+  }
 
 
 }

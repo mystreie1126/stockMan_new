@@ -251,7 +251,7 @@ var tracking_by_manufacturer = new Vue({
         exportList:function(){
           let csv = objectToCSV(this.product_lists);
           downloadList(csv);
-       }
+        }
     }
 
 });
@@ -353,5 +353,32 @@ var tracking_by_category = new Vue({
           let csv = objectToCSV(this.product_lists);
           downloadList(csv);
        }
+    }
+})
+
+var sendEmailNotification = new Vue({
+    el:'#sendEmailNotification',
+    methods:{
+        sendEmail:function(){
+             removeHide($('.preloader_red'));
+             let cate_id = document.getElementById('product_categories').value;
+             submit_once($('.sendEmail'),'Sending....');
+
+             axios({
+                 method:'post',
+                 data:{
+                     cate_id:cate_id
+                 },
+                 url:stockMan+'trackStockBy_stockCheck'
+             }).then((res)=>{
+                 addHide($('.preloader_red'));
+                 reset_button($('.sendEmail'),'Send Email');
+
+                 if(res.data.send == 1){
+                    alert('email sent!');
+                 }
+             });
+
+        }
     }
 })

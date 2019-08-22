@@ -231,7 +231,7 @@
 
     <div id="tracking_by_manufacturer">
       <span class="flow-text  cyan-text text-darken-3">Track Stock in and out By Manufactor</span>
-      <div class="row" >
+      <div class="row">
           <div class="col s12 m3 l3">
               <span class="indigo-text text-lighten-3">Select Manufactor:</span>
               <select id="manufactors">
@@ -252,6 +252,7 @@
                <input type="date" id="selected_end_date" v-model="endTime">
            </div>
            <button type="button" v-on:click.prevent="getBrandProcutList" class="btn s12 m3 l3" style="transform:translateY(80%)">Go!</button>
+
       </div>
       <div class="list_showcase">
           <table class="centered striped">
@@ -285,6 +286,7 @@
                       <td class="blue-grey-text text-darken-4">@{{list.total_retail}}</td>
                   </tr>
               </tbody>
+
               <button class="btn amber right" @click.prevent="exportList">Export to CSV</button>
           </table>
       </div>
@@ -455,7 +457,46 @@
   </div>
 </li>
 
+{{-- 4.send email --}}
 
+<li>
+  <div class="collapsible-header">
+      <i class="material-icons red-text text-darken-3">store</i>
+      Send Email Notification
+
+      <div class="preloader-wrapper small active preloader_red hide">
+       <div class="spinner-layer spinner-red-only">
+         <div class="circle-clipper left">
+           <div class="circle"></div>
+         </div><div class="gap-patch">
+           <div class="circle"></div>
+         </div><div class="circle-clipper right">
+           <div class="circle"></div>
+         </div>
+       </div>
+     </div>
+
+  </div>
+  <div class="collapsible-body">
+
+    <div id="sendEmailNotification">
+      <span class="flow-text red-text red-darken-3">Send Email</span>
+      <div class="row" >
+
+          <div class="col s12 m3 l3">
+              <span class="indigo-text text-lighten-3">Select Product Categories:</span>
+              <select id="product_categories">
+                    <option disabled selected>Choose a Category</option>
+                    <option value="1">All Tempered Glass</option>
+                    <option value="2">All Leather Case</option>
+                    <option value="3">All USMAS Products</option>
+              </select>
+           </div>
+           <button type="button" v-on:click.prevent="sendEmail" class="btn s12 m3 l3 red darken-3 sendEmail" style="transform:translateY(80%)">Send Email</button>
+      </div>
+    </div>
+  </div>
+</li>
 
 </ul>
   {{-- end of the whole list action form--}}
