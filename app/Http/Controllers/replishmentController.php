@@ -119,7 +119,7 @@ public function standard_replishment_list(Request $request){
 
 
 public function save_standard_replist(Request $request){
-
+    
     $data = json_decode($request->sheetData,true);
 
     foreach($data as $d){

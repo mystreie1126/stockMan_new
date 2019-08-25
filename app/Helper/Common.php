@@ -496,6 +496,18 @@ class Common
        return intval($qty);
     }
 
+    public static function productSoldQty_by_refInPos_shop($ref,$shop,$from,$to){
+        $qty = DB::table('c1ft_pos_prestashop.ps_order_detail as detail')
+              ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
+              ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
+              ->whereBetween('order.date_add',[$from,$to])
+              ->whereIn('order.current_state',[5])
+              ->where('detail.product_reference',$ref)
+              ->where('detail.id_shop',$shop)
+              ->groupBy('detail.product_reference')
+              ->value('soldQty');
+       return intval($qty);
+    }
     public static function total_stockIn($ref,$from,$to){
         $qty = DB::table('c1ft_stock_manager.sm_stock_in_history')
                ->select(DB::raw('sum(quantity) as qty'))

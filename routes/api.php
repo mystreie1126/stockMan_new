@@ -118,6 +118,13 @@ Route::post('/trackStockBy_topSelling','TrackStockController@trackStockBy_topSel
 
 Route::post('/trackStockBy_stockCheck','TrackStockController@trackStockBy_stockCheck');
 
+/* parts stock controller */
+
+Route::post('/parts_restock_by_standard','PartsController@get_parts_list_byStandard');
+
+Route::post('/savePartsToPos','PartsController@savePartsToPos');
+
+
 /*barcode..*/
 
 Route::get('/parts_with_barcodes','BarcodeController@barcode');

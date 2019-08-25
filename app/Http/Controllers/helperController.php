@@ -12,9 +12,11 @@ use App\Helper\Common;
 use App\Model\Device\Devicepool;
 use App\Model\Standard\Standard_Branch;
 use App\Model\Standard\new_standard;
+use App\Model\Parts\Parts_standard;
+
+
 use Nexmo\Laravel\Facade\Nexmo;
 
-use App\tt;
 use DB;
 use PDF;
 
@@ -116,7 +118,7 @@ class helperController extends Controller
 
    public function test_ref(){
 
-      $ref = 6970244527561;
+
      // foreach($refs as $ref){
      //      if(!Common::get_branchStockID_by_ref($ref,33)){
      //          array_push($no_branchStockID,$ref);
@@ -133,7 +135,9 @@ class helperController extends Controller
      //
      //  }
 
-           if(!Common::get_branchStockID_by_ref($ref,26)){
+        $ref = 'DVB4155CN';
+
+           if(!Common::get_branchStockID_by_ref($ref,43)){
                return 'no branchstock';
            }
            else if(!Common::get_productName_by_ref($ref)){
@@ -153,20 +157,19 @@ class helperController extends Controller
 
   public function getThis(){
 
-      $arr = [];
+      $query = DB::table('c1ft_stock_manager.sm_parts_standard')->get();
 
-      for($i = 0; $i<2;$i++){
-          $arr[] = [
-              'name' => 'jian'.$i,
-              'age' =>$i
-          ];
+      foreach($query as $q){
+          DB::table('c1ft_stock_manager.sm_parts_standard')->insert([
+             'parts_id'  => $q->parts_id,
+             'reference' => 'none',
+             'standard' =>$q->standard,
+             'shop_id' => 41
+          ]);
       }
-      //$result = (string)$arr;
 
-      $result = json_encode($arr);
-    
+      return 'done';
 
-      return view('test',compact('result'));
   }
 
 

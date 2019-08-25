@@ -12,9 +12,10 @@
 
   <h3></h3>
   <h5>Re Stock Options:</h5>
+  {{-- stadard restock --}}
 <ul class="collapsible" data-collapsible="accordion">
 
-    <li>
+<li>
       <div class="collapsible-header"><i class="material-icons green-text">whatshot</i>Standard Restock</div>
       <div class="collapsible-body" id="standard_rep">
 
@@ -69,8 +70,6 @@
           <button class="btn blue submitStandardList" v-if="showbtn" @click.prevent="submitStandardList">Submit</button>
       </div>
     </li>
-
-
 
 
 <li>
@@ -205,6 +204,63 @@
 </div>
 </li>
 
+{{-- parts restock --}}
+
+<li>
+  <div class="collapsible-header"><i class="material-icons pink-text text-darken-4">build</i>Parts Restock
+      <div class="preloader-wrapper small active preloader_parts hide">
+       <div class="spinner-layer spinner-teal-only">
+         <div class="circle-clipper left">
+           <div class="circle"></div>
+         </div><div class="gap-patch">
+           <div class="circle"></div>
+         </div><div class="circle-clipper right">
+           <div class="circle"></div>
+         </div>
+       </div>
+     </div>
+
+  </div>
+
+  <div class="collapsible-body" id="parts_standard">
+
+    <div class="row" >
+       <div class="col s12 m4 l4">
+        <span class="green-text text-lighten-3">Select Branch:</span>
+        <select id="parts_standard_stock_shop">
+                <option value="43">Northside</option>
+        </select>
+      </div>
+
+      <button class="pink pink-darken-4 btn col s6 m2 l2" @click.prevent="get_Parts_standardList" style="transform:translate(10%,80%)">Create List</button>
+
+      <div class="list_showcase">
+           <table class="centered striped">
+               <thead>
+                   <tr>
+                       <th>Parts Name</th>
+                       <th>standard</th>
+                       <th>Current Stock</th>
+                       <th>send</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <tr v-for="(list,index) in standard_list">
+                       <td>@{{list.name}}</td>
+                       <td>@{{list.standard}}</td>
+                       <td>@{{list.quantity}}</td>
+                       <td>
+                          <input type="number" v-model="list.send" style="width:40%" class="center indigo-text">
+                       </td>
+                   </tr>
+               </tbody>
+               <button class="btn amber right" v-if="showbtn" @click.prevent="exportList">Export to CSV</button>
+           </table>
+      </div>
+      <button class="btn blue sendParts" v-if="showbtn" @click.prevent="sendParts">Submit</button>
+  </div>
+</li>
+
 {{--stock tracking options--}}
 
 
@@ -261,6 +317,7 @@
                       <th>Product Name</th>
                       <th>Reference</th>
                       <th class="indigo-text">Total StockIn</th>
+                      <th class="purple-text darken-4">Warehouse Stock</th>
                       <th class="red-text">Total Send</th>
                       <th class="green-text">Branch Sold</th>
                       <th class="teal-text">Online Order</th>
@@ -276,6 +333,7 @@
                       <td>@{{list.name}}</td>
                       <td>@{{list.ref}}</td>
                       <td>@{{list.total_stockIn}}</td>
+                      <td class="purple-text darken-4">@{{list.warehouse_stock}}</td>
                       <td>@{{list.total_send}}</td>
                       <td class="green-text">@{{list.branch_sold}}</td>
                       <td class="teal-text">@{{list.online_order}}</td>
@@ -345,6 +403,7 @@
                       <th>Product Name</th>
                       <th>Reference</th>
                       <th class="indigo-text">Total StockIn</th>
+                      <th class="purple-text darken-4">Warehouse Stock</th>
                       <th class="red-text">Total Send</th>
                       <th class="green-text">Branch Sold</th>
                       <th class="teal-text">Online Order</th>
@@ -360,6 +419,7 @@
                       <td>@{{list.name}}</td>
                       <td>@{{list.reference}}</td>
                       <td>@{{list.stock_in}}</td>
+                      <td class="purple-text darken-4">@{{list.warehouse_stock}}</td>
                       <td>@{{list.total_send}}</td>
                       <td class="green-text">@{{list.store_sold}}</td>
                       <td class="teal-text">@{{list.online_order}}</td>
@@ -426,6 +486,7 @@
                       <th>Product Name</th>
                       <th>Reference</th>
                       <th class="indigo-text">Total StockIn</th>
+                      <th class="purple-text darken-4">Warehouse Stock</th>
                       <th class="red-text">Total Send</th>
                       <th class="green-text">Branch Sold</th>
                       <th class="teal-text">Online Order</th>
@@ -441,6 +502,7 @@
                       <td>@{{list.name}}</td>
                       <td>@{{list.ref}}</td>
                       <td>@{{list.stock_in}}</td>
+                       <td class="purple-text darken-4">@{{list.warehouse_stock}}</td>
                       <td>@{{list.total_send}}</td>
                       <td class="green-text">@{{list.store_sold}}</td>
                       <td class="teal-text">@{{list.online_order}}</td>

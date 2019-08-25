@@ -40,7 +40,8 @@ var standard_rep = new Vue({
                      method:'post',
                      url:stockMan+'save_standard_replist',
                      data:{
-                        sheetData:JSON.stringify(this.standard_list)
+                        //sheetData:JSON.stringify(this.standard_list)
+                        sheetData:this.standard_list
                      }
                  }).then((res)=>{
                      this.showbtn = false;
@@ -59,11 +60,6 @@ var standard_rep = new Vue({
 
     }
 })
-
-
-
-
-
 
 var sale_rep = new Vue({
     el:'#sale_rep',
@@ -127,10 +123,6 @@ var sale_rep = new Vue({
       }
     }
 })
-
-
-/*================================custom sending list==============================================================*/
-
 
 var custom_rep = new Vue({
     el:'#custom_rep',
@@ -381,4 +373,67 @@ var sendEmailNotification = new Vue({
 
         }
     }
+});
+
+
+var parts_standard_restock = new Vue({
+    el:'#parts_standard',
+    data:{
+        shop_id:'',
+        standard_list:[],
+        showbtn:false
+    },
+    methods:{
+        get_Parts_standardList:function(){
+            removeHide($('.preloader_parts'));
+            let shop_id = document.getElementById('parts_standard_stock_shop').value;
+
+            axios({
+                method:'post',
+                url:stockMan+'parts_restock_by_standard',
+                data:{
+                    shop_id:shop_id
+                }
+            }).then((res)=>{
+                console.log(res.data);
+                res.data.forEach((e)=>{e.send = Number(e.standard) - Number(e.quantity)});
+                this.standard_list = res.data;
+                 addHide($('.preloader_parts'));
+                 this.showbtn = true
+            })
+        },
+        exportList:function(){
+          let csv = objectToCSV(this.standard_list);
+          downloadList(csv);
+        },
+        sendParts:function(){
+            let faultySend_qty = this.standard_list.filter((e)=>Number(e.send <= 0));
+            console.log(faultySend_qty.length);
+            if(this.standard_list.length > 0 && faultySend_qty.length == 0){
+                submit_once($('.sendParts'),'sending....');
+                let list = JSON.stringify(this.standard_list);
+                axios({
+                    method:'post',
+                    url:stockMan+'savePartsToPos',
+                    data:{
+                        list:list,
+                        shop_id:this.standard_list[0].id_shop
+                    }
+                }).then((res)=>{
+                    console.log(res.data);
+                    this.standard_list = [];
+                    reset_button($('.sendParts'),'submit');
+                    this.showbtn = false;
+                })
+            }else{
+                alert('invalid number to update');
+            }
+        }
+
+   },
+   computed:{
+       // faultySend_qty:function(){
+       //     return this.standard_list.filter((e)=>Number(e.send <= 0));
+       // }
+   }
 })
