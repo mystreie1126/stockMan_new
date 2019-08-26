@@ -647,4 +647,14 @@ class Common
         }
     }
 
+    public static function shopemail($shop_id){
+        $email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',$shop_id)->value('shop_mail');
+        return $email;
+    }
+
+    public static function shopname($shop_id){
+        $shopname = DB::table('c1ft_pos_prestashop.ps_shop')->where('id_shop',$shop_id)->value('name');
+        return $shopname;
+    }
+
 }

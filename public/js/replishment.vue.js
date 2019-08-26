@@ -407,7 +407,9 @@ var parts_standard_restock = new Vue({
           downloadList(csv);
         },
         sendParts:function(){
-            let faultySend_qty = this.standard_list.filter((e)=>Number(e.send <= 0));
+            let faultySend_qty = this.standard_list.filter(function(e){
+                return e.send < 0 || e.send == '';
+            });
             console.log(faultySend_qty.length);
             if(this.standard_list.length > 0 && faultySend_qty.length == 0){
                 submit_once($('.sendParts'),'sending....');

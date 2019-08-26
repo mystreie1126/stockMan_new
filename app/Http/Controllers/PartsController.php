@@ -7,6 +7,7 @@ use App\Helper\Common;
 use DB;
 use Mail;
 use PDF;
+use App\Mail\parts_sendEmail;
 
 class PartsController extends Controller
 {
@@ -46,9 +47,9 @@ class PartsController extends Controller
 
     public function savePartsToPos(Request $request){
         $records = json_decode($request->list,true);
-
+        $send_ids = [];
         foreach($records as $record){
-            DB::table('c1ft_stock_manager.sm_parts_sendHistory')->insert([
+            $id = DB::table('c1ft_stock_manager.sm_parts_sendHistory')->insertGetId([
                     'parts_name'  =>$record['name'],
                     'parts_ref' => 'none',
                     'pos_parts_id' => $record['id_product'],
@@ -57,12 +58,24 @@ class PartsController extends Controller
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
 
+
             DB::table('c1ft_pos_prestashop.ps_stock_available')
                      ->where('id_product',$record['id_product'])
                      ->where('id_shop',$record['id_shop'])
                      ->increment('quantity',$record['send']);
+
+            array_push($send_ids,$id);
         }
+
+        $send_query = DB::table('c1ft_stock_manager.sm_parts_sendHistory')->whereIn('id',$send_ids)->get();
+        $shop_name = Common::shopname($records[0]['id_shop']);
+        $email = Common::shopemail($records[0]['id_shop']);
         
+        Mail::to($email)
+        ->cc(['warehouse@funtech.ie','hq@funtech.ie'])
+        ->send(new parts_sendEmail($send_query,$shop_name));
+
+
         return 'send';
     }
 }

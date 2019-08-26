@@ -23,32 +23,23 @@
         </style>
     </head>
     <body>
-        @if(count($order_details) > 0)
+        @if(count($part_lists) > 0)
         <p>Hi,</p>
-        <p>Your Order items have been dispatched and delivered to <span class="bold">{{$shopname}}</span>.</p>
+        <p>Please see the parts delivery list to <span class="bold">{{$shopname}}</span>.</p>
         <p>Delivery time: <span class="bold">{{date('Y-m-d')}}</span>.</p>
-        <p>Order reference: <span class="bold">{{$order_ref}}</span></p>
 
             <table>
                 <tr>
-                    <th>Product Name</th>
-                    <th>Barcode/ref</th>
-                    <th>Quantity</th>
-                    <th>Retail Price</th>
-                    <th>Wholesale Price</th>
+                    <th>Name</th>
+                    <th>Send</th>
                 </tr>
-                @foreach($order_details as $detail)
+                @foreach($part_lists as $part)
                 <tr>
-                    <td>{{$detail->product_name}}</td>
-                    <td>{{$detail->ref}}</td>
-                    <td>{{$detail->product_quantity}}</td>
-                    <td>{{$detail->retail_price}}</td>
-                    <td>{{$detail->wholesale_price}}</td>
+                    <td>{{$part->parts_name}}</td>
+                    <td>{{$part->send_quantity}}</td>
                 </tr>
                 @endforeach
             </table>
-            <p>Total <span class="bold">Total Retail sum</span>: {{$total_retail}} &euro;</p>
-            <p>Total <span class="bold">Total Wholesale sum</span>: {{($total_wholesale)}} &euro;</p>
             <p></p>
             <p>If you have any query, please do not hesitate to contact us.</p>
             <p>Best Regards,</p>
