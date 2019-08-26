@@ -118,9 +118,15 @@ class helperController extends Controller
 
    public function test_ref(){
 
+       $no_branchStockID = [];
+       $no_name = [];
+       $no_webstock = [];
+       $pass = [];
 
+
+     //   $refs = DB::table('c1ft_stock_manager.stockTakeAllShops')->pluck('ref')->toArray();
      // foreach($refs as $ref){
-     //      if(!Common::get_branchStockID_by_ref($ref,33)){
+     //      if(!Common::get_branchStockID_by_ref($ref,36)){
      //          array_push($no_branchStockID,$ref);
      //      }
      //      else if(!Common::get_productName_by_ref($ref)){
@@ -134,21 +140,24 @@ class helperController extends Controller
      //      }
      //
      //  }
+     //
+     //  return response()->json(['no_branchStockID' => $no_branchStockID, 'no_name' => $no_name,'noWebStock'=>$no_webstock]);
+     //
 
-        $ref = 'DVB4155CN';
-
-           if(!Common::get_branchStockID_by_ref($ref,43)){
-               return 'no branchstock';
-           }
-           else if(!Common::get_productName_by_ref($ref)){
-                return 'no name';
-           }
-           else if(!Common::get_webStockID_by_ref($ref)){
-                return 'no webstock';
-           }
-           else{
-               return 'all pass';
-           }
+        // $ref = '6959297700961';
+        //
+        //    if(!Common::get_branchStockID_by_ref($ref,26)){
+        //        return 'no branchstock';
+        //    }
+        //    else if(!Common::get_productName_by_ref($ref)){
+        //         return 'no name';
+        //    }
+        //    else if(!Common::get_webStockID_by_ref($ref)){
+        //         return 'no webstock';
+        //    }
+        //    else{
+        //        return 'all pass';
+        //    }
 
 
    }
@@ -157,18 +166,7 @@ class helperController extends Controller
 
   public function getThis(){
 
-      $query = DB::table('c1ft_stock_manager.sm_parts_standard')->get();
 
-      foreach($query as $q){
-          DB::table('c1ft_stock_manager.sm_parts_standard')->insert([
-             'parts_id'  => $q->parts_id,
-             'reference' => 'none',
-             'standard' =>$q->standard,
-             'shop_id' => 41
-          ]);
-      }
-
-      return 'done';
 
   }
 

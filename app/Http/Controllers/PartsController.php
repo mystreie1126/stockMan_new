@@ -62,6 +62,7 @@ class PartsController extends Controller
                      ->where('id_shop',$record['id_shop'])
                      ->increment('quantity',$record['send']);
         }
+        
         return 'send';
     }
 }

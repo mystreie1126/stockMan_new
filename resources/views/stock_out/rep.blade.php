@@ -229,6 +229,7 @@
         <span class="green-text text-lighten-3">Select Branch:</span>
         <select id="parts_standard_stock_shop">
                 <option value="43">Northside</option>
+                <option value="27">Athlone</option>
         </select>
       </div>
 
