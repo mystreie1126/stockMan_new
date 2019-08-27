@@ -119,7 +119,7 @@ public function standard_replishment_list(Request $request){
 
 
 public function save_standard_replist(Request $request){
-    
+
     $data = json_decode($request->sheetData,true);
 
     foreach($data as $d){
@@ -182,7 +182,6 @@ public function save_standard_replist(Request $request){
     public function custom_rep_data_save(Request $request){
 
         $data = json_decode($request->list,true);
-
         foreach($data as $d){
 
             $history = new RepHistory;
@@ -196,8 +195,6 @@ public function save_standard_replist(Request $request){
             $history->rep_by_custom       = 1;
             $history->rep_by_standard     = 0;
             $history->created_at          = date('Y-m-d H:i:s');
-
-            // $history->save();
 
             if($history->save()){
                 DB::table('ps_stock_available')->where('id_stock_available', $d['web_stock_id'])

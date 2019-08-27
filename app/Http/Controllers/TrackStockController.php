@@ -56,7 +56,7 @@ class TrackStockController extends Controller
                 'name'        => $product_name,
                 'reference'   => $product_ref,
                 'stock_in'    => Common::total_stockIn($product_ref,$request->from,$request->to),
-                'warehouse_stock' => Common::get_webStock_qty_by_ref($ref),
+                'warehouse_stock' => Common::get_webStock_qty_by_ref($product_ref),
                 'total_send'  => Common::total_send($product_ref,$request->from,$request->to),
                 'store_sold'  => Common::productSoldQty_by_refInPos($product_ref,$request->from,$request->to),
                 'online_order'=> Common::product_onlineSold_by_ref($product_ref,$request->from,$request->to),

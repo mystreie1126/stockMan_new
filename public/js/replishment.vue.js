@@ -40,8 +40,8 @@ var standard_rep = new Vue({
                      method:'post',
                      url:stockMan+'save_standard_replist',
                      data:{
-                        //sheetData:JSON.stringify(this.standard_list)
-                        sheetData:this.standard_list
+                        sheetData:JSON.stringify(this.standard_list)
+                        //sheetData:this.standard_list
                      }
                  }).then((res)=>{
                      this.showbtn = false;
