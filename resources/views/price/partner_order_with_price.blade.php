@@ -80,7 +80,7 @@
     <div class="row">
         <p v-if="reps.length > 0" class="teal-text">
             Replishment to @{{shopname}} from:@{{from}} to:@{{to}}<br>
-            Total @{{reps.length}} items, Total Cost(wholesale): <span class="blue-text">@{{rep_wholesale(reps)}}</span> &euro;
+            Total @{{reps.length}} items
         </p>
         <p class="flow-text red-text" v-if="missing_order_wholesale(reps).length > 0">
             @{{missing_order_wholesale(reps).join(' , ')}} doesn't have correct wholesale price

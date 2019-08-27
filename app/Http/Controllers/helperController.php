@@ -171,7 +171,7 @@ class helperController extends Controller
       //gel, auto focus,solid invisible,gel,
       //shockproof,commuter,defeneder
 
-      return Common::xiaomi_refs();
+      return Common::usams_refs();
       $arr1 = [1,23,4,5,6];
       $arr2 = [2,34,5,6,23,4,6];
       return array_unique($arr2);
