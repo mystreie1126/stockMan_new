@@ -230,6 +230,10 @@
         <select id="parts_standard_stock_shop">
                 <option value="43">Northside</option>
                 <option value="27">Athlone</option>
+                <option value="33">Wexford</option>
+                <option value="30">Gorey</option>
+                <option value="36">Douglas</option>
+                <option value="39">Blackpool</option>
                 {{-- <option value="41">Test</option> --}}
         </select>
       </div>
