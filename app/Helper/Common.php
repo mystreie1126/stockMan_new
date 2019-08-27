@@ -575,8 +575,37 @@ class Common
                 ->groupBy('a.name')
                 ->orderBy('b.reference','desc')
                 ->pluck('reference')->toArray();
-        return $refs;
+        return array_unique($refs);
     }
+
+    public static function gel_caseRefs(){
+        $refs = DB::table('ps_product_lang as a')
+                ->join('ps_product as b','a.id_product','b.id_product')
+                ->select('b.reference')
+                ->where('a.name','like','%'.'gel'.'%')
+                ->orWhere('a.name','like','%'.'auto focus'.'%')
+                ->orWhere('a.name','like','%'.'solid invisible'.'%')
+                ->Where('b.reference','<>','')
+                ->groupBy('a.name')
+                ->orderBy('b.reference','desc')
+                ->pluck('reference')->toArray();
+        return array_unique($refs);
+    }
+
+    public static function shockproof_caseRefs(){
+        $refs = DB::table('ps_product_lang as a')
+                ->join('ps_product as b','a.id_product','b.id_product')
+                ->select('b.reference')
+                ->where('a.name','like','%'.'shockproof'.'%')
+                ->orWhere('a.name','like','%'.'commuter'.'%')
+                ->orWhere('a.name','like','%'.'defeneder'.'%')
+                ->Where('b.reference','<>','')
+                ->groupBy('a.name')
+                ->orderBy('b.reference','desc')
+                ->pluck('reference')->toArray();
+        return array_unique($refs);
+    }
+
 
     public static function usams_refs(){
         $refs = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
@@ -586,6 +615,23 @@ class Common
                 ->groupBy('a.name')
                 ->pluck('reference')->toArray();
         return $refs;
+    }
+
+    public static function xiaomi_refs(){
+        // $refs1 = DB::table('ps_product')
+        //         ->select('id_product','reference')
+        //         ->where('id_manufacturer',332);
+        //         ->whereNotIn('reference',['','Mill',32879182743])
+        //         ->pluck('reference')->toArray();
+        //
+        // $refs2 = DB::table('ps_product')->where('id_manufacturer',332)->get();
+        // return $refs2;
+        // return $ids;
+        // $q  =DB::table('ps_product_attribute')->select('reference')->whereIn('id_product',$ids)->get();
+        // return $q;
+        // return $refs1;
+        //         return $query;
+
     }
 
     public static function warehouse_Standard_qty_formular($send_eachWeek,$stock_arrival_period){

@@ -386,8 +386,10 @@
           <div class="col s12 m3 l3">
               <span class="indigo-text text-lighten-3">Select Categories:</span>
               <select id="categories">
-                    <option value="1">Tempered Glass</option>
-                    <option value="2">Leather Case</option>
+                    <option value="1">Tempered Glasses</option>
+                    <option value="2">Leather Cases</option>
+                    <option value="3">Gel Cases</option>
+                    <option value="4">shockproof Cases</option>
               </select>
            </div>
 

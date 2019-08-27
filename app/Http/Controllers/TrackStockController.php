@@ -77,11 +77,17 @@ class TrackStockController extends Controller
         /*
             cate_id = 1 tempglass
             cate_id = 2 leather case
+            cate_id = 3 gel cases
+            cate_id = 4 shockproof
         */
         if(intval($request->cate_id) == 1){
             $refs = Common::temp_glassRefs();
         }else if(intval($request->cate_id) == 2){
             $refs = Common::leather_caseRefs();
+        }else if(intval($request->cate_id) == 3){
+            $refs = Common::gel_caseRefs();
+        }else if(intval($request->cate_id) == 4){
+            $refs = Common::shockproof_caseRefs();
         }
 
         if(count($refs) > 0){

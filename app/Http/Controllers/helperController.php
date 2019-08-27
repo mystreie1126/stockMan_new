@@ -166,7 +166,17 @@ class helperController extends Controller
 
   public function getThis(){
 
+      // $refs = DB::table('c1ft_pos_prestashop.ps_product')->pluck('reference')->toArray();
+      // return $refs;
+      //gel, auto focus,solid invisible,gel,
+      //shockproof,commuter,defeneder
 
+      return Common::xiaomi_refs();
+      $arr1 = [1,23,4,5,6];
+      $arr2 = [2,34,5,6,23,4,6];
+      return array_unique($arr2);
+      return array_merge($arr1,$arr2);
+      return array_diff($arr1,$arr2);
 
   }
 
