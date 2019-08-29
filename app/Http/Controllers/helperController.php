@@ -170,13 +170,25 @@ class helperController extends Controller
       // return $refs;
       //gel, auto focus,solid invisible,gel,
       //shockproof,commuter,defeneder
+      // if(in_array($ref,Common::allCombinationRefs()) && !in_array($ref,Common::allExcludeCombinationRefs())){
+      //     return 'yes';
+      // }else if(!in_array($ref,Common::allCombinationRefs()) && in_array($ref,Common::allExcludeCombinationRefs())){
+      //     return 'no';
+      // }else{
+      //     return 'sss';
+      // }
 
-      return Common::usams_refs();
-      $arr1 = [1,23,4,5,6];
-      $arr2 = [2,34,5,6,23,4,6];
-      return array_unique($arr2);
-      return array_merge($arr1,$arr2);
-      return array_diff($arr1,$arr2);
+      //return Common::get_wholesale_price_by_ref($ref);
+
+      $query = DB::table('c1ft_stock_manager.ns_parts')->get();
+
+             foreach($query as $q){
+                 DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_shop',28)->where('id_product',$q->id)
+                 ->update(['quantity'=>intval($q->qty)]);
+             }
+
+
+      return $query;
 
   }
 
