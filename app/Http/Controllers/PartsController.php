@@ -70,9 +70,9 @@ class PartsController extends Controller
         $send_query = DB::table('c1ft_stock_manager.sm_parts_sendHistory')->whereIn('id',$send_ids)->get();
         $shop_name = Common::shopname($records[0]['id_shop']);
         $email = Common::shopemail($records[0]['id_shop']);
-        
+
         Mail::to($email)
-        ->cc(['warehouse@funtech.ie','hq@funtech.ie'])
+        ->cc(['warehouse@funtech.ie','hq@funtech.ie','it@funtech.ie'])
         ->send(new parts_sendEmail($send_query,$shop_name));
 
 
