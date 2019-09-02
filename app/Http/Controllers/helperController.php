@@ -16,7 +16,7 @@ use App\Model\Parts\Parts_standard;
 
 
 use Nexmo\Laravel\Facade\Nexmo;
-
+use Excel;
 use DB;
 use PDF;
 
@@ -180,15 +180,23 @@ class helperController extends Controller
 
       //return Common::get_wholesale_price_by_ref($ref);
 
-      $query = DB::table('c1ft_stock_manager.ns_parts')->get();
 
-             foreach($query as $q){
-                 DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_shop',28)->where('id_product',$q->id)
-                 ->update(['quantity'=>intval($q->qty)]);
-             }
+      // foreach ($obj as $key => $value) {
+      //     echo $key;
+      //  }
+      $imei = '353750063294543';
+      $shop_id = 27;
+      return Common::checkdeviceInPos($imei,$shop_id);
 
-
-      return $query;
+      // $query = DB::table('c1ft_stock_manager.ns_parts')->get();
+      //
+      //        foreach($query as $q){
+      //            DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_shop',28)->where('id_product',$q->id)
+      //            ->update(['quantity'=>intval($q->qty)]);
+      //        }
+      //
+      //
+      // return $query;
 
   }
 
@@ -232,5 +240,60 @@ class helperController extends Controller
 
   }
 
+  public function import(Request $request){
 
+      // $this->validate($request, [
+      //     'select_file'  => 'required|mimes:xls,xlsx'
+      // ]);
+
+        $shop_id = 36;
+
+        $path = $request->file('select_file')->getRealPath();
+
+        $sheet_data = Excel::load($path)->get();
+
+
+        $keys = [];
+        foreach ($sheet_data[0] as $key => $value) {
+            array_push($keys,$key);
+         }
+        /*
+            $keys[2] -> name
+            $keys[3] -> imei
+            $keys[4] -> status
+
+        */
+        $devices = [];
+        foreach($sheet_data as $sheet){
+            if($sheet[$keys[2]] !== null && $sheet[$keys[3]] !== null && $sheet[$keys[4]] !== null)
+            array_push($devices,$sheet);
+        }
+
+        $instock_check = [];
+        $sold_check=[];
+        foreach($devices as $device){
+            //check the in stock imei
+            if(strpos(strtolower($device[$keys[4]]),'stock') !== false){
+                if(Common::checkdeviceInPos_inStock((string)$device[$keys[3]],$shop_id) !== 1){
+                    array_push($instock_check,$device);
+                }
+             }
+            //check the sold imei
+            else if(strpos(strtolower($device[$keys[4]]),'sold') !== false){
+                if(Common::checkdeviceInPos_sold((string)$device[$keys[3]],$shop_id) !== 1){
+                    array_push($sold_check,$device);
+                }
+            }
+
+        }
+        return redirect()->route('phone_check',compact('instock_check'));
+
+
+        return $data;
+
+      return redirect()->back()->with('errors', 'No file selected');
+
+      return 123;
+
+  }
 }

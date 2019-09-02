@@ -703,4 +703,75 @@ class Common
         return $shopname;
     }
 
+
+    public static function checkdeviceInPos_inStock($imei,$shop_id){
+
+        $inStock = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
+                 ->join('c1ft_pos_prestashop.ps_stock_available as b','a.id_product','b.id_product')
+                 ->join('c1ft_pos_prestashop.ps_product_shop as c','c.id_product','a.id_product')
+                 ->join('c1ft_pos_prestashop.ps_product as d','a.id_product','d.id_product')
+                 ->where('a.id_shop',$shop_id)
+                 ->where('b.id_shop',$shop_id)
+                 ->where('c.id_shop',$shop_id)
+                 ->where('d.reference','like','%'.$imei.'%')
+                 ->where('c.active',1)
+                 ->where('b.quantity',1)
+                 ->get();
+        //  $in_rockpos     = '';
+        //  $ready_for_sell = ''; //quantity && active
+        //
+        //  if($inStock->get()->count() == 1){
+        //      $in_rockpos = 'exsist in rockpos';
+        //  }else{
+        //      $in_rockpos = 'not in rockpos';
+        //  }
+        //
+        //  if($inStock->where('c.active',1)->get()->count() == 1){
+        //      $in_rockpos = 'exsist in rockpos';
+        //     if($inStock->where('b.quantity',1)->get()->count() == 1){
+        //         $ready_for_sell = 'ready to sell';
+        //     }else if($inStock->where('b.quantity',1)->get()->count() == 0){
+        //         $ready_for_sell = 'had been sold before';
+        //     }
+        // }else if($inStock->where('c.active',0)->get()->count() == 1){
+        //      $in_rockpos = 'exsist in rockpos';
+        //      $ready_for_sell  = ' not avaialbe to sell';
+        // }
+        //
+        // return $in_rockpos.' '.$ready_for_sell;
+
+    }
+
+    public static function checkdeviceInPos_sold($imei,$shop_id){
+
+        $query = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
+                 ->join('c1ft_pos_prestashop.ps_stock_available as b','a.id_product','b.id_product')
+                 ->join('c1ft_pos_prestashop.ps_product_shop as c','c.id_product','a.id_product')
+                 ->join('c1ft_pos_prestashop.ps_product as d','a.id_product','d.id_product')
+                 ->where('a.id_shop',$shop_id)
+                 ->where('b.id_shop',$shop_id)
+                 ->where('c.id_shop',$shop_id)
+                 ->where('d.reference','like','%'.$imei.'%')
+                 ->where('b.quantity',0)
+                 ->get();
+
+        return $query->count();
+    }
+
+    public static function checkdeviceInPos_active($imei,$shop_id){
+
+        $query = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
+                 ->join('c1ft_pos_prestashop.ps_stock_available as b','a.id_product','b.id_product')
+                 ->join('c1ft_pos_prestashop.ps_product_shop as c','c.id_product','a.id_product')
+                 ->join('c1ft_pos_prestashop.ps_product as d','a.id_product','d.id_product')
+                 ->where('a.id_shop',$shop_id)
+                 ->where('b.id_shop',$shop_id)
+                 ->where('c.id_shop',$shop_id)
+                 ->where('d.reference','like','%'.$imei.'%')
+                 ->where('c.active',0)
+                 ->get();
+
+        return $query->count();
+    }
+
 }

@@ -119,8 +119,15 @@ Route::get('/topselling',function(){
 })->name('topselling');
 
 
+//phone check
 
+// Route::get('/phone_check',function(){
+// 	return view('phone_check.excel_import');
+// })->name('phone_check');
 
+Route::get('/phone_check','Phone_checkController@index')->name('phone_check');
+
+Route::post('/test_import','Phone_checkController@import')->name('import_pop_list');
 
 
 // Clear application cache:

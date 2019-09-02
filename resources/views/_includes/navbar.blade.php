@@ -14,6 +14,9 @@
                   <li>
                     <a href="{{route('parts_barcode')}}">Add Barcode on Parts</a>
                   </li>
+                  <li>
+                    <a href="{{route('phone_check')}}" class="amber-text">Device Check</a>
+                  </li>
               @endguest
             </li>
         </ul>
