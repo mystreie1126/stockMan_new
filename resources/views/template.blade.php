@@ -114,5 +114,7 @@
     {{--barcode js--}}
     @stack('barcode_js')
     @stack('partner_order_price')
+    {{--barcode js--}}
+    @stack('invoice')
     </body>
 </html>

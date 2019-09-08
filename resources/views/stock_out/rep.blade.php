@@ -236,6 +236,8 @@
                 <option value="39">Blackpool</option>
                 <option value="28">ESS</option>
                 <option value="34">MarketCross</option>
+                <option value="29">Arthus Quay</option>
+                <option value="31">Parkway</option>
                 {{-- <option value="41">Test</option> --}}
         </select>
       </div>

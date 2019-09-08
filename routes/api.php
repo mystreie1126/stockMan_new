@@ -137,13 +137,18 @@ Route::post('/get_parts_model','BarcodeController@parts_model');
 
 Route::post('/setbarcode_topartsref','BarcodeController@set_barcode_parts_ref');
 
+/* invoice */
+Route::post('/send_invoice','invoiceController@send_invoice');
+
+
+
 /*helper*/
 Route::get('/soldAll','helperController@soldAll');
 Route::get('/test_ref','helperController@test_ref');
 
 Route::get('/standard','helperController@standard_model');
 
-Route::get('/pp','helperController@check_earphone');
+Route::get('/pp','helperController@update_part_stock');
 Route::get('/pa','helperController@getThis');
 Route::get('/pb','helperController@getThat');
 

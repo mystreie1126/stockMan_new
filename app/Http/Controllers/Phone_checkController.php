@@ -46,17 +46,22 @@ class Phone_checkController extends Controller
           foreach ($sheet_data[0] as $key => $value) {
               array_push($keys,$key);
            }
+
           /*
               $keys[2] -> name
               $keys[3] -> imei
               $keys[4] -> status
           */
+
           $devices = [];
           foreach($sheet_data as $sheet){
               if($sheet[$keys[2]] !== null && $sheet[$keys[3]] !== null && $sheet[$keys[4]] !== null)
               array_push($devices,$sheet);
           }
 
+         // return $devices;
+
+         // return Common::checkdeviceInPos_inStock((string)$devices[3][$keys[3]],$request->shop_id);
 
           foreach($devices as $device){
               //check the in stock imei
@@ -71,38 +76,15 @@ class Phone_checkController extends Controller
                                 'date_add' => date('Y-m-d')
                             ]
                         );
+                      //array_push($testArr,$device[$keys[3]]);
+
                   }
                }
-              //check the sold imei
-              // else if(strpos(strtolower($device[$keys[4]]),'sold') !== false){
-              //     if(Common::checkdeviceInPos_sold((string)$device[$keys[3]],$request->shop_id) !== 1){
-              //         DB::table('c1ft_stock_manager.sm_pop_import')->insert(
-              //               [
-              //                   'name' => $device[$keys[2]],
-              //                   'imei' => $device[$keys[3]],
-              //                   'status'=>$device[$keys[4]],
-              //                   'shop_id' => $request->shop_id,
-              //                   'date_add' => date('Y-m-d')
-              //               ]
-              //           );
-              //     }
-              // }
-              // else{
-              //     if(Common::checkdeviceInPos_active((string)$device[$keys[3]],$request->shop_id) !== 1){
-              //         DB::table('c1ft_stock_manager.sm_pop_import')->insert(
-              //               [
-              //                   'name' => $device[$keys[2]],
-              //                   'imei' => $device[$keys[3]],
-              //                   'status'=>$device[$keys[4]],
-              //                   'shop_id' => $request->shop_id,
-              //                   'date_add' => date('Y-m-d')
-              //               ]
-              //           );
-              //     }
-              // }
 
           }
-          return back()->with('success', 'Excel Data Imported successfully.');
+           //return $testArr;
+          //return DB::table('c1ft_stock_manager.sm_pop_import')->get();
+          // return back()->with('success', 'Excel Data Imported successfully.');
           return redirect()->route('phone_check',compact('instock_check'));
 
     }

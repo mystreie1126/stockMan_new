@@ -717,6 +717,8 @@ class Common
                  ->where('c.active',1)
                  ->where('b.quantity',1)
                  ->get();
+
+        return $inStock->count();
         //  $in_rockpos     = '';
         //  $ready_for_sell = ''; //quantity && active
         //

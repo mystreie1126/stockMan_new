@@ -93,24 +93,14 @@ class helperController extends Controller
 
 
     public function update_part_stock(){
-      $stefan_parts =  self::track_staff();
+      $parts = DB::table('c1ft_stock_manager.ns_parts')->get();
 
-      foreach($stefan_parts as $stefan){
-        $stock = new Parts_stock;
-        $stock->parts_id = $stefan->parts_id;
-        $stock->quantity = $stefan->quantity;
-        $stock->pending  = $stefan->pending;
-        $stock->return   = $stefan->return;
-        $stock->intransit = $stefan->intransit;
-        $stock->user_id  = 230;
-        $stock->standard = $stefan->standard;
-        $stock->created_at = date('Y-m-d h:i:s');
-        $stock->updated_at = date('Y-m-d h:i:s');
-
-        $stock->save();
+      foreach($parts as $part){
+          DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_product',$part->id)
+          ->where('id_shop',29)
+          ->update(['quantity'=> intval($part->qty)]);
       }
-
-      return 'updated';
+      return 'done';
 
     }
 
@@ -125,24 +115,48 @@ class helperController extends Controller
 
 
      //   $refs = DB::table('c1ft_stock_manager.stockTakeAllShops')->pluck('ref')->toArray();
-     // foreach($refs as $ref){
-     //      if(!Common::get_branchStockID_by_ref($ref,36)){
-     //          array_push($no_branchStockID,$ref);
-     //      }
-     //      else if(!Common::get_productName_by_ref($ref)){
-     //           array_push($no_name,$ref);
-     //      }
-     //      else if(!Common::get_webStockID_by_ref($ref)){
-     //          array_push($no_webstock,$ref);
-     //      }
-     //      else{
-     //          array_push($pass ,$ref);
-     //      }
-     //
-     //  }
-     //
-     //  return response()->json(['no_branchStockID' => $no_branchStockID, 'no_name' => $no_name,'noWebStock'=>$no_webstock]);
-     //
+
+     $refs = [
+
+         6958444964737,
+6958961226509,
+6971207490106,
+6930251850489,
+6971738230011,
+6955578031991,
+6970237663337,
+6970237662651,
+6971738230035,
+105601,
+105602,
+105603,
+105604,
+105605,
+105606,
+105607,
+105608,
+105609,
+105610,
+105611
+];
+     foreach($refs as $ref){
+          if(!Common::get_branchStockID_by_ref($ref,36)){
+              array_push($no_branchStockID,$ref);
+          }
+          else if(!Common::get_productName_by_ref($ref)){
+               array_push($no_name,$ref);
+          }
+          else if(!Common::get_webStockID_by_ref($ref)){
+              array_push($no_webstock,$ref);
+          }
+          else{
+              array_push($pass ,$ref);
+          }
+
+      }
+
+      return response()->json(['no_branchStockID' => $no_branchStockID, 'no_name' => $no_name,'noWebStock'=>$no_webstock]);
+
 
         // $ref = '6959297700961';
         //
