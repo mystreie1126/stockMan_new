@@ -59,14 +59,24 @@ class Phone_checkController extends Controller
               array_push($devices,$sheet);
           }
 
-         // return $devices;
+
 
          // return Common::checkdeviceInPos_inStock((string)$devices[3][$keys[3]],$request->shop_id);
+         $testArr = [];
+
+         //if (strpos(strtolower($devices[0][$keys[4]]),'stock')) !== false ){return 'has stock'};
+
+         //if(Common::checkdeviceInPos_inStock((string)$devices[0][$keys[3]],$request->shop_id) !== 1){return 'right'};
+
+          //if(Common::checkdeviceInPos_inStock((string)$devices[0][$keys[3]],$request->shop_id) !== 1){return 'right';}
+          //return $devices[0];
+
 
           foreach($devices as $device){
               //check the in stock imei
               if(strpos(strtolower($device[$keys[4]]),'stock') !== false){
-                  if(Common::checkdeviceInPos_inStock((string)$device[$keys[3]],$request->shop_id) !== 1){
+
+                  if(Common::checkdeviceInPos_inStock(intval($device[$keys[3]]),intval($request->shop_id)) !== 1){
                       DB::table('c1ft_stock_manager.sm_pop_import')->insert(
                             [
                                 'name' => $device[$keys[2]],
@@ -76,7 +86,7 @@ class Phone_checkController extends Controller
                                 'date_add' => date('Y-m-d')
                             ]
                         );
-                      //array_push($testArr,$device[$keys[3]]);
+
 
                   }
                }

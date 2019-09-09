@@ -198,9 +198,13 @@ class helperController extends Controller
       // foreach ($obj as $key => $value) {
       //     echo $key;
       //  }
-      $imei = '353750063294543';
-      $shop_id = 27;
-      return Common::checkdeviceInPos($imei,$shop_id);
+      $imei = '863459040599312';
+      $shop_id = 43;
+
+      if(Common::checkdeviceInPos_inStock($imei,$shop_id) !== 1){
+          return 'lool';
+      }
+      return Common::checkdeviceInPos_inStock($imei,$shop_id);
 
       // $query = DB::table('c1ft_stock_manager.ns_parts')->get();
       //
