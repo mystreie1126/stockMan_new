@@ -42,7 +42,8 @@
         <table>
             <thead>
               <tr>
-                  <th>Product</th>
+                  <th>item</th>
+                  <th>Description</th>
                   <th>Quantity</th>
                   <th>
                       Unit price <br>
@@ -56,6 +57,9 @@
                 <tr>
                     <td>
                         <input type="text" v-model="list.name" class="center">
+                    </td>
+                    <td>
+                        <input type="text" v-model="list.desc" class="center">
                     </td>
                     <td>
                         <input type="number" v-model="list.qty" class="center">

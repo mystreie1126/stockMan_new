@@ -66,9 +66,9 @@
                     <table>
                         <thead>
                           <tr>
-
-                              <th class="center">Product</th>
-                              <th class="center">Quantity</th>
+                             <th class="center">Quantity</th>
+                              <th class="center">Item</th>
+                              <th class="center">Description</th>
                               <th class="center">
                                   Unit Price
                                   (tax excl.)
@@ -85,9 +85,9 @@
                         <tbody>
                             @foreach($order_lists as $list)
                                 <tr>
-
-                                    <td class="center">{{$list['name']}}</td>
                                     <td class="center">{{$list['qty']}}</td>
+                                    <td class="center">{{$list['name']}}</td>
+                                    <td class="center">{{$list['desc']}}</td>
                                     <td class="center">{{$list['price_tax_excl']}}&euro;</td>
                                     <td class="center">{{$list['tax']}}%</td>
                                     <td class="center">{{$list['taxes']}} &euro;</td>

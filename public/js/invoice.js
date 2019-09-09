@@ -16,7 +16,7 @@ var invoice = new Vue({
         add:function(){
             this.showList = true;
             this.lists.push({
-                ref:'',
+                desc:'',
                 name:'',
                 qty:'',
                 tax:'',
@@ -42,8 +42,14 @@ var invoice = new Vue({
                 return e.tax == '';
             })
 
+            let descs = this.lists.filter((e)=>{
+                return e.desc == '';
+            })
+
+
 
             if(this.lists.length > 0
+                && descs.length == 0
                 && names.length == 0
                 && qtys.length == 0
                 && all_taxes.length == 0
