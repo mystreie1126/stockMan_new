@@ -61,7 +61,8 @@ var invoice = new Vue({
                 this.lists.forEach((e)=>{
                     e.taxes = Number(Number(e.price) * Number(e.tax/100)).toFixed(2);
                     e.total = Number(e.price * e.qty);
-                    e.price_tax_excl = Number(e.price - Number(e.price*e.tax/100)).toFixed(2);
+                    //e.price_tax_excl = Number(e.price - Number(e.price*e.tax/100)).toFixed(2);
+                    e.price_tax_inc = Number(Number(e.price) + Number(e.price * e.tax/100)).toFixed(2);
                 });
                 axios({
                     method:'post',
@@ -93,6 +94,9 @@ var invoice = new Vue({
         },
         price_tax_excl:function(price,tax){
             return Number(price - Number(price*tax/100)).toFixed(2);
+        },
+        price_tax_inc:function(price,tax){
+            return Number(Number(price) + Number(price*tax/100)).toFixed(2);
         }
 
     },
@@ -100,7 +104,7 @@ var invoice = new Vue({
 
         total_price:function(){
              let a =  this.lists.map((e)=>{
-                return Number(e.qty)*Number(e.price);
+                return Number(e.qty)*this.price_tax_inc(e.price,e.tax);
             });
             //return a;
 

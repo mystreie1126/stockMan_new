@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'warehouse@funtech.ie'),
-        'name' => env('MAIL_FROM_NAME', 'Funtech_warehouse'),
+        'address' => env('MAIL_FROM_ADDRESS', 'wholesale@funtech.ie'),
+        'name' => env('MAIL_FROM_NAME', 'FuntechGlobal'),
     ],
 
     /*

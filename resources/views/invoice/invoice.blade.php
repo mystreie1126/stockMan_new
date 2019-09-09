@@ -47,7 +47,7 @@
                   <th>Quantity</th>
                   <th>
                       Unit price <br>
-                      (tax included)
+                      (tax excluded)
                   </th>
                   <th>Tax Rate &#37;</th>
               </tr>
@@ -129,11 +129,12 @@
             <table>
                 <thead>
                   <tr>
-                      <th>Product</th>
-                      <th>Quantity</th>
+                       <th>Quantity</th>
+                      <th>Item</th>
+                      <th>Description</th>
                       <th>
                           Unit Price<br>
-                          (tax excl.)
+                          (tax incl.)
                       </th>
                       <th>Tax Rate &percnt;</th>
                       <th>Taxes</th>
@@ -146,9 +147,10 @@
 
                 <tbody v-for="list in lists">
                     <tr>
-                        <td>@{{list.name}}</td>
                         <td>@{{list.qty}}</td>
-                        <td>@{{price_tax_excl(list.price,list.tax)}} &euro;</td>
+                        <td>@{{list.name}}</td>
+                        <td>@{{list.desc}}</td>
+                        <td>@{{price_tax_inc(list.price,list.tax)}} &euro;</td>
                         <td>@{{list.tax}} &percnt;</td>
                         <td>@{{Number(Number(list.price) * Number(list.tax/100)).toFixed(2)}} &euro;</td>
                         <td class="center">@{{Number(list.price * list.qty) }}&euro;</td>

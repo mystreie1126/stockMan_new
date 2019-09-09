@@ -71,7 +71,7 @@
                               <th class="center">Description</th>
                               <th class="center">
                                   Unit Price
-                                  (tax excl.)
+                                  (tax incl.)
                               </th>
                               <th class="center">Tax Rate %</th>
                               <th class="center">Taxes</th>
@@ -88,7 +88,7 @@
                                     <td class="center">{{$list['qty']}}</td>
                                     <td class="center">{{$list['name']}}</td>
                                     <td class="center">{{$list['desc']}}</td>
-                                    <td class="center">{{$list['price_tax_excl']}}&euro;</td>
+                                    <td class="center">{{$list['price_tax_inc']}}&euro;</td>
                                     <td class="center">{{$list['tax']}}%</td>
                                     <td class="center">{{$list['taxes']}} &euro;</td>
                                     <td class="center">{{$list['total']}} &euro;</td>
