@@ -110,7 +110,7 @@ var invoice = new Vue({
             //return a;
 
             return a.reduce(function(c,d){
-                return Number(Number(c) + Number(d));
+                return Number(Number(c) + Number(d)).toFixed(2);
             });
         },
         total_tax:function(){

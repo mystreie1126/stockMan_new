@@ -153,7 +153,7 @@
                         <td>@{{price_tax_inc(list.price,list.tax)}} &euro;</td>
                         <td>@{{list.tax}} &percnt;</td>
                         <td>@{{Number(Number(list.price) * Number(list.tax/100)).toFixed(2)}} &euro;</td>
-                        <td class="center">@{{Number(list.price * list.qty) }}&euro;</td>
+                        <td class="center">@{{Number(price_tax_inc(list.price,list.tax) * list.qty).toFixed(2) }}&euro;</td>
                     </tr>
                 </tbody>
             </table>
