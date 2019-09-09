@@ -81,6 +81,7 @@ var invoice = new Vue({
                     }
                 }).then((e)=>{
                     console.log(e.data);
+                    window.location.href = "invoice"
                 })
             }else {
                 alert('Please fill all the required field!');
@@ -104,12 +105,12 @@ var invoice = new Vue({
 
         total_price:function(){
              let a =  this.lists.map((e)=>{
-                return Number(e.qty)*this.price_tax_inc(e.price,e.tax);
+                return Number(Number(e.qty)*this.price_tax_inc(e.price,e.tax)).toFixed(2);
             });
             //return a;
 
             return a.reduce(function(c,d){
-                return c + d;
+                return Number(Number(c) + Number(d));
             });
         },
         total_tax:function(){

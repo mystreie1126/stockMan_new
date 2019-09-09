@@ -22,8 +22,8 @@ class invoiceController extends Controller
             array('invoice_number' => intval($request->invoice_id) + 1)
         );
 
-        $email = $request->email;
-        //$email = 'jianqilu1126@gmail.com';
+        //$email = $request->email;
+        $email = 'jianqilu1126@gmail.com';
 
          Mail::to($email)->send(new invoiceSendMail
                  (
