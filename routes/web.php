@@ -131,7 +131,7 @@ Route::post('/test_import','Phone_checkController@import')->name('import_pop_lis
 
 //invoice
 
-Route::get('/invoice','invoiceController@invoice_page');
+Route::get('/invoice','invoiceController@invoice_page')->name('invoice_page');
 // Clear application cache:
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');

@@ -6,9 +6,10 @@
     </head>
     <body>
         <p>Dear Customer,</p>
-        <p>Thanks for your recent purchase with Funtech, Please find your VAT receipt via PDF attachment.</p>
-        <p>Please let us know if there is any issues.</p>
-        <p>Regards</p>
-        <p>sales@funtech.ie</p>
+        <p>This message contains Invoice from Fun Tech Ltd.If you have questions about the contents of this message or Invoice, please contact Fun Tech Ltd.</p>
+
+        <span>Fun Tech Ltd</span><br>
+        <span>Unit 8 Old Sawmills Industrial Est</span><br>
+        <span>Lr Ballymount Road, Walkinstown 12</span>
     </body>
 </html>

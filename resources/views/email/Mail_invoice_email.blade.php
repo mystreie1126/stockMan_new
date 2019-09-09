@@ -33,9 +33,9 @@
                         <div class="">
                             <span>Invoice Number: <span class="bold">#0000{{$invoice_id}}</span></span><br>
                             <span>Order Date: <span class="bold">{{$date}}</span></span><br>
-                            @if($order_ref !== '')
+                            {{-- @if($order_ref !== '')
                                 <span>Order Ref: <span class="bold">{{$order_ref}}</span></span><br>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
                 </div>
@@ -46,12 +46,12 @@
                     @if($email !== '')
                         <span class="bold">{{$email}}</span>
                     @endif
-                    @if(intval($billing_address) !== 0)
+                    @if($billing_address !== '')
                         <div class="address_left">
                             Billing Address:<span class="bold" style="word-break: break-all;">{{$billing_address}}</span>
                         </div>
                     @endif
-                    @if(intval($shipping_address) !== 0)
+                    @if($shipping_address !== '')
                         <div class="address_right">
                             Shipping Address:<span class="bold" style="word-break: break-all;">{{$shipping_address}}</span>
                         </div>
@@ -66,14 +66,14 @@
                     <table>
                         <thead>
                           <tr>
-                              <th class="center">Barcode</th>
+
                               <th class="center">Product</th>
                               <th class="center">Quantity</th>
                               <th class="center">
                                   Unit Price
                                   (tax excl.)
                               </th>
-                              <th class="center">Tax Rate %;</th>
+                              <th class="center">Tax Rate %</th>
                               <th class="center">Taxes</th>
                               <th class="center">
                                   <span>Total</span>
@@ -85,7 +85,7 @@
                         <tbody>
                             @foreach($order_lists as $list)
                                 <tr>
-                                    <td class="center">{{$list['ref']}}</td>
+
                                     <td class="center">{{$list['name']}}</td>
                                     <td class="center">{{$list['qty']}}</td>
                                     <td class="center">{{$list['price_tax_excl']}}&euro;</td>

@@ -39,7 +39,7 @@ class invoiceController extends Controller
                      $request->invoice_id
                  ));
 
-                 return 'done';
+                 return redirect()->route('invoice_page');
         // return new invoiceSendMail
         //         (
         //             $request->lists,

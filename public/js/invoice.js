@@ -29,11 +29,7 @@ var invoice = new Vue({
             this.lists.splice(index,1);
         },
         send:function(){
-
-            let refs = this.lists.filter((e)=>{
-                return e.ref == '';
-            })
-
+            submit_once($('.send_invoice_button'),'sending...');
             let names = this.lists.filter((e)=>{
                 return e.name == '';
             })
@@ -48,7 +44,6 @@ var invoice = new Vue({
 
 
             if(this.lists.length > 0
-                && refs.length == 0
                 && names.length == 0
                 && qtys.length == 0
                 && all_taxes.length == 0

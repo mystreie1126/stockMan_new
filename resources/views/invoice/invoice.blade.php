@@ -9,10 +9,10 @@
                 <input type="date" id="selected_start_date" v-model="date">
             </div>
 
-            <div class="input-field" style="transform:translateY(-20%)">
+            {{-- <div class="input-field" style="transform:translateY(-20%)">
                 <span class="indigo-text text-darken-3">Input Order reference (can be empty):</span>
                 <input type="text" v-model="order_reference">
-            </div>
+            </div> --}}
         </div>
 
         <div class="input-field col s4">
@@ -42,7 +42,6 @@
         <table>
             <thead>
               <tr>
-                  <th>Barcode</th>
                   <th>Product</th>
                   <th>Quantity</th>
                   <th>
@@ -55,9 +54,6 @@
 
             <tbody v-for="(list,index) in lists">
                 <tr>
-                    <td>
-                        <input type="text" v-model="list.ref" class="center">
-                    </td>
                     <td>
                         <input type="text" v-model="list.name" class="center">
                     </td>
@@ -129,7 +125,6 @@
             <table>
                 <thead>
                   <tr>
-                      <th>Barcode</th>
                       <th>Product</th>
                       <th>Quantity</th>
                       <th>
@@ -147,7 +142,6 @@
 
                 <tbody v-for="list in lists">
                     <tr>
-                        <td>@{{list.ref}}</td>
                         <td>@{{list.name}}</td>
                         <td>@{{list.qty}}</td>
                         <td>@{{price_tax_excl(list.price,list.tax)}} &euro;</td>
@@ -164,7 +158,7 @@
 
         </div>
     </div>
-    <button class="btn blue left"style="margin-top:30px" @click.prevent='send'>Send Invoice</button>
+    <button class="btn blue left send_invoice_button"style="margin-top:30px" @click.prevent='send'>Send Invoice</button>
 </div>
 
 
