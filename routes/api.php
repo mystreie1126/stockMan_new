@@ -142,6 +142,10 @@ Route::post('/send_invoice','invoiceController@send_invoice');
 
 
 
+/* charts */
+
+Route::post('/all_shop_sales_charts','SalesReportController@shopsales');
+
 /*helper*/
 Route::get('/soldAll','helperController@soldAll');
 Route::get('/test_ref','helperController@test_ref');

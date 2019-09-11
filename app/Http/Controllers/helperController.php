@@ -97,7 +97,7 @@ class helperController extends Controller
 
       foreach($parts as $part){
           DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_product',$part->id)
-          ->where('id_shop',29)
+          ->where('id_shop',37)
           ->update(['quantity'=> intval($part->qty)]);
       }
       return 'done';
@@ -176,10 +176,87 @@ class helperController extends Controller
 
    }
 
+   
 
+   private function abc(){
+        $var1 = 0;
+        return $var1+2;
+    }
+
+    public function cde(){
+       
+    }
 
   public function getThis(){
+    
+    // $query = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
+    // ->leftJoin('c1ft_stock_manager.sm_wholesale as b','a.reference','b.reference')
+    // ->select(DB::raw('sum(updated_quantity) as qty'),'a.reference',DB::raw('IFNULL(b.wholesale,0) as wholesale'),DB::raw('IFNULL(b.wholesale,0) as wholesale * sum(updated_quantity)'))
+    // ->where('shop_id',43)
+    // //->whereBetween('created_at',[$from,$to])
+    // ->groupBy('reference')
+    // ->get();
 
+    $shop_id = 26;
+    $from = "2019-09-05";
+    $to = '2019-09-12';
+    $total_price = DB::select(
+        "select sum(round((total_paid_tax_incl - (total_paid_tax_incl * 0.23)),2)) as price
+            from c1ft_pos_prestashop.ps_orders 
+            where id_shop = '$shop_id'
+            and current_state = 5
+            and date_add >= '$from'
+            and date_add <= '$to'
+        "
+    );
+
+    return floatval($total_price[0]->price);
+    // return "date is ";
+    $query = DB::table('ps_orders')
+                ->where('id_shop',11)
+                ->where('id_customer',5143)
+                ->whereBetween('date_add',[$from,$to])
+                ->sum('total_paid_tax_excl');
+    return $query;
+
+    $total_price = DB::select(
+        "select sum(round(total_paid_tax_excl,2)) as price
+            from ps_orders 
+            where id_shop = 11
+            and id_customer = 5143
+            and date_add >= '$from'
+            and date_add <= '$to'
+        "
+    );
+    return floatval($total_price[0]->price); 
+
+    // $total_price = DB::select(
+    //     "select sum(IFNULL(round(b.wholesale,2),0) * a.updated_quantity) as price
+    //     from c1ft_stock_manager.sm_all_replishment_history as a
+    //     left join c1ft_stock_manager.sm_wholesale as b on a.reference = b.reference
+    //     where a.shop_id = '$shop_id' and a.created_at >= '$from' and a.created_at <= '$to'
+    //     "
+    // );
+    // return floatval($total_price[0]->price);   
+
+    // $wholesale_by_delivery = 0;
+    //     $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
+    //         ->select(DB::raw('sum(updated_quantity) as qty'),'reference')
+    //         ->where('shop_id',$shop_id)
+    //         ->where('created_at','>',$from)
+    //         //->whereBetween('created_at',[$from,$to])
+    //         ->groupBy('reference')
+    //         ->get();
+
+    //     for($i = 0; $i < count($query); $i++){
+    //         $wholesale_by_delivery +=(intval($query[$i]->qty) * Common::get_wholesale_price_by_ref($query[$i]->reference));
+    //     }
+
+    //     return $wholesale_by_delivery; 
+
+    
+
+    return $query;
       // $refs = DB::table('c1ft_pos_prestashop.ps_product')->pluck('reference')->toArray();
       // return $refs;
       //gel, auto focus,solid invisible,gel,
