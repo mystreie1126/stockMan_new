@@ -24,7 +24,6 @@ class Phone_checkController extends Controller
 
         }
 
-
         return view('phone_check.excel_import',compact('shops','missmatched_shops'));
     }
 
@@ -41,35 +40,29 @@ class Phone_checkController extends Controller
           $path = $request->file('select_file')->getRealPath();
 
           $sheet_data = Excel::load($path)->get();
-
+         
           $keys = [];
-          foreach ($sheet_data[0] as $key => $value) {
+          foreach ($sheet_data[0][4] as $key => $value) {
               array_push($keys,$key);
            }
 
+           
+           //return $sheet_data;
           /*
               $keys[2] -> name
               $keys[3] -> imei
               $keys[4] -> status
           */
 
+          
+           
           $devices = [];
-          foreach($sheet_data as $sheet){
+          foreach($sheet_data[0] as $sheet){
               if($sheet[$keys[2]] !== null && $sheet[$keys[3]] !== null && $sheet[$keys[4]] !== null)
               array_push($devices,$sheet);
           }
 
-
-
-         // return Common::checkdeviceInPos_inStock((string)$devices[3][$keys[3]],$request->shop_id);
-         $testArr = [];
-
-         //if (strpos(strtolower($devices[0][$keys[4]]),'stock')) !== false ){return 'has stock'};
-
-         //if(Common::checkdeviceInPos_inStock((string)$devices[0][$keys[3]],$request->shop_id) !== 1){return 'right'};
-
-          //if(Common::checkdeviceInPos_inStock((string)$devices[0][$keys[3]],$request->shop_id) !== 1){return 'right';}
-          //return $devices[0];
+        
 
 
           foreach($devices as $device){
@@ -97,5 +90,24 @@ class Phone_checkController extends Controller
           // return back()->with('success', 'Excel Data Imported successfully.');
           return redirect()->route('phone_check',compact('instock_check'));
 
+    }
+
+
+    public function checkedAndDelete(Request $request)
+    {   
+        if($request->delete_id){
+            DB::table('c1ft_stock_manager.sm_pop_import')->where('id',intval($request->delete_id))->delete();
+        }
+
+        return redirect()->route('phone_check');
+    }
+
+    public function clearAll(Request $request)
+    {   
+        if($request->shop_id){
+            DB::table('c1ft_stock_manager.sm_pop_import')->where('shop_id',intval($request->shop_id))->delete();
+        }
+
+        return redirect()->route('phone_check');
     }
 }

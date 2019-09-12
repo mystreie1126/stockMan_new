@@ -5,7 +5,7 @@ var color = {
     profit:'#46eb34'
 };
 
-var ctx = document.getElementById('chart').getContext('2d');
+var ctx  = document.getElementById('chart').getContext('2d');
 var chart = new Chart(ctx,{
     type: 'bar',
     data: {
@@ -35,7 +35,7 @@ var chart = new Chart(ctx,{
         text: ''
       }
     }
-})
+});
 
 
 var allBranchSalesChart = new Vue({

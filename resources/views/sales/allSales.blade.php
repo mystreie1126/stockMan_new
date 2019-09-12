@@ -1,8 +1,6 @@
 @extends('template')
 @section('content')
 
-
-
 <div class=" row">
 	<div id="branches_general_sales">
 		<div class="row" style="margin-top:10px">
@@ -21,8 +19,6 @@
 	<div class="col s12">
 		<canvas id="chart"></canvas>
 	</div>
-
-
 </div>
 @push('sale_js')
 	<script type="text/javascript" src="{{URL::asset('js/sale.js')}}"></script>

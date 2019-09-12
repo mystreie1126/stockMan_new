@@ -16,13 +16,14 @@ Auth::routes();
 
 //Route::get('/dashboard','HomeController@index')->name('salespage');
 
+/* chart */
 Route::get('/',function(){
-	return view('sales');
+	return view('sales.allSales');
 })->name('salespage')->middleware('auth');
 
-Route::get('/product',function(){
-	return view('sales');
-})->name('stockpage')->middleware('auth');
+Route::get('/product_sales',function(){
+	return view('sales.product_sales');
+})->name('product_sales');
 
 Route::get('/order',function(){
 		return view('order');
@@ -125,9 +126,14 @@ Route::get('/topselling',function(){
 // 	return view('phone_check.excel_import');
 // })->name('phone_check');
 
+Route::post('/clearAll','Phone_checkController@clearAll')->name('clear_allImported');
+
+Route::post('/checkedAndDelete','Phone_checkController@checkedAndDelete')->name('checkedAndDelete');
+
 Route::get('/phone_check','Phone_checkController@index')->name('phone_check');
 
 Route::post('/test_import','Phone_checkController@import')->name('import_pop_list');
+
 
 //invoice
 
