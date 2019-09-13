@@ -32,7 +32,7 @@ var chart = new Chart(ctx,{
       legend: { display: true },
       title: {
         display: true,
-        text: ''
+        text: 'Rockpos today general products sale'
       }
     }
 });

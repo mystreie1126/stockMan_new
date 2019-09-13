@@ -11,11 +11,11 @@
               @guest
                   <li><a href="{{ route('login') }}">Login</a></li>
               @else
-                  <li>
+                  {{-- <li>
                     <a href="{{route('parts_barcode')}}">Add Barcode on Parts</a>
-                  </li>
+                  </li> --}}
                   <li>
-                    <a href="{{route('phone_check')}}" class="amber-text">Device Check</a>
+                    <a href="{{route('phone_check')}}" class="amber-text">Device and Parts Check</a>
                   </li>
               @endguest
             </li>
