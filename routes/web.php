@@ -127,12 +127,15 @@ Route::get('/topselling',function(){
 // })->name('phone_check');
 
 Route::post('/clearAll','Phone_checkController@clearAll')->name('clear_allImported');
+Route::post('/clearAll_parts','Phone_checkController@clearAll_parts')->name('clear_allImported_parts');
 
 Route::post('/checkedAndDelete','Phone_checkController@checkedAndDelete')->name('checkedAndDelete');
+Route::post('/checkedAndDelete_parts','Phone_checkController@checkedAndDelete_parts')->name('checkedAndDelete_parts');
+
 
 Route::get('/phone_check','Phone_checkController@index')->name('phone_check');
 
-Route::post('/test_import','Phone_checkController@import')->name('import_pop_list');
+Route::post('/excel_import','Phone_checkController@import')->name('import_pop_list');
 
 
 //invoice

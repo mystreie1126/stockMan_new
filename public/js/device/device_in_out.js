@@ -80,7 +80,7 @@ var aviable_devices = new Vue({
         }).then((res)=>{
             console.log(res.data);
             res.data.forEach((e)=>{
-                e.search = e.IMEI.toLowerCase().concat(e.brand.toLowerCase(),e.color.toLowerCase(),e.model.toLowerCase(),e.storage.toLowerCase(),e.condition.toLowerCase());
+                e.search = e.IMEI.toLowerCase().concat(e.brand.toLowerCase(),e.model.toLowerCase(),e.storage.toLowerCase());
                 e.notes = '';
             })
             aviable_devices.all_devices = res.data;

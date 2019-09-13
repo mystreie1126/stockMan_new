@@ -357,6 +357,16 @@ class Common
     }
 
 
+    public static function branch_product_qty_by_ref($ref,$shop_id){
+        $qty = DB::table('c1ft_pos_prestashop.ps_product as a')
+                ->join('c1ft_pos_prestashop.ps_stock_available as b','a.id_product','b.id_product')
+                ->where('b.id_shop',$shop_id)
+                ->where('a.reference',$ref)
+                ->value('b.quantity');
+        return intval($qty);
+
+    }
+
     //9.get product price by ref
 
     public static function get_retail_price_by_ref($ref){
@@ -489,7 +499,6 @@ class Common
               ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
               ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
               ->whereBetween('order.date_add',[$from,$to])
-              ->whereIn('order.current_state',[5])
               ->where('detail.product_reference',$ref)
               ->groupBy('detail.product_reference')
               ->value('soldQty');
@@ -501,7 +510,6 @@ class Common
               ->select(DB::raw('sum(detail.product_quantity) as soldQty'))
               ->join('c1ft_pos_prestashop.ps_orders as order','order.id_order','detail.id_order')
               ->whereBetween('order.date_add',[$from,$to])
-              ->whereIn('order.current_state',[5])
               ->where('detail.product_reference',$ref)
               ->where('detail.id_shop',$shop)
               ->groupBy('detail.product_reference')
@@ -775,5 +783,16 @@ class Common
 
         return $query->count();
     }
+
+    public static function checkPartsQty_ifMatchInPos($parts_id,$shop_id,$sheet_qty){
+        $pos_qty = DB::table('c1ft_pos_prestashop.ps_stock_available')
+                ->where('id_shop',$shop_id)
+                ->where('id_product',$parts_id)
+                ->value('quantity');
+        // if(intval($pos_qty) == intval($sheet_qty)) 
+
+        return intval($pos_qty) == intval($sheet_qty) ? 1 : 0;
+    }
+
 
 }

@@ -17,7 +17,7 @@ var chart = new Chart(ctx,{
           data: []
         },
         {
-          label:'Wholesale (Delivery cost)',
+          label:'Wholesale (tax excl.)',
           backgroundColor: color.wholesale,
           data:[]
         },
@@ -63,7 +63,7 @@ var allBranchSalesChart = new Vue({
                  chart.data.datasets[0].data = shopData.map((e)=>e.retail);
                  chart.data.datasets[1].data = shopData.map((e)=>e.wholesale);
                  chart.data.datasets[2].data = shopData.map((e)=>e.profit);
-                 chart.options.title.text ='Rockpos sales from ' + $( "#select_days option:selected" ).text();
+                 chart.options.title.text ='Rockpos products sales from ' + $( "#select_days option:selected" ).text();
                  chart.update();
             })
         }
