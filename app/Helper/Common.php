@@ -768,7 +768,7 @@ class Common
         return $query->count();
     }
 
-    public static function checkdeviceInPos_active($imei,$shop_id){
+    public static function checkdeviceInPos_active($imei,$shop_id,$time){
 
         $query = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
                  ->join('c1ft_pos_prestashop.ps_stock_available as b','a.id_product','b.id_product')
@@ -781,17 +781,41 @@ class Common
                  ->where('c.active',0)
                  ->get();
 
-        return $query->count();
+        $sold = DB::table('c1ft_pos_prestashop.ps_orders as a')
+                ->join('c1ft_pos_prestashop.ps_order_detail as b','a.id_order','b.id_order')
+                ->where('b.product_reference',$imei)
+                ->where('b.id_shop',$shop_id)
+                ->where('a.date_add','>=',$time)
+                ->value('b.product_quantity');
+
+        if($query->count() == 1){
+           if($query[0]->quantity == 1){
+               return 1;
+           }else if($query[0]->quantity == 0 && intval($sold) == 1){
+               return 1;
+           }else{
+               return 0;
+           }
+        }else{
+            return 0;
+        }
     }
 
-    public static function checkPartsQty_ifMatchInPos($parts_id,$shop_id,$sheet_qty){
+    public static function checkPartsQty_ifMatchInPos($parts_id,$shop_id,$sheet_qty,$time){
         $pos_qty = DB::table('c1ft_pos_prestashop.ps_stock_available')
                 ->where('id_shop',$shop_id)
                 ->where('id_product',$parts_id)
                 ->value('quantity');
+
+        $sold = DB::table('c1ft_pos_prestashop.ps_orders as a')
+                ->join('c1ft_pos_prestashop.ps_order_detail as b','a.id_order','b.id_order')
+                ->where('b.product_id',$parts_id)
+                ->where('b.id_shop',$shop_id)
+                ->where('a.date_add','>=',$time)
+                ->value('b.product_quantity');
         // if(intval($pos_qty) == intval($sheet_qty)) 
 
-        return intval($pos_qty) == intval($sheet_qty) ? 1 : 0;
+        return (intval($pos_qty) + intval($sold)) == intval($sheet_qty) ? 1 : 0;
     }
 
 

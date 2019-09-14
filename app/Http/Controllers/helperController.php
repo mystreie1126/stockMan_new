@@ -176,8 +176,6 @@ class helperController extends Controller
 
    }
 
-   
-
    private function abc(){
         $var1 = 0;
         return $var1+2;

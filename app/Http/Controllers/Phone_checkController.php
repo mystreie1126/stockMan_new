@@ -46,11 +46,12 @@ class Phone_checkController extends Controller
     }
 
     public function import(Request $request){
-       
+               
         $this->validate($request, [
             'shop_id'      => 'required',
             'select_file'  => 'required',
-            'options'      => 'required'
+            'options'      => 'required',
+            'datetime'     => 'required'
         ]);
 
         $path = $request->file('select_file')->getRealPath();
@@ -81,7 +82,7 @@ class Phone_checkController extends Controller
                 //check the in stock imei
                 if(strpos(strtolower($device[$keys[4]]),'stock') !== false){
 
-                    if(Common::checkdeviceInPos_inStock(intval($device[$keys[3]]),intval($request->shop_id)) !== 1){
+                    if(Common::checkdeviceInPos_inStock(intval($device[$keys[3]]),intval($request->shop_id),$request->datetime) !== 1){
                         DB::table('c1ft_stock_manager.sm_pop_import')->insert(
                             [
                                 'name' => $device[$keys[2]],
@@ -104,7 +105,7 @@ class Phone_checkController extends Controller
             }
 
             foreach($sheet_data as $data){
-                if(Common::checkPartsQty_ifMatchInPos(intval($data[$keys[0]]),intval($request->shop_id),intval($data[$keys[2]])) == 0){
+                if(Common::checkPartsQty_ifMatchInPos(intval($data[$keys[0]]),intval($request->shop_id),intval($data[$keys[2]]),$request->datetime) == 0){
                     DB::table('c1ft_stock_manager.sm_parts_import')->insert(
                         [
                             'parts_name' => $data[$keys[1]],

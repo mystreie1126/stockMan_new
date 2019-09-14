@@ -25,33 +25,20 @@ class invoiceController extends Controller
         $email = $request->email;
         //$email = 'jianqilu1126@gmail.com';
 
-         Mail::to($email)->send(new invoiceSendMail
-                 (
-                     $request->lists,
-                     $request->date,
-                     $request->shipping_address,
-                     $request->billing_address,
-                     $request->email,
-                     $request->name,
-                     $request->order_ref,
-                     $request->total_tax,
-                     $request->total_price,
-                     $request->invoice_id
-                 ));
+        Mail::to($email)->send(new invoiceSendMail
+            (
+                $request->lists,
+                $request->date,
+                $request->shipping_address,
+                $request->billing_address,
+                $request->email,
+                $request->name,
+                $request->order_ref,
+                $request->total_tax,
+                $request->total_price,
+                $request->invoice_id
+            ));
 
-                 return 'done';
-        // return new invoiceSendMail
-        //         (
-        //             $request->lists,
-        //             $request->date,
-        //             $request->shipping_address,
-        //             $request->billing_address,
-        //             $request->email,
-        //             $request->name,
-        //             $request->order_ref,
-        //             $request->total_tax,
-        //             $request->total_price,
-        //             $request->invoice_id
-        //         );
+            return 'done';
     }
 }

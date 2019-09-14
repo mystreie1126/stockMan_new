@@ -12,12 +12,12 @@ var chart = new Chart(ctx,{
       labels: [],
       datasets: [
         {
-          label: "Retails sales (tax excl.)",
+          label: "General Product Sales (tax excl.)",
           backgroundColor: color.retail,
           data: []
         },
         {
-          label:'Wholesale (tax excl.)',
+          label:'General Product (tax excl.)',
           backgroundColor: color.wholesale,
           data:[]
         },

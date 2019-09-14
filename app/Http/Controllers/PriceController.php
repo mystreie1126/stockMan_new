@@ -45,12 +45,12 @@ class PriceController extends Controller
         }
 
         $partner_reps = DB::table('c1ft_stock_manager.sm_all_replishment_history')
-                       ->select('reference as barcode',DB::raw('sum(updated_quantity) as total_send'))
-                       ->where('shop_id',intval($shop_id))
-                       ->where('uploaded',1)
-                       ->whereBetween('created_at',[$request->startTime,$request->endTime])
-                       ->groupBy('reference')
-                       ->get();
+                ->select('reference as barcode',DB::raw('sum(updated_quantity) as total_send'))
+                ->where('shop_id',intval($shop_id))
+                ->where('uploaded',1)
+                ->whereBetween('created_at',[$request->startTime,$request->endTime])
+                ->groupBy('reference')
+                ->get();
 
         foreach($partner_reps as $rep){
             $rep->name = Common::get_productName_by_ref($rep->barcode);

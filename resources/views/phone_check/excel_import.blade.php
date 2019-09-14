@@ -3,21 +3,22 @@
 @section('content')
 
 <div class="container" id="phone_check">
-
-    
    <form method="post" enctype="multipart/form-data" action="{{route('import_pop_list')}}" class="row">
         {{ csrf_field() }}
        
         <p class="center">
-                <span>Choose your option:</span>
+            <p class="teal-text">1. Choose your option:</p>
             <input name="options" type="radio" id="test1" value="1"/>
             <label for="test1" class="light-green-text text-darken-3">Check Devices</label>
-            &nbsp;OR&nbsp;     
+            <br>
         
             <input name="options" type="radio" id="test2" value="2"/>
             <label for="test2" class="brown-text">Check Parts</label>
-
+            <p class="teal-text">2. Choose the sheet submit date</p>
+            <input type="datetime-local" name="datetime" style="width:30%">
         </p>
+        <span class="teal-text">3 .Upload the sheet</span>
+        <br>
         <div class="input-field col s6">
                 <select name="shop_id">
                     <option disabled selected>Choose a store</option>
@@ -25,7 +26,7 @@
                         <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
                     @endforeach
                 </select>
-                <label>Choose a Store</label>
+               
         </div>
 
         <div class="file-field input-field col s6">
@@ -92,7 +93,7 @@
         <p class="flow-text brown-text">Missmatch Parts</p>
         <ul class="collapsible">
                 @foreach($wrongPart_shops as $missmatch)
-                    <form action="{{route('clear_allImported')}}" class="right" method="post">
+                    <form action="{{route('clear_allImported_parts')}}" class="right" method="post">
                         {{csrf_field()}}
                         <input type="hidden" name="shop_id" value="{{$missmatch->id_shop}}">
                         <button class="btn red clear" style="transform:translate(-10%,20%)">clear</button>
