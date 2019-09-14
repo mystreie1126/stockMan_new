@@ -8,8 +8,11 @@ use DB;
 
 class StandardController extends Controller
 {
-    public function index()
-    {
-        $query = DB::table('c1ft_stock_manager.sm_standard_branch')
-    }
+    // public function index()
+    // {
+    //     $query = DB::select(
+    //         'select '
+    //     )
+
+    // }
 }
