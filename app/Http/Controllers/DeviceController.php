@@ -44,7 +44,7 @@ class DeviceController extends Controller
         $devices = Devicepool::all();
         $shops = DB::connection('mysql2')->table('ps_shop')
               ->select('id_shop','name')
-              ->whereNotIn('id_shop',[1,35,42])
+              ->whereNotIn('id_shop',[1,35,42,41,32])
               ->get();
 
         return view('device.deviceTransfer',compact('devices','shops'));
@@ -75,6 +75,7 @@ class DeviceController extends Controller
 
     public function ready_to_send(){
         $shopIDs = Device_transfer::where('send','0')
+                   ->where('shop_id','!=',700)
                    ->groupBy('shop_id')
                    ->pluck('shop_id')->toArray();
         $lists = [];

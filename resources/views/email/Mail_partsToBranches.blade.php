@@ -34,10 +34,12 @@
                     <th>Send</th>
                 </tr>
                 @foreach($part_lists as $part)
-                <tr>
-                    <td>{{$part->parts_name}}</td>
-                    <td>{{$part->send_quantity}}</td>
-                </tr>
+                    @if(intval($part->send_quantity) > 0)
+                        <tr>
+                            <td>{{$part->parts_name}}</td>
+                            <td>{{$part->send_quantity}}</td>
+                        </tr>
+                    @endif
                 @endforeach
             </table>
             <p></p>

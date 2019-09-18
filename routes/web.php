@@ -122,11 +122,8 @@ Route::get('/topselling',function(){
 })->name('topselling');
 
 
-//phone check
+//phone and parts check
 
-// Route::get('/phone_check',function(){
-// 	return view('phone_check.excel_import');
-// })->name('phone_check');
 
 Route::post('/clearAll','Phone_checkController@clearAll')->name('clear_allImported');
 Route::post('/clearAll_parts','Phone_checkController@clearAll_parts')->name('clear_allImported_parts');
@@ -139,6 +136,7 @@ Route::get('/phone_check','Phone_checkController@index')->name('phone_check');
 
 Route::post('/excel_import','Phone_checkController@import')->name('import_pop_list');
 
+Route::get('/trackPartsByStandard','PartsController@track_Parts_by_Standard')->name('track_Parts_by_Standard');
 
 //invoice
 

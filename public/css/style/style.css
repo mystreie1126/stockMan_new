@@ -349,16 +349,17 @@ nav{
 	display: none;
 }
 
-#branches_general_sales .select-wrapper input.select-dropdown{
+.branches_general_sales .select-wrapper input.select-dropdown{
 	display: none;
 }
 
-#branches_general_sales .select-dropdown{
+.branches_general_sales .select-dropdown{
 	border:1px solid red;
 }
-#branches_general_sales .select-wrapper .caret{
+.branches_general_sales .select-wrapper .caret{
 	display: none;
 }
+
 
 .flexx{
 	display: flex;

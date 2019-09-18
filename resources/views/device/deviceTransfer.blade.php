@@ -9,9 +9,11 @@
         <div class="row" style="margin-top:20px">
             <select class="col s4 assignShop">
                     <option disabled selected><span class="red-text center">Target Branch</span></option>
+                    <option value="700">Wholesaler</option>
                     @foreach($shops as $shop)
-                    <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
+                        <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
                     @endforeach
+                    
             </select>
 
            <div class="col s2"></div>

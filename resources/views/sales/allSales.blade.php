@@ -2,7 +2,7 @@
 @section('content')
 
 <div class=" row">
-	<div id="branches_general_sales">
+	<div class="branches_general_sales">
 		<div class="row" style="margin-top:10px">
 			<div class="input-field col s4">
 				<select class="teal-text" style="display:block" v-model="selectedDays" @change="onChange()" id="select_days">

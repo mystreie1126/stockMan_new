@@ -17,25 +17,25 @@ class replishmentController extends Controller
 {
   private function make_uploadList($by_sale = 0,$by_standard = 0,$by_custom = 0){
       $shops_by_sale = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
-                        ->select('a.shop_id','b.name as shop_name')
-                        ->join('c1ft_pos_prestashop.ps_shop as b','b.id_shop','a.shop_id')
-                        ->where('a.uploaded',0)
-                        ->where('a.rep_by_sale',$by_sale)
-                        ->where('a.rep_by_custom',$by_custom)
-                        ->where('a.rep_by_standard',$by_standard)
-                        ->groupBy('a.shop_id')
-                        ->get();
+                ->select('a.shop_id','b.name as shop_name')
+                ->join('c1ft_pos_prestashop.ps_shop as b','b.id_shop','a.shop_id')
+                ->where('a.uploaded',0)
+                ->where('a.rep_by_sale',$by_sale)
+                ->where('a.rep_by_custom',$by_custom)
+                ->where('a.rep_by_standard',$by_standard)
+                ->groupBy('a.shop_id')
+                ->get();
 
    foreach($shops_by_sale as $shop){
            $shop->detail = DB::table('c1ft_stock_manager.sm_all_replishment_history as a')
-                           ->select('a.shop_stock_id','a.reference as barcode','a.updated_quantity','b.name as shopname','a.selected_startDate','a.selected_endDate','a.created_at')
-                           ->where('a.shop_id',$shop->shop_id)
-                           ->where('a.uploaded',0)
-                           ->where('a.rep_by_sale',$by_sale)
-                           ->where('a.rep_by_custom',$by_custom)
-                           ->where('a.rep_by_standard',$by_standard)
-                           ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
-                           ->get();
+                ->select('a.shop_stock_id','a.reference as barcode','a.updated_quantity','b.name as shopname','a.selected_startDate','a.selected_endDate','a.created_at')
+                ->where('a.shop_id',$shop->shop_id)
+                ->where('a.uploaded',0)
+                ->where('a.rep_by_sale',$by_sale)
+                ->where('a.rep_by_custom',$by_custom)
+                ->where('a.rep_by_standard',$by_standard)
+                ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
+                ->get();
             foreach($shop->detail as $detail){
                 $detail->product_name = Common::get_productName_by_ref($detail->barcode);
             }
@@ -71,7 +71,7 @@ class replishmentController extends Controller
    }
 
    /*
-
+011702
    PAGE ACTION
 
    */
@@ -151,11 +151,11 @@ public function save_standard_replist(Request $request){
 
     public function custom_get_rep_data(Request $request){
         $search_result = DB::table('c1ft_pos_prestashop.ps_product as a')
-                       ->select('a.reference','b.name',DB::raw('concat(a.reference,b.name) as str'))
-                       ->join('c1ft_pos_prestashop.ps_product_lang as b','a.id_product','b.id_product')
-                       ->where('b.id_shop',26)
-                       ->where(DB::raw('concat(a.reference,b.name)'),'like','%'.$request->search.'%')
-                       ->first();
+            ->select('a.reference','b.name',DB::raw('concat(a.reference,b.name) as str'))
+            ->join('c1ft_pos_prestashop.ps_product_lang as b','a.id_product','b.id_product')
+            ->where('b.id_shop',26)
+            ->where(DB::raw('concat(a.reference,b.name)'),'like','%'.$request->search.'%')
+            ->first();
         if($search_result){
             $ref = $search_result->reference;
             $name = $search_result->name;
@@ -241,12 +241,12 @@ public function save_standard_replist(Request $request){
 
     public function update_to_branch(Request $request){
         $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
-                ->where('uploaded',0)
-                ->where('shop_id',$request->shop_id)
-                ->where('rep_by_sale',$request->by_sale)
-                ->where('rep_by_custom',$request->by_custom)
-                ->where('rep_by_standard',$request->by_standard)
-                ->get();
+            ->where('uploaded',0)
+            ->where('shop_id',$request->shop_id)
+            ->where('rep_by_sale',$request->by_sale)
+            ->where('rep_by_custom',$request->by_custom)
+            ->where('rep_by_standard',$request->by_standard)
+            ->get();
         $shopname = self::shopname($request->shop_id);
         $email = self::shopemail($request->shop_id);
 
@@ -314,12 +314,12 @@ public function save_standard_replist(Request $request){
 
     public function delete_before_update_to_branch(Request $request){
         $query = DB::table('c1ft_stock_manager.sm_all_replishment_history')
-                ->where('uploaded',0)
-                ->where('shop_id',$request->shop_id)
-                ->where('rep_by_sale',$request->by_sale)
-                ->where('rep_by_custom',$request->by_custom)
-                ->where('rep_by_standard',$request->by_standard)
-                ->get();
+            ->where('uploaded',0)
+            ->where('shop_id',$request->shop_id)
+            ->where('rep_by_sale',$request->by_sale)
+            ->where('rep_by_custom',$request->by_custom)
+            ->where('rep_by_standard',$request->by_standard)
+            ->get();
 
         foreach($query as $q){
             DB::table('ps_stock_available')->where('id_stock_available',$q->web_stock_id)

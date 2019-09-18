@@ -186,31 +186,9 @@ class helperController extends Controller
     }
 
   public function getThis(){
-    $shop_id = 43;
-    $parts_id = 4719;
-    $sheet_qty = 5;
-
-    return Common::checkPartsQty_ifMatchInPos($parts_id,$shop_id,$sheet_qty);
-
-
-
-
-
-    $from = '2019-07-13';
-    $to = date('Y-m-d H:i:s');
     
-    $xiaomis = DB::table('c1ft_stock_manager.sm_wholesale')
-    ->select('reference','name')
-    ->where('category_id',8)->get();
-
-    foreach($xiaomis as $xiaomi){
-        $xiaomi->NS_sold = Common::productSoldQty_by_refInPos_shop($xiaomi->reference,43,$from,$to);
-        $xiaomi->NS_stock = Common::branch_product_qty_by_ref($xiaomi->reference,43);
-        $xiaomi->mill_sold = Common::productSoldQty_by_refInPos_shop($xiaomi->reference,26,$from,$to);
-        $xiaomi->mill_stock = Common::branch_product_qty_by_ref($xiaomi->reference,26);
-    }
-    
-    return $xiaomis;
+    $query = DB::connection('mysql2')->table('ps_shop')->orderBy('id_shop','desc')->limit(100)->get();
+    return $query;
 
   }
 

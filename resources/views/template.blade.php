@@ -108,7 +108,7 @@
     @stack('update_to_branch')
     @stack('device_newDevice_js')
     @stack('stock_in_js')
-
+    
     {{-- device js... --}}
     @stack('device_pool_js')
     @stack('deviceTest_js')
@@ -119,5 +119,6 @@
     @stack('invoice')
 
     @stack('device_import_check')
+    @stack('trackPartsByStandard')
     </body>
 </html>

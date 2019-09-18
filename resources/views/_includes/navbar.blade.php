@@ -39,6 +39,21 @@
              </li>
 
              <li class="green">
+              <a><span class="nav_sub_header white-text">Devices and Parts</span></a>
+            </li>
+
+            <li>
+              <a href="{{route('phone_check')}}">Check with excel sheet</a>
+            </li>
+            <li>
+              <a href="{{route('track_Parts_by_Standard')}}">Track Parts by Standard</a>
+            </li>
+
+            <li>
+              <div class="divider">User Action</div>
+            </li>
+
+             <li class="green">
                <a><span class="nav_sub_header white-text">Delivery Cost</span></a>
              </li>
 
