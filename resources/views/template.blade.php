@@ -120,5 +120,6 @@
 
     @stack('device_import_check')
     @stack('trackPartsByStandard')
+    @stack('editParts_js')
     </body>
 </html>

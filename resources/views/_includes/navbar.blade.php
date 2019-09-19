@@ -61,7 +61,14 @@
             <li>
               <a href="{{route('track_Parts_by_Standard')}}">Track Parts by Standard</a>
             </li>
-
+            @if(Auth::User()->id == 1 || Auth::User()->id == 4)
+                <li>
+                  <a href="{{route('edit_parts')}}" style="display:flex; align-items:center">
+                      <span>Edit Parts Quantity</span>
+                      <i class="small material-icons  red-text text-darken-3">star</i>
+                  </a>
+                </li>
+            @endif
             <li>
               <div class="divider">User Action</div>
             </li>

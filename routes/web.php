@@ -138,6 +138,8 @@ Route::post('/excel_import','Phone_checkController@import')->name('import_pop_li
 
 Route::get('/trackPartsByStandard','PartsController@track_Parts_by_Standard')->name('track_Parts_by_Standard');
 
+Route::get('/editParts','PartsController@editParts')->name('edit_parts');
+
 //invoice
 
 Route::get('/invoice','invoiceController@invoice_page')->name('invoice_page');

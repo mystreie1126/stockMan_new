@@ -158,4 +158,49 @@ class PartsController extends Controller
         return view('phone_check.trackPartsByStandard',compact('shops'));
     }
 
+    public function editParts(){
+        $shops = DB::connection('mysql2')->table('ps_shop')
+              ->select('id_shop','name')
+              ->whereNotIn('id_shop',[1,35,42,41,32])
+              ->get();
+        
+        return view('phone_check.edit_parts',compact('shops'));
+    }
+
+    public function findParts(Request $request){
+        $part = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
+                ->join('c1ft_pos_prestashop.ps_stock_available as b','a.id_product','b.id_product')
+                ->join('c1ft_pos_prestashop.ps_shop as c','b.id_shop','c.id_shop')
+                ->select('a.id_product as part_id','a.name as partsname','b.quantity as rockpos_qty','c.name as shopname','c.id_shop')
+                ->where('a.id_shop',$request->shop_id)
+                ->where('b.id_shop',$request->shop_id)
+                ->where('a.id_product',$request->parts_id)
+                ->whereIn('a.id_product',self::parts_ids())
+                ->first();
+        if($part){
+            return response()->json(['findPart' => 1,'found_parts'=>$part]);
+        }else{
+            return response()->json(['findPart' => 0]);
+        }
+    }
+
+    public function saveEditPartsReason(Request $request){
+         DB::table('c1ft_pos_prestashop.ps_stock_available')
+             ->where('id_shop',$request->shop_id)
+             ->where('id_product',$request->parts_id)
+             ->update(['quantity' => $request->actual_qty]);
+
+         DB::table('c1ft_stock_manager.sm_parts_edit_reason')->insertGetId([
+            'parts_id'     => $request->parts_id,
+            'shop_id'      => $request->shop_id,
+            'issued_staff' => $request->staff,
+            'reason'       => $request->reason,
+            'updated_quantity'   => $request->actual_qty,
+            'sm_user'      => $request->sm_user,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return 'done';
+    }
+
 }

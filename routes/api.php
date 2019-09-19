@@ -125,6 +125,10 @@ Route::post('/parts_restock_by_standard','PartsController@get_parts_list_byStand
 Route::post('/savePartsToPos','PartsController@savePartsToPos');
 
 Route::post('/checkPartsByStandard','PartsController@checkPartsByStandardAndNotes');
+
+Route::post('/findParts','PartsController@findParts');
+
+Route::post('/saveEditPartsReason','PartsController@saveEditPartsReason');
 /*barcode..*/
 
 Route::get('/parts_with_barcodes','BarcodeController@barcode');
