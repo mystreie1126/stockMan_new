@@ -45,7 +45,8 @@ var allBranchSalesChart = new Vue({
     },
     methods:{
         onChange:function(){
-            //console.log(this.selectedDays)
+            console.log(123123)
+            console.log(this.selectedDays)
             this.getChartByDate(this.selectedDays);
             //console.log($( ".select_days option:selected" ).val());
         },
@@ -72,5 +73,3 @@ var allBranchSalesChart = new Vue({
        this.getChartByDate(0);
     }
 })
-
-

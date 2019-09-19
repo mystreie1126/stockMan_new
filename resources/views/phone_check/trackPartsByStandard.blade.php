@@ -12,40 +12,48 @@
 				</select>
 				<label>Select the Branch</label>
             </div>
-            
+
             <button class="black btn" style="transform:translateY(50%)" @click.prevent="click">Track Parts By standard</button>
         </div>
-        
-        <table style="margin-top:15px" class="highlight centered striped bordered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Standard</th>
-                    <th>In RockPos</th>
-                    <th>Suggest Send</th>
-                    <th>Repair By Standard</th>
-                    <th>Send Between Repairs</th>
-                    <th>Total Send</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(list,index) in list">
-                  <td>@{{list.name}}</td>
-                  <td>@{{list.standard}}</td>
-                  <td>@{{list.quantity}}</td>
-                  <td>@{{list.suggest_send}}</td>
-                  <td>
-                      <div v-for="item in list.repair_historyByStandard">
-                            <span class="teal-text">Date:</span>@{{item.date_add}}<br>
-                            <span class="red-text">Ref:</span>@{{item.reference}}<br>
-                            <span class="indigo-text">Track Number:</span>@{{item.message}}<br>
-                      </div>
-                  </td>
-                  <td>@{{list.sendBetweenRepairs}}</td>
-                  <td>@{{list.totalSendFromBeginning}}</td>
-                </tr>
-              </tbody>
-        </table>
+
+  <div class="progress hide">
+      <div class="indeterminate"></div>
+  </div>
+
+		<div class="row center" style="margin-top:20px" v-if="list.length > 0">
+			<span class="col s2">Name</span>
+			<span class="col s1">Rockpos </span>
+			<span class="col s1">Standard </span>
+			<span class="col s2">Suggest Send</span>
+			<span class="col s2">Parts Scanned</span>
+			<span class="col s2">Send During Repairs</span>
+			<span class="col s2">Total Send from Start</span>
+		</div>
+		<ul class="collapsible" data-collapsible="accordion">
+		    <li v-for="(list,index) in list">
+		      <div class="collapsible-header row center" v-bind:style="[list.repair_historyByStandard.length > 0 && list.repair_historyByStandard.length - list.suggest_send !== 0 ? {color:'red'}:{color:'black'}]">
+				  {{-- <i class="material-icons col s1">build</i> --}}
+				  <span class="col s2">@{{list.name}}</span>
+				  <span class="col s1">@{{list.quantity}}</span>
+				  <span class="col s1">@{{list.standard}}</span>
+				  <span class="col s2">@{{list.suggest_send}}</span>
+				  <span class="col s2">@{{list.repair_historyByStandard.length}}</span>
+				  <span class="col s2">@{{list.sendBetweenRepairs}}</span>
+				  <span class="col s2">@{{list.totalSendFromBeginning}}</span>
+			  </div>
+		      <div class="collapsible-body" v-for="(item,ind) in list.repair_historyByStandard">
+					<p class="container row">
+						<span class="col s3  deep-purple-text text-darken-3">@{{item.fullname}}</span>
+						<span class="col s3">@{{item.date_add}}</span>
+						<span class="col s3">@{{item.reference}}</span>
+						<span class="indigo-text col s3">
+							@{{item.message}}
+						</span>
+					</p>
+			  </div>
+		    </li>
+
+	  	</ul>
 	</div>
 </div>
 @endif
@@ -61,6 +69,7 @@
             methods:{
                 click:function(){
                     console.log(this.shop_id);
+					removeHide($('.progress'));
                     axios({
                         method:'post',
                         data:{
@@ -70,6 +79,7 @@
                     }).then((e)=>{
                         this.list = e.data;
                         console.log(this.list)
+						addHide($('.progress'));
                     })
                 }
             }

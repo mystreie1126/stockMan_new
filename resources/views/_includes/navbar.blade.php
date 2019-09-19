@@ -14,9 +14,9 @@
                   {{-- <li>
                     <a href="{{route('parts_barcode')}}">Add Barcode on Parts</a>
                   </li> --}}
-                  <li>
+                  {{-- <li>
                     <a href="{{route('phone_check')}}" class="amber-text">Device and Parts Check</a>
-                  </li>
+                  </li> --}}
               @endguest
             </li>
         </ul>
@@ -38,7 +38,20 @@
                <a class="indigo-text">Login As: {{Auth::User()->name}}</a>
              </li>
 
-             <li class="green">
+             <li class="deep-purple accent-1">
+              <a><span class="nav_sub_header white-text">Sales Details</span></a>
+            </li>
+
+            <li>
+              <a href="{{route('phone_check')}}">Track Single Sales</a>
+            </li>
+
+
+            <li>
+              <div class="divider">User Action</div>
+            </li>
+
+             <li class="black">
               <a><span class="nav_sub_header white-text">Devices and Parts</span></a>
             </li>
 

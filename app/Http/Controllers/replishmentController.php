@@ -246,6 +246,8 @@ public function save_standard_replist(Request $request){
             ->where('rep_by_sale',$request->by_sale)
             ->where('rep_by_custom',$request->by_custom)
             ->where('rep_by_standard',$request->by_standard)
+            ->where('updated_quantity','>',0)
+            ->orderBy('reference')
             ->get();
         $shopname = self::shopname($request->shop_id);
         $email = self::shopemail($request->shop_id);
@@ -287,7 +289,7 @@ public function save_standard_replist(Request $request){
         }
 
         Mail::to($email)
-        ->cc(['warehouse@funtech.ie','hq@funtech.ie'])
+        ->cc(['warehouse@funtech.ie','hq@funtech.ie','it@funtech.ie'])
         ->send(new replishmentEmail($query,$shopname,$total_retail,$total_wholesale));
 
         foreach($query as $q){

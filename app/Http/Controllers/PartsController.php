@@ -28,7 +28,7 @@ class PartsController extends Controller
                 ->join('c1ft_pos_prestashop.ps_shop as shop','shop.id_shop','detail.id_shop')
                 ->join('c1ft_pos_prestashop.ps_order_history as history','history.id_order','order.id_order')
                 ->join('c1ft_pos_prestashop.ps_employee as staff','history.id_employee','staff.id_employee')
-                ->select('message.message','order.reference','order.date_add','staff.lastname')
+                ->select('message.message','order.reference','order.date_add','staff.lastname','staff.firstname',DB::raw("concat(staff.lastname,' ',staff.firstname) as fullname"))
                 ->where('detail.product_id',$id_product)
                 ->where('detail.id_shop',$id_shop)
                 ->orderBy('detail.id_order','desc')
@@ -101,13 +101,13 @@ class PartsController extends Controller
         Mail::to($email)
         ->cc(['warehouse@funtech.ie','hq@funtech.ie','it@funtech.ie'])
         ->send(new parts_sendEmail($send_query,$shop_name));
-        
+
         return 'send';
     }
 
     public function checkPartsByStandardAndNotes(Request $request)
-    {   
-       
+    {
+
         // $id_product = 4451;
         // $suggest_send = 10;
 
@@ -142,7 +142,7 @@ class PartsController extends Controller
                 $part->sendBetweenRepairs = 0;
             }
             $part->totalSendFromBeginning = self::get_parts_sendHistory_betweenOrder('2019-08-29 00:00:00',date('Y-m-d H:i:s'),$part->id_shop,$part->id_product);
-            
+
             //$to = $part->repair_historyByStandard[count($part->repair_historyByStandard)]->date_add;
         }
         return $parts;
