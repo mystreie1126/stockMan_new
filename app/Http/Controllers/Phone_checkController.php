@@ -8,7 +8,7 @@ use DB;
 
 ini_set('max_execution_time', 180);
 class Phone_checkController extends Controller
-{   
+{
     private function pos_parts_qty($parts_id,$shop_id){
         $pos_qty = DB::table('c1ft_pos_prestashop.ps_stock_available')
             ->where('id_shop',$shop_id)
@@ -41,12 +41,12 @@ class Phone_checkController extends Controller
                             ->where('shop_id',$shop->id_shop)->get();
             $shop->count  = $shop->parts->count();
         }
-        
+
         return view('phone_check.excel_import',compact('shops','missmatched_shops','wrongPart_shops'));
     }
 
     public function import(Request $request){
-               
+
         $this->validate($request, [
             'shop_id'      => 'required',
             'select_file'  => 'required',
@@ -62,7 +62,7 @@ class Phone_checkController extends Controller
             options 2 => parts
         */
         if(intval($request->options) == 1)
-        {   
+        {
             $keys = [];
             foreach ($sheet_data[0][4] as $key => $value) {
                 array_push($keys,$key);
@@ -71,7 +71,7 @@ class Phone_checkController extends Controller
                 $keys[2] -> name
                 $keys[3] -> imei
                 $keys[4] -> status
-            */           
+            */
             $devices = [];
             foreach($sheet_data[0] as $sheet){
                 if($sheet[$keys[2]] !== null && $sheet[$keys[3]] !== null && $sheet[$keys[4]] !== null)
@@ -95,7 +95,7 @@ class Phone_checkController extends Controller
                     }
                 }
             }
-            
+
         }
         else if(intval($request->options) == 2)
         {
@@ -117,14 +117,14 @@ class Phone_checkController extends Controller
                     );
                 }
             }
-        }   
+        }
 
         return redirect()->route('phone_check');
     }
 
 
     public function checkedAndDelete(Request $request)
-    {   
+    {
         if($request->delete_id){
             DB::table('c1ft_stock_manager.sm_pop_import')->where('id',intval($request->delete_id))->delete();
         }
@@ -142,7 +142,7 @@ class Phone_checkController extends Controller
     }
 
     public function clearAll(Request $request)
-    {   
+    {
         if($request->shop_id){
             DB::table('c1ft_stock_manager.sm_pop_import')->where('shop_id',intval($request->shop_id))->delete();
         }
@@ -151,7 +151,7 @@ class Phone_checkController extends Controller
     }
 
     public function clearAll_parts(Request $request)
-    {   
+    {
         if($request->shop_id){
             DB::table('c1ft_stock_manager.sm_parts_import')->where('shop_id',intval($request->shop_id))->delete();
         }
@@ -162,7 +162,7 @@ class Phone_checkController extends Controller
     public function parts_import(Request $request){
 
         $this->validate($request, [
-            
+
             //'select_file'  => 'required|mimes:xls,xlsx'
         ]);
 

@@ -129,6 +129,9 @@ Route::post('/checkPartsByStandard','PartsController@checkPartsByStandardAndNote
 Route::post('/findParts','PartsController@findParts');
 
 Route::post('/saveEditPartsReason','PartsController@saveEditPartsReason');
+
+Route::post('/sendMissMatchPartEmail','PartsController@sendMissMatchPartEmail')->name('sendMissMatchPartEmail');
+
 /*barcode..*/
 
 Route::get('/parts_with_barcodes','BarcodeController@barcode');

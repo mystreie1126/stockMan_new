@@ -8,6 +8,7 @@ use DB;
 use Mail;
 use PDF;
 use App\Mail\parts_sendEmail;
+use App\Mail\PartsMissMatchEmail;
 
 class PartsController extends Controller
 {
@@ -226,6 +227,20 @@ class PartsController extends Controller
 
 
         return redirect()->route('edit_parts');
+
+    }
+
+    public function sendMissMatchPartEmail(Request $request){
+
+        $query = DB::table('c1ft_stock_manager.sm_parts_import')
+                ->where('shop_id',$request->shop_id)
+                ->get();
+        $email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',$request->shop_id)->value('shop_mail');
+        Mail::to($email)
+        //->cc(['warehouse@funtech.ie','it@funtech.ie'])
+        ->send(new PartsMissMatchEmail($query,$request->shop_id));
+
+        return redirect()->route('phone_check');
 
     }
 
