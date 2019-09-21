@@ -130,7 +130,7 @@ Route::post('/findParts','PartsController@findParts');
 
 Route::post('/saveEditPartsReason','PartsController@saveEditPartsReason');
 
-Route::post('/sendMissMatchPartEmail','PartsController@sendMissMatchPartEmail')->name('sendMissMatchPartEmail');
+Route::post('/sendMissMatchPartEmail','PartsController@sendMissMatchPartEmail');
 
 /*barcode..*/
 
