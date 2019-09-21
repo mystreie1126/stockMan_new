@@ -235,7 +235,9 @@ class PartsController extends Controller
         $query = DB::table('c1ft_stock_manager.sm_parts_import')
                 ->where('shop_id',$request->shop_id)
                 ->get();
-        $email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',$request->shop_id)->value('shop_mail');
+        //$email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',$request->shop_id)->value('shop_mail');
+
+        $email = 'jianqilu1126@gmail.com';
         Mail::to($email)
         //->cc(['warehouse@funtech.ie','it@funtech.ie'])
         ->send(new PartsMissMatchEmail($query,$request->shop_id));

@@ -176,7 +176,7 @@
             e.preventDefault();
             submit_once($('.partmissmatchEmail'),'sending...');
             $.ajax({
-                url:stockMan+'sendMissMatchPartEmail',
+                url:window.location.origin+'/sendMissMatchPartEmail',
                 type:'post',
                 data:{
                     shop_id:$(this).prev().val()

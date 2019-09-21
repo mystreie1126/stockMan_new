@@ -142,6 +142,7 @@ Route::get('/editParts','PartsController@editParts')->name('edit_parts');
 
 Route::post('/updatedPartsByApproval','PartsController@editPartsWithApproval')->name('updatedPartsByApproval');
 
+Route::post('/sendMissMatchPartEmail','PartsController@sendMissMatchPartEmail')->name('sendMissMatchPartEmail');
 
 //invoice
 
