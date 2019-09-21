@@ -104,10 +104,10 @@
                             {{$missmatch->name}} has {{$missmatch->count}} missmatches
                         </div>
                         <div class="collapsible-body">
-                            <form action="{{route('sendMissMatchPartEmail')}}" method="post">
+                            <div>
                                 <input type="hidden" name="shop_id" value="{{$missmatch->id_shop}}">
                                 <button class="btn partmissmatchEmail">Email Missmatch</button>
-                            </form>
+                            </div>
 
                             <table>
                                 <thead>
@@ -176,7 +176,7 @@
             e.preventDefault();
             submit_once($('.partmissmatchEmail'),'sending...');
             $.ajax({
-                url:stockMan+'sendMissMatchPartEmail',
+                url:stockMan+"sendMissMatchPartEmail",
                 type:'post',
                 data:{
                     shop_id:$(this).prev().val()
