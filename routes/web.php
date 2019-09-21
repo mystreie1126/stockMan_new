@@ -140,6 +140,7 @@ Route::get('/trackPartsByStandard','PartsController@track_Parts_by_Standard')->n
 
 Route::get('/editParts','PartsController@editParts')->name('edit_parts');
 
+Route::post('/updatedPartsByApproval','PartsController@editPartsWithApproval')->name('updatedPartsByApproval');
 //invoice
 
 Route::get('/invoice','invoiceController@invoice_page')->name('invoice_page');

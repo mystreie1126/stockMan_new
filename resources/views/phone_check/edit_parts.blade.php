@@ -58,6 +58,60 @@
                   </div>
             </div>
         </div>
+        <div class="row">
+
+
+
+            @foreach($reasons as $reason)
+                <ul class="collapsible" data-collapsible="accordion">
+                    <li>
+                      <div class="collapsible-header row valign-wrapper">
+                           <i class="material-icons col s1">build</i>
+                            <span class="col s4">
+                                <span>{{$reason->name}}</span><br>
+                            </span>
+
+
+                            <span class="col s4">
+                                Request Updated Quantity:&nbsp;
+                                <span class="red-text">{{$reason->updated_quantity}}</span>
+                            </span>
+
+                            <span class="col s3">
+                                @if($reason->approved_by > 0)
+                                    Approved By:
+                                    <span class="blue-text">
+                                        {{DB::table('c1ft_stock_manager.sm_users')->where('id',$reason->approved_by)->value('name')}}
+                                    </span>
+                                @else
+                                    Needs Approval
+                                @endif
+                            </span>
+                            <span class="brown-text">
+                                {{$reason->shopname}}
+                            </span>
+                     </div>
+                      <div class="collapsible-body">
+                          issued staff:<span class="red-text"> {{$reason->issued_staff}}</span><br>
+                          issued date: <span class="teal-text"> {{$reason->created_at}}</span><br>
+                          <p class="flow-text grey-text text-darken-2" style="font-family:sans-serif;">{{$reason->reason}}</p>
+                          @if(Auth::User()->HQ == 1 && $reason->approved_by == 0)
+                              <form action="{{route('updatedPartsByApproval')}}" method="post">
+                                  {{csrf_field()}}
+                                  <input type="hidden" value="{{$reason->parts_id}}" name="parts_id">
+                                  <input type="hidden" value="{{$reason->shop_id}}" name="shop_id">
+                                  <input type="hidden" value="{{$reason->updated_quantity}}" name="request_qty">
+                                  <input type="show" value="{{$reason->id}}" name="reason_id">
+                                  <input type="show" value="{{Auth::User()->id}}" name="user_id">
+                                  <button class="btn">Approve</button>
+                              </form>
+                          @endif
+                      </div>
+                    </li>
+                </ul>
+            @endforeach
+            {{$reasons->links()}}
+        </div>
     </div>
 @endif
 @stop
@@ -134,6 +188,7 @@
                         this.staff  = '';
                         this.reason = '';
                         this.actual_qty = '';
+                        reset_button($('.saveReason'),'submit again');
                     }
                 }
             }

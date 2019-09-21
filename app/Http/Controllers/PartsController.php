@@ -163,8 +163,16 @@ class PartsController extends Controller
               ->select('id_shop','name')
               ->whereNotIn('id_shop',[1,35,42,41,32])
               ->get();
-        
-        return view('phone_check.edit_parts',compact('shops'));
+        $reasons = DB::table('c1ft_stock_manager.sm_parts_edit_reason as a')
+                    ->join('c1ft_pos_prestashop.ps_product_lang as b','a.parts_id','b.id_product')
+                    // ->join('c1ft_stock_manager.sm_users as c','a.sm_user','')
+                    ->join('c1ft_pos_prestashop.ps_shop as c','c.id_shop','a.shop_id')
+                    ->groupBy('b.name')
+                    ->select('a.*','b.name','c.name as shopname')
+                    ->orderBy('a.id','desc')
+                    ->simplePaginate(2);
+
+        return view('phone_check.edit_parts',compact('shops','reasons'));
     }
 
     public function findParts(Request $request){
@@ -185,10 +193,6 @@ class PartsController extends Controller
     }
 
     public function saveEditPartsReason(Request $request){
-         DB::table('c1ft_pos_prestashop.ps_stock_available')
-             ->where('id_shop',$request->shop_id)
-             ->where('id_product',$request->parts_id)
-             ->update(['quantity' => $request->actual_qty]);
 
          DB::table('c1ft_stock_manager.sm_parts_edit_reason')->insertGetId([
             'parts_id'     => $request->parts_id,
@@ -201,6 +205,28 @@ class PartsController extends Controller
         ]);
 
         return 'done';
+    }
+
+    public function editPartsWithApproval(Request $request){
+        $this->validate($request, [
+            'shop_id'      => 'required',
+            'parts_id'     => 'required',
+            'request_qty'  => 'required',
+            'reason_id'    => 'required',
+            'user_id'      => 'required'
+        ]);
+        DB::table('c1ft_pos_prestashop.ps_stock_available')
+            ->where('id_shop',$request->shop_id)
+            ->where('id_product',$request->parts_id)
+            ->update(['quantity' => $request->request_qty]);
+
+        DB::table('c1ft_stock_manager.sm_parts_edit_reason')
+            ->where('id',intval($request->reason_id))
+            ->update(['approved_by'=>intval($request->user_id)]);
+
+
+        return redirect()->route('edit_parts');
+
     }
 
 }

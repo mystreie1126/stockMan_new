@@ -97,7 +97,7 @@ class helperController extends Controller
 
       foreach($parts as $part){
           DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_product',$part->id)
-          ->where('id_shop',37)
+          ->where('id_shop',26)
           ->update(['quantity'=> intval($part->qty)]);
       }
       return 'done';
@@ -118,26 +118,7 @@ class helperController extends Controller
 
      $refs = [
 
-         6958444964737,
-6958961226509,
-6971207490106,
-6930251850489,
-6971738230011,
-6955578031991,
-6970237663337,
-6970237662651,
-6971738230035,
-105601,
-105602,
-105603,
-105604,
-105605,
-105606,
-105607,
-105608,
-105609,
-105610,
-105611
+         6934177707452
 ];
      foreach($refs as $ref){
           if(!Common::get_branchStockID_by_ref($ref,36)){
@@ -182,19 +163,32 @@ class helperController extends Controller
     }
 
     public function cde(){
-       
+
     }
 
   public function getThis(){
-    
-    $query = DB::connection('mysql2')->table('ps_shop')->orderBy('id_shop','desc')->limit(100)->get();
-    return $query;
+      $query = DB::table('c1ft_stock_manager.sm_HQstockTake_history as a')
+                ->select('a.web_stock_id',DB::raw('sum(a.updated_quantity) as total'),'b.id_product')
+                ->join('ps_stock_available as b','a.web_stock_id','b.id_stock_available')
 
+                ->where('added',0)
+                ->where('created_at','>','2019-09-20')
+                ->groupBy('web_stock_id')
+                ->get();
+
+
+    foreach($query as $q){
+        DB::table('ps_product_shop')->where('id_product',$q->id_product)
+        ->update(['active' => 1]);
+    }
+    return 'done';
   }
 
 
 
   public function getThat(){
+
+
 
          $query =
          DB::select("select a.issue_id from

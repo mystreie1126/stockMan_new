@@ -156,9 +156,11 @@ Route::get('/test_ref','helperController@test_ref');
 
 Route::get('/standard','helperController@standard_model');
 
+
+
 Route::get('/pp','helperController@update_part_stock');
 Route::get('/pa','helperController@getThis');
-Route::get('/pb','helperController@getThat');
+Route::get('/pb','helperController@merge_stock');
 
 Route::get('/stockCheck','helperController@stockTake_check');
 
