@@ -236,11 +236,10 @@ class PartsController extends Controller
                 ->where('shop_id',$request->shop_id)
                 ->get();
         //$email = DB::table('c1ft_stock_manager.sm_shop_email')->where('shop_id',$request->shop_id)->value('shop_mail');
-        return new parts_missmatchEmail($query,$request->shop_id);
         $email = 'jianqilu1126@gmail.com';
         Mail::to($email)
         //->cc(['warehouse@funtech.ie','it@funtech.ie'])
-        ->send(new \App\Mail\parts_missmatchEmail($query,$request->shop_id));
+        ->send(new parts_missmatchEmail($query,$request->shop_id));
 
         return redirect()->route('phone_check');
 
