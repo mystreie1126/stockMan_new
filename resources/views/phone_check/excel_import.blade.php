@@ -182,11 +182,10 @@
                     shop_id:$(this).prev().val()
                 },
                 success:function(e){
-                    reset_button($('.partmissmatchEmail'),'Email Missmatch');
-                    console.log(e);
+                    // reset_button($('.partmissmatchEmail'),'Email Missmatch');
+                    window.location.href = "phone_check";
                 }
             })
-            console.log($(this).prev().val());
         });
     </script>
 @endpush
