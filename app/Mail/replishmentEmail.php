@@ -41,6 +41,7 @@ class replishmentEmail extends Mailable
         $total_retail = $this->total_retail;
         $total_wholesale = $this->total_wholesale;
 
-        return $this->view('email.Mail_replishment',compact('lists','shopname','date','total_retail','total_wholesale'));
+        return $this->from('warehouse@funtech.ie')
+                    ->view('email.Mail_replishment',compact('lists','shopname','date','total_retail','total_wholesale'));
     }
 }

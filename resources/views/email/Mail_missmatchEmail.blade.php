@@ -45,7 +45,7 @@
                 </tr>
                 @endforeach
             </table>
-            <p>Please Email to manager@funtech.ie adding a reason for each miss match mentioned above</p>
+            <p>Please Email to stocktake@funtech.ie adding a reason for each miss match mentioned above</p>
             <p>FunTech HQ</p>
          @endif
     </body>

@@ -37,7 +37,8 @@ class parts_sendEmail extends Mailable
         $shopname   = $this->shopname;
 
         $subject = 'Parts Delivery To '.$shopname.' Branch.';
-        return $this->subject($subject)
+        return $this->from('stocktake@funtech.ie')
+                    ->subject($subject)
                     ->view('email.Mail_partsToBranches',compact('part_lists','shopname'));
     }
 }

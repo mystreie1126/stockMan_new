@@ -45,7 +45,7 @@
             <p></p>
             <p>If you have any query, please do not hesitate to contact us.</p>
             <p>Best Regards,</p>
-            <p>warehouse@funtech.ie</p>
+            <p>stocktake@funtech.ie</p>
          @endif
     </body>
 </html>

@@ -35,7 +35,7 @@ class parts_missmatchEmail extends Mailable
 
         $subject = 'MissMatch Parts from '.$shopname.' Parts StockTake.';
 
-        return $this->from('manager@funtech.ie')
+        return $this->from('stocktake@funtech.ie')
                     ->subject($subject)
                     ->view('email.Mail_missmatchEmail',compact('missmatch_parts','shopname'));
     }

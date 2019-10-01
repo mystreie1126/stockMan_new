@@ -47,26 +47,32 @@ class Phone_checkController extends Controller
 
     public function import(Request $request){
 
-        $this->validate($request, [
-            'shop_id'      => 'required',
-            'select_file'  => 'required',
-            'options'      => 'required',
-            'datetime'     => 'required'
-        ]);
+        // $this->validate($request, [
+        //     'shop_id'      => 'required',
+        //     'select_file'  => 'required',
+        //     'options'      => 'required',
+        //     'datetime'     => 'required'
+        // ]);
 
         $path = $request->file('select_file')->getRealPath();
 
         $sheet_data = Excel::load($path)->get();
+
+
         /*
             options 1 => devices
             options 2 => parts
         */
+
+
         if(intval($request->options) == 1)
         {
-            $keys = [];
+
+            $keys=[];
             foreach ($sheet_data[0][4] as $key => $value) {
                 array_push($keys,$key);
             }
+
             /*
                 $keys[2] -> name
                 $keys[3] -> imei

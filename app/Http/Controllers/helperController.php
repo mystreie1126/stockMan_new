@@ -167,21 +167,25 @@ class helperController extends Controller
     }
 
   public function getThis(){
-      $query = DB::table('c1ft_stock_manager.sm_HQstockTake_history as a')
-                ->select('a.web_stock_id',DB::raw('sum(a.updated_quantity) as total'),'b.id_product')
-                ->join('ps_stock_available as b','a.web_stock_id','b.id_stock_available')
-
-                ->where('added',0)
-                ->where('created_at','>','2019-09-20')
-                ->groupBy('web_stock_id')
+      $query = DB::table('c1ft_stock_manager.sm_parts_import')
+                ->select('parts_id','shop_id','pos_stock','sheet_stock',DB::raw('pos_stock +(sheet_stock - pos_stock) as cc'))
+                ->where('shop_id',26)
+                ->where('date_add','>','2019-09-30')
                 ->get();
 
+      foreach($query as $q){
+          DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_product',$q->parts_id)->where('id_shop',$q->shop_id)
+          ->update(['quantity'=>$q->cc]);
+      }
 
-    foreach($query as $q){
-        DB::table('ps_product_shop')->where('id_product',$q->id_product)
-        ->update(['active' => 1]);
-    }
-    return 'done';
+
+
+    // foreach($query as $q){
+    //     DB::table('ps_stock_available')->where('id_stock_available',$q->web_stock_id)->update(['quantity'=>$q->total]);
+    // }
+    return $query;
+    // return 'd
+
   }
 
 
@@ -224,6 +228,15 @@ class helperController extends Controller
         }
         return 'done';
 
+  }
+
+  public function demon_stockCheck(){
+      $results = DB::table('c1ft_stock_manager.sm_demo_stockcheck')
+               ->select('name','barcode',DB::raw('sum(qty) as total'))
+               ->groupBy('barcode')
+               ->orderBy('barcode')
+               ->get();
+      return view('demon_stockCheck',compact('results'));
   }
 
   public function import(Request $request){

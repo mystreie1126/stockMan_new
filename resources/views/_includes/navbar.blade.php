@@ -11,9 +11,9 @@
               @guest
                   <li><a href="{{ route('login') }}">Login</a></li>
               @else
-                  {{-- <li>
-                    <a href="{{route('parts_barcode')}}">Add Barcode on Parts</a>
-                  </li> --}}
+                  <li>
+                    <a href="{{route('demon_stockCheck')}}">demo</a>
+                  </li>
                   {{-- <li>
                     <a href="{{route('phone_check')}}" class="amber-text">Device and Parts Check</a>
                   </li> --}}

@@ -144,6 +144,10 @@ Route::post('/updatedPartsByApproval','PartsController@editPartsWithApproval')->
 
 // Route::post('/sendMissMatchPartEmail','PartsController@sendMissMatchPartEmail')->name('sendMissMatchPartEmail');
 
+
+/*test routes*/
+
+Route::get('/demon_stockCheck','helperController@demon_stockCheck')->name('demon_stockCheck');
 //invoice
 
 Route::get('/invoice','invoiceController@invoice_page')->name('invoice_page');

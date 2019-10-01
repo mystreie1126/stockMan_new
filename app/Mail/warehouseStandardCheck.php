@@ -35,7 +35,8 @@ class warehouseStandardCheck extends Mailable
     {
         $lists = $this->lists;
         $subject = $this->subject;
-        return $this->subject($subject)
+        return $this->from('warehouse@funtech.ie')
+                ->subject($subject)
                 ->view('email.Mail_warehouseStandard_check',compact('lists'));
     }
 }

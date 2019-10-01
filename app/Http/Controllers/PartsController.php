@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Helper\Common;
 use DB;
 use Mail;
 use PDF;
 use App\Mail\parts_sendEmail;
 use App\Mail\parts_missmatchEmail;
+use App\Helper\Common;
 
 class PartsController extends Controller
 {
@@ -176,7 +176,7 @@ class PartsController extends Controller
         return view('phone_check.edit_parts',compact('shops','reasons'));
     }
 
-    public function findParts(Request $request){
+    public function findParts(Request $request) {
         $part = DB::table('c1ft_pos_prestashop.ps_product_lang as a')
                 ->join('c1ft_pos_prestashop.ps_stock_available as b','a.id_product','b.id_product')
                 ->join('c1ft_pos_prestashop.ps_shop as c','b.id_shop','c.id_shop')
@@ -186,9 +186,9 @@ class PartsController extends Controller
                 ->where('a.id_product',$request->parts_id)
                 ->whereIn('a.id_product',self::parts_ids())
                 ->first();
-        if($part){
+        if($part) {
             return response()->json(['findPart' => 1,'found_parts'=>$part]);
-        }else{
+        } else {
             return response()->json(['findPart' => 0]);
         }
     }
@@ -225,12 +225,11 @@ class PartsController extends Controller
             ->where('id',intval($request->reason_id))
             ->update(['approved_by'=>intval($request->user_id)]);
 
-
         return redirect()->route('edit_parts');
 
     }
 
-    public function sendMissMatchPartEmail(Request $request){
+    public function sendMissMatchPartEmail(Request $request) {
 
         $query = DB::table('c1ft_stock_manager.sm_parts_import')
                 ->where('shop_id',$request->shop_id)
@@ -244,5 +243,4 @@ class PartsController extends Controller
         return 'done';
 
     }
-
 }

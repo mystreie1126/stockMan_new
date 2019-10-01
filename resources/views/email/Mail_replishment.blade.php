@@ -56,7 +56,7 @@
         <p>Total <span class="bold">Retail</span> is: <span class="bold">{{$total_retail}} &euro;</span></p>
         <p>Total <span class="bold">Wholesale price</span> is: {{round($total_wholesale)}} &euro;</p>
         <p>Best Regards,</p>
-        <p>warehouse@funtech.ie</p>
+        <p>stocktake@funtech.ie</p>
         @endif
 
     </body>
