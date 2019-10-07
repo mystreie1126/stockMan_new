@@ -27,6 +27,7 @@ class Phone_checkController extends Controller
 
         $wrongPart_shops = DB::table('c1ft_stock_manager.sm_parts_import as a')
                             ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
+                            ->where('a.merged',0)
                             ->groupBy('a.shop_id')->get();
 
         foreach($missmatched_shops as $shop){
@@ -47,12 +48,12 @@ class Phone_checkController extends Controller
 
     public function import(Request $request){
 
-        // $this->validate($request, [
-        //     'shop_id'      => 'required',
-        //     'select_file'  => 'required',
-        //     'options'      => 'required',
-        //     'datetime'     => 'required'
-        // ]);
+        $this->validate($request, [
+            'shop_id'      => 'required',
+            'select_file'  => 'required',
+            'options'      => 'required',
+            'datetime'     => 'required'
+        ]);
 
         $path = $request->file('select_file')->getRealPath();
 
