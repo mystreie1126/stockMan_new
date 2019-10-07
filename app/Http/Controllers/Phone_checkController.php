@@ -23,7 +23,7 @@ class Phone_checkController extends Controller
 
         $missmatched_shops = DB::table('c1ft_stock_manager.sm_pop_import as a')
                              ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
-                             ->where('a.merged',0)
+                            //  ->where('a.merged',0)
                              ->groupBy('a.shop_id')->get();
 
         $wrongPart_shops = DB::table('c1ft_stock_manager.sm_parts_import as a')
