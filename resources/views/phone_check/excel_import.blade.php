@@ -93,11 +93,11 @@
         <p class="flow-text brown-text">Missmatch Parts</p>
         <ul class="collapsible">
                 @foreach($wrongPart_shops as $missmatch)
-                    <form action="{{route('clear_allImported_parts')}}" class="right" method="post">
+                    {{-- <form action="{{route('clear_allImported_parts')}}" class="right" method="post">
                         {{csrf_field()}}
                         <input type="hidden" name="shop_id" value="{{$missmatch->id_shop}}">
                         <button class="btn red clear" style="transform:translate(-10%,20%)">clear</button>
-                    </form>
+                    </form> --}}
 
                     <li>
                         <div class="collapsible-header" style="display:flex">
@@ -125,11 +125,11 @@
                                             <td class="indigo-text">{{$part->pos_stock}}</td>
                                             <td class="orange-text text-darken-3">{{$part->sheet_stock}}</td>
                                             <td>
-                                            <form action="{{route('checkedAndDelete_parts')}}" method="post">
+                                            {{-- <form action="{{route('checkedAndDelete_parts')}}" method="post">
                                                 {{csrf_field()}}
                                                     <input type="hidden" name="delete_id" value="{{$part->id}}">
                                                     <button class="btn green checked">Checked</button>
-                                                </form>
+                                                </form> --}}
                                             </td>
                                         </tr>
                                     @endforeach
