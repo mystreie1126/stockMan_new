@@ -40,7 +40,7 @@ class Phone_checkController extends Controller
 
         foreach($wrongPart_shops as $shop){
             $shop->parts  = DB::table('c1ft_stock_manager.sm_parts_import')
-                            ->where('shop_id',$shop->id_shop)->get();
+                            ->where('shop_id',$shop->id_shop)->where('merged',0)->get();
             $shop->count  = $shop->parts->count();
         }
 
