@@ -809,13 +809,15 @@ class Common
 
         $sold = DB::table('c1ft_pos_prestashop.ps_orders as a')
                 ->join('c1ft_pos_prestashop.ps_order_detail as b','a.id_order','b.id_order')
+                ->select(DB::raw('b.product_quantity as qty'))
                 ->where('b.product_id',$parts_id)
                 ->where('b.id_shop',$shop_id)
                 ->where('a.date_add','>=',$time)
-                ->value('b.product_quantity');
+                ->groupBy('b.product_reference')
+                ->get();
         // if(intval($pos_qty) == intval($sheet_qty)) 
-
-        return (intval($pos_qty) + intval($sold)) == intval($sheet_qty) ? 1 : 0;
+        
+        return (intval($pos_qty) + intval($sold[0]->qty)) === intval($sheet_qty) ? 1 : 0;
     }
 
 
