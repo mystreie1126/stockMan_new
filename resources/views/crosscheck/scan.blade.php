@@ -183,7 +183,7 @@ var scan_check = new Vue({
         package:function(){
             this.compare();
             if(this.missmatches.length > 0){
-                this.whatIhaveScanned();
+                
                 let r = confirm('Are you sure wanna package with outstanding missmatches items left?')
                 if(r == true){
                     axios({
