@@ -167,25 +167,16 @@ class helperController extends Controller
     }
 
   public function getThis(){
-      $query = DB::table('c1ft_stock_manager.sm_parts_import')
-                ->select('parts_id','shop_id','pos_stock','sheet_stock',DB::raw('pos_stock +(sheet_stock - pos_stock) as cc'))
-                ->where('shop_id',26)
-                ->where('date_add','>','2019-09-30')
-                ->get();
-
-      foreach($query as $q){
-          DB::table('c1ft_pos_prestashop.ps_stock_available')->where('id_product',$q->parts_id)->where('id_shop',$q->shop_id)
-          ->update(['quantity'=>$q->cc]);
-      }
-
-
-
-    // foreach($query as $q){
-    //     DB::table('ps_stock_available')->where('id_stock_available',$q->web_stock_id)->update(['quantity'=>$q->total]);
-    // }
-    return $query;
-    // return 'd
-
+      $time = '2019-09-01';
+    $sold = DB::table('c1ft_pos_prestashop.ps_orders as a')
+    ->join('c1ft_pos_prestashop.ps_order_detail as b','a.id_order','b.id_order')
+    ->select(DB::raw('b.product_quantity as qty'))
+    ->where('b.product_id',3663)
+    ->where('b.id_shop',28)
+    ->where('a.date_add','>=',$time)
+    ->groupBy('b.product_id')->get();
+    //->value('qty');
+    return intval($sold);
   }
 
 

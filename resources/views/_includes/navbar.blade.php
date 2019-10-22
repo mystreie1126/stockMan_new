@@ -39,14 +39,14 @@
              </li>
 
              <li class="deep-purple accent-1">
-              <a><span class="nav_sub_header white-text">Sales Details</span></a>
+              <a><span class="nav_sub_header white-text">Cross Check</span></a>
             </li>
 
             <li>
-              <a href="{{route('phone_check')}}">Track Single Sales</a>
+              <a href="{{route('crosscheck')}}">check pages</a>
             </li>
 
-
+            
             <li>
               <div class="divider">User Action</div>
             </li>

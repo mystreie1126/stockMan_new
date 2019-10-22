@@ -180,3 +180,10 @@ Route::get('/clear-compiled', function() {
     $exitCode = Artisan::call('clear-compiled');
     return 'Compiled classes cache cleared';
 });
+
+
+/* cross check */
+
+Route::get('/crosscheck','cross_checkController@index')->name('crosscheck');
+Route::get('/scan-product/{task_id}','cross_checkController@barcode_scan');
+

@@ -35,6 +35,8 @@
     <script type="text/javascript">
         var stockMan = 'http://stockangryman.funtech.ie/api/';
       //var stockMan = 'http://localhost/project/laravel/stockManager_api/public/api/';
+        //var api_endpoint = 'http://localhost:3000/';
+        var api_endpoint = 'https://stockmananger-api.herokuapp.com/';
 
       var submit_once = function(e,btn_text){
           $(e).attr('disabled','disabled');
@@ -94,6 +96,8 @@
 "></script>
 <script type="text/javascript" src="https://cdn.rawgit.com/pinzon1992/materialize_table_pagination/f9a8478f/js/pagination.js"></script>
 
+<script src="https://unpkg.com/jspdf@1.5.3/dist/jspdf.min.js"></script>
+<script src="https://unpkg.com/jspdf-autotable@3.2.8/dist/jspdf.plugin.autotable.js"></script>
 
     <script type="text/javascript" src="{{URL::asset('js/script.js')}}"></script>
 
@@ -121,5 +125,8 @@
     @stack('device_import_check')
     @stack('trackPartsByStandard')
     @stack('editParts_js')
+
+    @stack('crosscheck_js')
+    @stack('scan_product')
     </body>
 </html>
