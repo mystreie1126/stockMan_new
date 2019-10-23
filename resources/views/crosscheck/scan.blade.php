@@ -190,7 +190,7 @@ var scan_check = new Vue({
                         url:api_endpoint+'scanner-products/'+task_id
                     }).then((e)=>{
                         this.whatIhaveScanned();
-                        window.location.href = '../';
+                        
                     })
                 }
             }else if(this.missmatches.length == 0){
@@ -199,7 +199,6 @@ var scan_check = new Vue({
                     url:api_endpoint+'scanner-products/'+task_id
                 }).then((e)=>{
                     this.whatIhaveScanned();
-                    window.location.href = '../';
                 })
             }
         },
@@ -227,7 +226,8 @@ var scan_check = new Vue({
                 }
           
                 doc.autoTable({body:rows,didDrawPage:header})
-                doc.save(`Job Number:${task_id} ${shopname} delivery sheet`)
+                doc.save(`Job Number:${task_id} ${shopname} delivery sheet`);
+                window.location.href = '../';
             })
         }
 
