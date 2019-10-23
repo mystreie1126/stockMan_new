@@ -92,6 +92,7 @@ var scan_check = new Vue({
     methods:{
         pressMe:function(e,flag){ 
             if (e.which >= 48 && e.which <= 200) {
+                console.log(e.which)
                 chars.push(String.fromCharCode(e.which));
             }
             setTimeout(function(){
@@ -189,7 +190,7 @@ var scan_check = new Vue({
                         url:api_endpoint+'scanner-products/'+task_id
                     }).then((e)=>{
                         this.whatIhaveScanned();
-                        window.history.back();
+                        window.location.href = '../';
                     })
                 }
             }else if(this.missmatches.length == 0){
@@ -198,7 +199,7 @@ var scan_check = new Vue({
                     url:api_endpoint+'scanner-products/'+task_id
                 }).then((e)=>{
                     this.whatIhaveScanned();
-                    window.history.back();
+                    window.location.href = '../';
                 })
             }
         },
@@ -218,7 +219,7 @@ var scan_check = new Vue({
                 })
 
                 doc.autoTable({body:rows,theme:'grid',didDrawPage:function(){
-                    doc.text(`Job Number:${task_id} ${shopname} missmatches`,20,10)
+                    doc.text(`Job Number:${task_id} ${shopname} delivery sheet`,20,10)
                 }});
                 doc.save(`Job Number:${task_id} ${shopname} delivery sheet`)
             })
