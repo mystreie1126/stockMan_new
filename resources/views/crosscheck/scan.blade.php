@@ -212,12 +212,15 @@ var scan_check = new Vue({
                 var rows = [];
                 var products = e.data.data.products;
                 var shopname = e.data.data.shopname;
-                console.log(e.data)
+                var date = [];
+                console.log(date)
                 products.forEach((e)=>{
                     rows.push({name:e.name,barcode:e.barcode,send:e.total})
+                    date.push({from:e.selected_from,to:e.selected_to})
                 })
-                var from = products[0].selected_from.slice(0, 19).replace('T', ' '),
-                    to   = products[0].selected_to.slice(0, 19).replace('T', ' ');
+                console.log(date)
+                var from = date[0].from.slice(0, 19).replace('T', ' '),
+                    to   = date[0].to.slice(0, 19).replace('T', ' ');
                 var header = function(data){
                     doc.setFontSize(12);
                     doc.setTextColor(40);
