@@ -50,17 +50,16 @@
             <table id="missmatchTable">
                 <thead>
                     <tr>
-                        <th>Barcode</th>
-                        <th>Name</th>
                         <th>Missmatch</th>
+                        <th>Name</th>
+                        <th>Barcode</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(product,index) in missmatches" v-bind:class="[product.missmatch > 0 ? 'green-text' : 'red-text']">
-                        <th>@{{product.barcode}}</th>
-                        <th>@{{product.name}}</th>
-                        
                         <th>@{{product.missmatch}}</th>
+                        <th>@{{product.name}}</th>
+                        <th>@{{product.barcode}}</th>
                     </tr>
                 </tbody>
             </table>
@@ -129,9 +128,9 @@ var scan_check = new Vue({
             //doc.text('Theme "grid"', 14, doc.autoTable.previous.finalY + 10);   
             doc.autoTable({html:"#missmatchTable",theme: 'grid',
                             columnStyles:{
-                                0: {cellWidth:50,fontStyle: 'bold'},
-                                1: {cellWidth:100,fontStyle: 'bold'},
-                                2: {cellWidth:20,fontStyle: 'bold',halign: 'center'}
+                                0: {cellWidth:50,fontStyle: 'bold',halign: 'center'},
+                                1: {cellWidth:50,fontStyle: 'bold'},
+                                2: {cellWidth:50,fontStyle: 'bold'}
                             },didDrawPage:function(data){
                                 doc.text(`Task number:${task_id} missmatch`,20 ,10);
                             }
@@ -220,9 +219,9 @@ var scan_check = new Vue({
                 })
 
                 doc.autoTable({body:rows,theme:'grid',didDrawPage:function(){
-                    doc.text(`Job Number:${task_id} ${shopname}`,20,10)
+                    doc.text(`Job Number:${task_id} ${shopname} missmatches`,20,10)
                 }});
-                doc.save('test.pdf')
+                doc.save(`Job Number:${task_id} ${shopname} delivery sheet`)
             })
         }
 

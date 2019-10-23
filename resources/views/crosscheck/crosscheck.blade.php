@@ -197,7 +197,7 @@
             success:function(res){
                 console.log(res);
                 var doc = new jsPDF();
-                var columns = ['name','barcode','send']
+                var columns = ['send','name','barcode',]
                 var rows = [];
                 var shopname = res.data.shopname;
 
