@@ -4,7 +4,6 @@
 
 
 <div class="scanner-input container">
-     
 
     <h5 class="col s12 cyan-text text-darken-3 center">Scan the Product(Task Number{{$task_id}})</h5>
     <div class="row">
@@ -92,7 +91,7 @@ var scan_check = new Vue({
     },
     methods:{
         pressMe:function(e,flag){ 
-            if (e.which >= 48 && e.which <= 57) {
+            if (e.which >= 48 && e.which <= 200) {
                 chars.push(String.fromCharCode(e.which));
             }
             setTimeout(function(){
