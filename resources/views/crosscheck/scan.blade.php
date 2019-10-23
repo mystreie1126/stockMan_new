@@ -213,14 +213,20 @@ var scan_check = new Vue({
                 var rows = [];
                 var products = e.data.data.products;
                 var shopname = e.data.data.shopname;
-
+                console.log(e.data)
                 products.forEach((e)=>{
-                    rows.push(e)
+                    rows.push({name:e.name,barcode:e.barcode,send:e.total})
                 })
-
-                doc.autoTable({body:rows,theme:'grid',didDrawPage:function(){
-                    doc.text(`Job Number:${task_id} ${shopname} delivery sheet`,20,10)
-                }});
+                var from = products[0].selected_from.slice(0, 19).replace('T', ' '),
+                    to   = products[0].selected_to.slice(0, 19).replace('T', ' ');
+                var header = function(data){
+                    doc.setFontSize(12);
+                    doc.setTextColor(40);
+                    doc.setFontStyle('normal');
+                    doc.text(`Job Number:${task_id} ${shopname} delivery sheet from ${from} to ${to}`, 10, 10);
+                }
+          
+                doc.autoTable({body:rows,didDrawPage:header})
                 doc.save(`Job Number:${task_id} ${shopname} delivery sheet`)
             })
         }
