@@ -166,18 +166,21 @@ class helperController extends Controller
 
     }
 
-  public function getThis(){
-      $time = '2019-09-01';
-    $sold = DB::table('c1ft_pos_prestashop.ps_orders as a')
-    ->join('c1ft_pos_prestashop.ps_order_detail as b','a.id_order','b.id_order')
-    ->select(DB::raw('b.product_quantity as qty'))
-    ->where('b.product_id',3663)
-    ->where('b.id_shop',28)
-    ->where('a.date_add','>=',$time)
-    ->groupBy('b.product_id')->get();
-    //->value('qty');
-    return intval($sold);
-  }
+    public function getThis(){
+        $refs = DB::table('c1ft_stock_manager.sm1_product_scan')
+                ->select('barcode',DB::raw('sum(quantity) as total'))
+                ->where('task_id',35)
+                ->groupBy('barcode')
+                ->get();
+        
+        //Common::get_webStock_qty_by_ref($ref)
+        $arr = [];
+        $arr1 = [];
+        $barcodes=[];
+
+        
+        
+    }
 
 
 
