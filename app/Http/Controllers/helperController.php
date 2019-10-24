@@ -167,16 +167,49 @@ class helperController extends Controller
     }
 
     public function getThis(){
-        $refs = DB::table('c1ft_stock_manager.sm1_product_scan')
+        $tasks = DB::table('c1ft_stock_manager.sm1_rep_tasks')
+                ->where('created_at','>','2019-10-24')
+                ->pluck('id');
+        $task_ids = [47];
+        $task_id = 47;
+        $shop_id = 25;
+        //scans
+        $scans = DB::table('c1ft_stock_manager.sm1_product_scan')
                 ->select('barcode',DB::raw('sum(quantity) as total'))
-                ->where('task_id',35)
+                ->where('task_id',$task_id)
                 ->groupBy('barcode')
                 ->get();
+        //check
+        $web_stock_ids = [];
+        $branch_stock_ids = [];
+        $missing_stock = [];
         
+        foreach($scans as $scan){
+            array_push($web_stock_ids,Common::get_webStockID_by_ref($scan->barcode));
+            array_push($branch_stock_ids,Common::get_branchStockID_by_ref($scan->barcode,$shop_id));
+            
+        }
+        if(count($branch_stock_ids) !== count($web_stock_ids)){
+            return 'error';
+        }else{
+             foreach($scans as $scan){
+            // DB::table('ps_stock_available')
+            // ->where('id_stock_available',Common::get_webStockID_by_ref($scan->barcode))
+            // ->decrement('quantity',intval($scan->total));
+
+            // DB::table('c1ft_pos_prestashop.ps_stock_available')
+            // ->where('id_stock_available',Common::get_branchStockID_by_ref($scan->barcode,$shop_id))
+            // ->increment('quantity',intval($scan->total));
+
+        }
+            return 'done';
+        }
+        
+       
+        
+
         //Common::get_webStock_qty_by_ref($ref)
-        $arr = [];
-        $arr1 = [];
-        $barcodes=[];
+        return $tasks;
 
         
         

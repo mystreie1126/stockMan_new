@@ -259,7 +259,11 @@ class Common
             ->where('product.reference',$ref)
             ->get();
 
-        if($query->count() == 1) return $query[0]->id_stock_available;
+        if($query->count() == 1) {
+            return $query[0]->id_stock_available;
+        }else{
+            return 0;
+        }
     }
 
     //4. get SINGLE product name by ref(rockpos)
