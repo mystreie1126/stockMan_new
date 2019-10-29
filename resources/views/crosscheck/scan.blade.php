@@ -62,7 +62,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button class="btn-large red accent-4" @click.prevent="package">Ready to Package</button>
+            <button class="btn-large red accent-4" @click.prevent="package" :disabled="disabled">Ready to Package</button>
         </div>
 
         
@@ -182,7 +182,7 @@ var scan_check = new Vue({
         package:function(){
             this.compare();
             if(this.missmatches.length > 0){
-                
+                this.disabled = true;
                 let r = confirm('Are you sure wanna package with outstanding missmatches items left?')
                 if(r == true){
                     axios({
@@ -199,6 +199,7 @@ var scan_check = new Vue({
                     })
                 }
             }else if(this.missmatches.length == 0){
+                this.disabled = true;
                 axios({
                     method:'put',
                     url:api_endpoint+'scanner-products/'+task_id
