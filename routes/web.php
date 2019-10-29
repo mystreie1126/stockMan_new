@@ -185,5 +185,5 @@ Route::get('/clear-compiled', function() {
 /* cross check */
 
 Route::get('/crosscheck','cross_checkController@index')->name('crosscheck');
-Route::get('/scan-product/{task_id}','cross_checkController@barcode_scan');
+Route::get('/crosscheck/scan-product/{task_id}','cross_checkController@barcode_scan');
 

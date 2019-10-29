@@ -17,7 +17,7 @@
             <div class="col s2">Created at:<br>
                 <span class="teal-text">{{$task->created_at}}</span>
             </div>
-            <a class="btn green col s1" href="./scan-product/{{$task->id}}">scan</a>
+            <a class="btn green col s1" href="./crosscheck/scan-product/{{$task->id}}">scan</a>
             <button class="btn red col s1 delete_task">Delete</button>     
             <input type="hidden" class="task_id" value="{{$task->id}}">
             <button class="btn amber col s1 export_task">Export</button>  

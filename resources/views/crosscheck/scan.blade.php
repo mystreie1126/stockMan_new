@@ -189,7 +189,12 @@ var scan_check = new Vue({
                         method:'put',
                         url:api_endpoint+'scanner-products/'+task_id
                     }).then((e)=>{
-                        this.whatIhaveScanned();
+                        if(e.data.status == 'success'){
+                            this.whatIhaveScanned();
+                        }else{
+                            alert('can not be updated!');
+                            window.location.href = '../';
+                        }
                         
                     })
                 }
