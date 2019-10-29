@@ -179,7 +179,7 @@
                 url:api_endpoint+'replishment-task/'+taskId
             }).then((e)=>{
                 if(e.data.status == 'success'){
-                    window.location.href = "crosscheck"
+                    window.location.href = "./"
                 }
             })
         }  
