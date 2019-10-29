@@ -158,7 +158,7 @@
                     }).then((e)=>{
                         console.log(e.data);
                         if(e.data.status == 'success'){
-                            window.location.href = "crosscheck"
+                            window.location.href = "./"
                         }
                     })
                 }           
