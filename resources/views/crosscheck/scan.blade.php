@@ -194,9 +194,11 @@ var scan_check = new Vue({
                         }else{
                             alert('can not be updated!');
                             window.location.href = '../';
-                        }
-                        
+                        }           
                     })
+                }
+                else{
+                    this.disabled = false;
                 }
             }else if(this.missmatches.length == 0){
                 this.disabled = true;
