@@ -35,8 +35,8 @@
     <script type="text/javascript">
         var stockMan = 'http://stockangryman.funtech.ie/api/';
         //var stockMan = 'http://localhost/project/laravel/stockManager_api/public/api/';
-        //var api_endpoint = 'http://localhost:3000/';
-        var api_endpoint = 'https://stockmananger-api.herokuapp.com/';
+        var api_endpoint = 'http://localhost:3000/';
+        //var api_endpoint = 'https://stockmananger-api.herokuapp.com/';
 
       var submit_once = function(e,btn_text){
           $(e).attr('disabled','disabled');
