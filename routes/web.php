@@ -136,8 +136,6 @@ Route::get('/phone_check','Phone_checkController@index')->name('phone_check');
 
 Route::post('/excel_import','Phone_checkController@import')->name('import_pop_list');
 
-Route::get('/trackPartsByStandard','PartsController@track_Parts_by_Standard')->name('track_Parts_by_Standard');
-
 Route::get('/editParts','PartsController@editParts')->name('edit_parts');
 
 Route::post('/updatedPartsByApproval','PartsController@editPartsWithApproval')->name('updatedPartsByApproval');
@@ -187,3 +185,12 @@ Route::get('/clear-compiled', function() {
 Route::get('/crosscheck','cross_checkController@index')->name('crosscheck');
 Route::get('/crosscheck/scan-product/{task_id}','cross_checkController@barcode_scan')->name('scanproducts');
 
+
+
+
+/*get check parts */
+
+Route::get('/trackPartsByStandard','PartsController@track_Parts_by_Standard')->name('track_Parts_by_Standard');
+Route::get('/parts_uploaded',function(){
+	return view('ss_upload.parts');
+})->name('parts_uploaded');

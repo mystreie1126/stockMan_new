@@ -31,11 +31,10 @@
                     <hr>
                     <div class="right-invoice-date" >
                         <div class="">
+                            <p class="bold">Bill To:</p>
                             <span>Invoice Number: <span class="bold">#0000{{$invoice_id}}</span></span><br>
+                            {{-- <span>Invoice Number: <span class="bold">#IN011858</span></span><br> --}}
                             <span>Order Date: <span class="bold">{{$date}}</span></span><br>
-                            {{-- @if($order_ref !== '')
-                                <span>Order Ref: <span class="bold">{{$order_ref}}</span></span><br>
-                            @endif --}}
                         </div>
                     </div>
                 </div>

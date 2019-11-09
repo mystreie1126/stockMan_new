@@ -33,8 +33,8 @@
     @stack('product_editing')
     @stack('export_topSale')
     <script type="text/javascript">
-        var stockMan = 'http://stockangryman.funtech.ie/api/';
-        //var stockMan = 'http://localhost/project/laravel/stockManager_api/public/api/';
+        //var stockMan = 'http://stockangryman.funtech.ie/api/';
+        var stockMan = 'http://localhost/project/laravel/stockManager_api/public/api/';
         //var api_endpoint = 'http://localhost:3000/';
         var api_endpoint = 'https://stockmananger-api.herokuapp.com/';
 
@@ -128,5 +128,7 @@
 
     @stack('crosscheck_js')
     @stack('scan_product')
+
+    @stack('upload_ss_parts')
     </body>
 </html>
