@@ -24,7 +24,19 @@ class invoiceController extends Controller
 
         $email = $request->email;
         //$email = 'jianqilu1126@gmail.com';
-
+        // return new invoiceSendMail
+        // (
+        //     $request->lists,
+        //     $request->date,
+        //     $request->shipping_address,
+        //     $request->billing_address,
+        //     $request->email,
+        //     $request->name,
+        //     $request->order_ref,
+        //     $request->total_tax,
+        //     $request->total_price,
+        //     $request->invoice_id
+        // );
         Mail::to($email)
         ->cc(['warehouse@funtech.ie','hq@funtech.ie','wholesale@funtech.ie'])
         ->send(new invoiceSendMail

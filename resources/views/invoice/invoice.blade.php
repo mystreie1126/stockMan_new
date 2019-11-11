@@ -129,7 +129,7 @@
             <table>
                 <thead>
                   <tr>
-                       <th>Quantity</th>
+                      <th>Quantity</th>
                       <th>Item</th>
                       <th>Description</th>
                       <th>

@@ -168,12 +168,12 @@ class helperController extends Controller
 
     public function getThis(){
 
-      // $a = DB::table('c1ft_pos_prestashop.ps_shop')->get();
-      // return $a;
+    // $a = DB::table('c1ft_pos_prestashop.ps_shop')->get();
+    // return $a;
+    
+    
 
-
-      $a = DB::connection('mysql2')->table('ps_shop')->get();
-      return $a;
+    
         
         
     }

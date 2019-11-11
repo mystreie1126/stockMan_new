@@ -194,3 +194,7 @@ Route::get('/trackPartsByStandard','PartsController@track_Parts_by_Standard')->n
 Route::get('/parts_uploaded',function(){
 	return view('ss_upload.parts');
 })->name('parts_uploaded');
+
+Route::get('/pop_stockTake',function(){
+	return view('pop_stockTake');
+})->name('pop_stockTake');
