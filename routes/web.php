@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\DB;
+
 Auth::routes();
 
 
@@ -196,5 +198,8 @@ Route::get('/parts_uploaded',function(){
 })->name('parts_uploaded');
 
 Route::get('/pop_stockTake',function(){
-	return view('pop_stockTake');
+	$shops = \DB::table('c1ft_pos_prestashop.ps_shop')
+			->whereNotIn('id_shop',[1,32,35,41,42])
+			->get();
+	return view('pop_stockTake',compact('shops'));
 })->name('pop_stockTake');

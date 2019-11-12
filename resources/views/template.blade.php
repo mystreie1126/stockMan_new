@@ -130,5 +130,6 @@
     @stack('scan_product')
 
     @stack('upload_ss_parts')
+    @stack('pop_stocktake')
     </body>
 </html>

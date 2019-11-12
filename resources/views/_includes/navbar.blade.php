@@ -61,7 +61,8 @@
             <li>
               <a href="{{route('track_Parts_by_Standard')}}">Track Parts by Standard</a>
             </li>
-            @if(Auth::User()->id == 1 || Auth::User()->id == 4)
+           
+            @if(Auth::User()->id == 1 || Auth::User()->id == 4 || Auth::User()->id == 6)
                 <li>
                   {{-- <a href="{{route('edit_parts')}}" style="display:flex; align-items:center">
                       <span>Edit Parts Quantity</span>
@@ -69,8 +70,14 @@
                   </a> --}}
                   <a href="{{route('parts_uploaded')}}" style="display:flex; align-items:center">
                       <span>uploaded parts SS sheet</span>
-                      <i class="small material-icons  red-text text-darken-3">star</i>
+                      <i class="small material-icons  red-text text-darken-3">build</i>
                   </a>
+                </li>
+                <li>
+                    <a href="{{route('pop_stockTake')}}" style="display:flex; align-items:center">
+                        <span>Check Branch Pop SS Sheet</span>
+                        <i class="small material-icons  red-text text-darken-3">phone_android</i>
+                    </a>
                 </li>
             @endif
             <li>
