@@ -199,18 +199,22 @@
             success:function(res){
                 console.log(res);
                 var doc = new jsPDF();
-                var columns = ['send','name','barcode','standard']
-                var rows = [];
-                var shopname = res.data.shopname;
+                var shopname = res.data.shopname;           
+                var rows = res.data.products.map(e=>[e.suggest,e.name,e.barcode,e.standard_quantity])
 
-                res.data.products.forEach((e)=>{
-                    rows.push(e)
-                })
+                doc.autoTable({ 
+                                body:rows,
+                                theme:'grid',
+                                headStyles: {fontSize:10,cellPadding:2,cellWidth:'auto',haligin:'center',valigh:'center'},
+                                columnStyles:{0:{cellWidth:20,halign:'center'},1:{cellWidth:110},2:{cellWidth:30,halign:'center'},3:{cellWidth:20,halign:'center'}},
+                                columns: [{header: 'Send', dataKey: 0}, {header: 'Name', dataKey: 1},{header: 'Barcode', dataKey: 2,haligin:'center'},{header: 'Standard', dataKey: 3,haligin:'center'}],
+                                didDrawPage:function(){
+                                    doc.text(`Job Number:${task_id} ${shopname} suggest send list`,20,10)
+                                }
+                            });
 
-                doc.autoTable({body:rows,theme:'grid',didDrawPage:function(){
-                    doc.text(`Job Number:${task_id} ${shopname} suggest send list`,10,10,10)
-                }});
-                doc.save(`${shopname} suggest.pdf`)
+               
+                doc.save(`${shopname} task ${task_id} suggest.pdf`)
             }
         })
     })
