@@ -199,7 +199,7 @@
             success:function(res){
                 console.log(res);
                 var doc = new jsPDF();
-                var columns = ['send','name','barcode',]
+                var columns = ['send','name','barcode','standard']
                 var rows = [];
                 var shopname = res.data.shopname;
 
@@ -208,7 +208,7 @@
                 })
 
                 doc.autoTable({body:rows,theme:'grid',didDrawPage:function(){
-                    doc.text(`Job Number:${task_id} ${shopname} suggest send list`,20,10)
+                    doc.text(`Job Number:${task_id} ${shopname} suggest send list`,10,10,10)
                 }});
                 doc.save(`${shopname} suggest.pdf`)
             }
