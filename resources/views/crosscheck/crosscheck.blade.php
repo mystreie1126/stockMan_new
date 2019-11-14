@@ -80,6 +80,7 @@
                             <th>Name</th>
                             <th>Barcode</th>
                             <th>Suggest</th>
+                            <th class="red-text">Standard</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,6 +88,7 @@
                             <td>@{{product.name}}</td>
                             <td>@{{product.ref}}</td>
                             <td>@{{product.qty}}</td>
+                            <td>@{{product.standard_quantity}}</td>
                         </tr>
                     </tbody>
                 </table>
