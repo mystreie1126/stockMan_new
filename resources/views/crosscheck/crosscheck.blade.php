@@ -109,7 +109,6 @@
             endTime:'',
             lists:{
                 products:[],
-                devices:[],
                 parts:[],
                 other:{
                     from:'',
@@ -117,9 +116,11 @@
                     shop_id:''
                 }
             },
+           
         },
         methods:{
-            getList:function(){          
+            getList:function(){       
+                   
                 if(this.startTime !== '' && this.endTime !== '' && this.selectedShops !== ''){
                     this.lists.other.from = this.lists.other.to = this.lists.other.shop_id = '';
                     axios({
@@ -127,18 +128,36 @@
                         url:api_endpoint+`all-replishment-lists?from=${this.startTime}&to=${this.endTime}&shop_id=${this.selectedShop}`
                         //url:api+'test'
                     }).then((res)=>{
-                        if(res.data.status == 'success'){
-                            
+                        if(res.data.status == 'success'){                           
                             let api_response = res.data.data
-                            
-                            this.lists.devices  = api_response.lists.devices;
-                            this.lists.parts    = api_response.lists.parts;
+                            console.log(api_response)
+                            //this.lists.parts    = api_response.lists.parts;
                             this.lists.products = api_response.lists.products.sold.concat(api_response.lists.products.standard);
                             this.lists.products.sort((a,b)=>(a.ref > b.ref)? 1: -1);
-                            console.log(this.lists.products);
+                           
                             this.lists.other.from      = api_response.other.from;
                             this.lists.other.to        = api_response.other.to;
                             this.lists.other.shop_id   = api_response.other.shop_id;
+                            //console.log(api_response.lists.devices);
+                            this.devices_lists = api_response.lists.devices;
+                            
+                            console.log(this.devices_lists);
+                            var doc = new jsPDF();
+                            var shopname = $('#getDeliveryDetailsForCrossCheck :selected ').text();
+                            var rows = api_response.lists.devices.map(e=>[e.product_name,e.device_type]);
+
+                            doc.autoTable({ 
+                                body:rows,
+                                theme:'grid',
+                                style:{fontSize:'10px'},
+                                didDrawPage:function(){
+                                    doc.text(`${shopname} sold devices from ${deliery.startTime} to ${deliery.endTime}`,5,5)
+                                }
+                            });
+
+                            doc.save(`${shopname} devices from ${deliery.startTime} to ${deliery.endTime}`);
+
+
                         }else if(res.data.status == 'failed'){
                             alert('internal error')
                         }                   
@@ -163,7 +182,8 @@
                             window.location.href = "./"
                         }
                     })
-                }           
+                }        
+                 
             },
         }
     });
@@ -197,23 +217,22 @@
             dataType:'json',
             url:api_endpoint+'replishment-task/need-to-check-products/'+task_id,
             success:function(res){
-                console.log(res);
+                console.log(res.data);
                 var doc = new jsPDF();
                 var shopname = res.data.shopname;           
                 var rows = res.data.products.map(e=>[e.suggest,e.name,e.barcode,e.standard_quantity])
 
                 doc.autoTable({ 
-                                body:rows,
-                                theme:'grid',
-                                headStyles: {fontSize:10,cellPadding:2,cellWidth:'auto',haligin:'center',valigh:'center'},
-                                columnStyles:{0:{cellWidth:20,halign:'center'},1:{cellWidth:110},2:{cellWidth:30,halign:'center'},3:{cellWidth:20,halign:'center'}},
-                                columns: [{header: 'Send', dataKey: 0}, {header: 'Name', dataKey: 1},{header: 'Barcode', dataKey: 2,haligin:'center'},{header: 'Standard', dataKey: 3,haligin:'center'}],
-                                didDrawPage:function(){
-                                    doc.text(`Job Number:${task_id} ${shopname} suggest send list`,20,10)
-                                }
-                            });
-
-               
+                    body:rows,
+                    theme:'grid',
+                    headStyles: {fontSize:10,cellPadding:2,cellWidth:'auto',haligin:'center',valigh:'center'},
+                    columnStyles:{0:{cellWidth:20,halign:'center'},1:{cellWidth:110},2:{cellWidth:30,halign:'center'},3:{cellWidth:20,halign:'center'}},
+                    columns: [{header: 'Send', dataKey: 0}, {header: 'Name', dataKey: 1},{header: 'Barcode', dataKey: 2,haligin:'center'},{header: 'Standard', dataKey: 3,haligin:'center'}],
+                    didDrawPage:function(){
+                        doc.text(`Job Number:${task_id} ${shopname} suggest send list`,20,10)
+                    }
+                });
+                            
                 doc.save(`${shopname} task ${task_id} suggest.pdf`)
             }
         })
