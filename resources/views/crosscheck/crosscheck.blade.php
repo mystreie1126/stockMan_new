@@ -178,7 +178,7 @@
         e.preventDefault();
         let r = confirm("Do you wanna delete this task? (suggest standard replishment quantities may changes by the time)");
         if(r == true){
-            let taskId = $(this).next().val();
+            let taskId = $(this).next().next().val();
             console.log(taskId)
             submit_once($(this),'deleting...')
             axios({
