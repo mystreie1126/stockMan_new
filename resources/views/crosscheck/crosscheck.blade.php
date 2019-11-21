@@ -8,7 +8,7 @@
     <li>
         <div class="collapsible-header row">
             <span class="col s2">Task Number: <span class="indigo-text">{{$task->id}}</span></span>
-            <span class="col s2">{{$task->shopname}}</span>
+            <span class="col s1">{{$task->shopname}}</span>
             <div class="col s2">
                 <span class="red-text">{{$task->selected_from}}</span><br>
                     to<br>
@@ -18,9 +18,11 @@
                 <span class="teal-text">{{$task->created_at}}</span>
             </div>
         <a class="btn green col s1" href="{{route('scanproducts',$task->id)}}">scan</a>
-            <button class="btn red col s1 delete_task">Delete</button>     
+            <button class="btn red col s1 delete_task">Delete</button>  
+            <button class="btn blue col s1 export_devices_list">device</button>   
             <input type="hidden" class="task_id" value="{{$task->id}}">
-            <button class="btn amber col s1 export_task">Export</button>  
+            <button class="btn amber col s1 export_task">product lists</button> 
+             
         </div>
         <div class="collapsible-body">
             <table class="centered">
@@ -139,24 +141,7 @@
                             this.lists.other.to        = api_response.other.to;
                             this.lists.other.shop_id   = api_response.other.shop_id;
                             //console.log(api_response.lists.devices);
-                            this.devices_lists = api_response.lists.devices;
-                            
-                            console.log(this.devices_lists);
-                            var doc = new jsPDF();
-                            var shopname = $('#getDeliveryDetailsForCrossCheck :selected ').text();
-                            var rows = api_response.lists.devices.map(e=>[e.product_name,e.device_type]);
-
-                            doc.autoTable({ 
-                                body:rows,
-                                theme:'grid',
-                                style:{fontSize:'10px'},
-                                didDrawPage:function(){
-                                    doc.text(`${shopname} sold devices from ${deliery.startTime} to ${deliery.endTime}`,5,5)
-                                }
-                            });
-
-                            doc.save(`${shopname} devices from ${deliery.startTime} to ${deliery.endTime}`);
-
+                           
 
                         }else if(res.data.status == 'failed'){
                             alert('internal error')
@@ -237,6 +222,43 @@
             }
         })
     })
+
+    $('.export_devices_list').click(function(e){
+        e.preventDefault();
+        let task_id = $(this).next().val();
+        console.log(task_id);
+
+        $.ajax({
+            type:'get',
+            dataType:'json',
+            url:api_endpoint+'replishment-task/need-to-check-products/devices/'+task_id,
+            success:function(res){
+                console.log(res);
+                if(res.status == 'success' && res.data.devices.length == 0){
+                    alert(`no devices sold during the ${res.data.to} to ${res.data.from} in ${res.data.shopname}`);
+                }else if (res.status == 'success' && res.data.devices.length > 0){
+                    var doc = new jsPDF();
+                    var rows = res.data.devices.map(e=>[e.product_name,e.device_type]);
+
+                    doc.autoTable({ 
+                        body:rows,
+                        theme:'grid',
+                        style:{fontSize:'10px'},
+                        didDrawPage:function(){
+                            doc.text(`${res.data.shopname} sold devices from ${res.data.to} to ${res.data.from}`,5,5)
+                        }
+                    });
+
+                    doc.save(`${res.data.shopname} devices from ${res.data.to} to ${res.data.from}`);
+
+                }
+            }
+        })
+
+    })
+
+
+
 </script>
 @endpush
 @endif
