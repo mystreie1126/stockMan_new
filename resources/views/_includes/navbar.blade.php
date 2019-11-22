@@ -81,6 +81,9 @@
                 </li>
             @endif
             <li>
+                <a href="{{route('sm1_parts_upload_history')}}">Parts Upload&Merge History</a>
+              </li>
+            <li>
               <div class="divider">User Action</div>
             </li>
 

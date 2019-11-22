@@ -203,3 +203,5 @@ Route::get('/pop_stockTake',function(){
 			->get();
 	return view('pop_stockTake',compact('shops'));
 })->name('pop_stockTake');
+
+Route::get('/parts_check_upload_history','PartsController@sm1_parts_upload_history')->name('sm1_parts_upload_history');

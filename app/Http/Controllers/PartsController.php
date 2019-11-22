@@ -243,4 +243,23 @@ class PartsController extends Controller
         return 'done';
 
     }
+
+
+    public function sm1_parts_upload_history(){
+        $upload_history = DB::table('c1ft_stock_manager.sm1_parts_uploaded as a')
+            ->select('b.name','a.created_at')
+            ->join('c1ft_pos_prestashop.ps_shop as b','a.shop_id','b.id_shop')
+            ->groupBy('a.created_at')->orderBy('a.created_at','desc')->get();
+
+        $merge_history = DB::table('c1ft_stock_manager.sm1_parts_uploaded as a')
+            ->select('a.parts_id','a.shop_id','b.update_at','b.reason','c.name as shopname','d.name as partsname')
+            ->join('c1ft_stock_manager.sm1_parts_merge_history as b','a.id','b.upload_id')
+            ->join('c1ft_pos_prestashop.ps_shop as c','a.shop_id','c.id_shop')
+            ->join('c1ft_pos_prestashop.ps_product_lang as d','d.id_product','a.parts_id')
+            ->groupBy('d.name')
+            ->orderBy('a.shop_id')
+            ->get();
+          
+        return view('parts_ss_upload_history',compact('upload_history','merge_history'));
+    }
 }
