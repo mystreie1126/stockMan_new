@@ -19,7 +19,7 @@
             </div>
         <a class="btn green col s1" href="{{route('scanproducts',$task->id)}}">scan</a>
             <button class="btn red col s1 delete_task">Delete</button>  
-            <button class="btn blue col s1 export_devices_list">device</button>   
+            {{-- <button class="btn blue col s1 export_devices_list">device</button>    --}}
             <input type="hidden" class="task_id" value="{{$task->id}}">
             <button class="btn amber col s1 export_task">product lists</button> 
              
