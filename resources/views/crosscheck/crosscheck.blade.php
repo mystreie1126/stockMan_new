@@ -19,7 +19,6 @@
             </div>
         <a class="btn green col s1" href="{{route('scanproducts',$task->id)}}">scan</a>
             <button class="btn red col s1 delete_task">Delete</button>  
-            {{-- <button class="btn blue col s1 export_devices_list">device</button>    --}}
             <input type="hidden" class="task_id" value="{{$task->id}}">
             <button class="btn amber col s1 export_task">product lists</button> 
              
@@ -51,12 +50,34 @@
 
 
 <div class="container">
+        <p style="display:flex; align-items:center">
+                <i class="material-icons left red-text" style="font-size:3rem;">phone_android</i>
+                <span>1. Send Devcies Based On Sold:</span>
+            </p>
+            <span style="font-style:italic">last time device send on {{$lastTime_send_devices}}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center">
+                <span class="red-text">From:</span>
+                <input type="date" class="center select_device_sold_from" style="width:25%"> <span class="red-text">TO</span>
+                <input type="date" class="center select_device_sold_to" style="width:25%">
+                <button class="btn red deviceList">Device List</button>
+            </div>
+            <div class="device_sold_table_list row">
+                <span class="col s2"></span>
+            </div>
 
     <div class="branches_general_sales" id="getDeliveryDetailsForCrossCheck">
-
+        
         <div class="row" style="margin-top:50px">
+            
+               
+
+            <p style="display:flex; align-items:center">
+                <i class="material-icons left teal-text" style="font-size:3rem;">airport_shuttle</i>
+                <span>2. Weekly Delivery Based On Standard:</span>
+            </p>
             <div class="input-field col s12 m3 l3" style="transform:translateY(20%)">
                 <select class="teal-text" style="display:block" v-model="selectedShop" >
+                    
                     @foreach($shops as $shop)
                         <option value="{{$shop->id_shop}}">{{$shop->name}}</option>
                     @endforeach
@@ -117,7 +138,7 @@
                     to:'',
                     shop_id:''
                 }
-            },
+            }
            
         },
         methods:{
@@ -169,7 +190,7 @@
                     })
                 }        
                  
-            },
+            }
         }
     });
 
@@ -178,7 +199,7 @@
         e.preventDefault();
         let r = confirm("Do you wanna delete this task? (suggest standard replishment quantities may changes by the time)");
         if(r == true){
-            let taskId = $(this).next().next().val();
+            let taskId = $(this).next().val();
             console.log(taskId)
             submit_once($(this),'deleting...')
             axios({
@@ -223,40 +244,41 @@
         })
     })
 
-    $('.export_devices_list').click(function(e){
+ 
+    $('.deviceList').click(function(e){
         e.preventDefault();
-        let task_id = $(this).next().val();
-        console.log(task_id);
-
-        $.ajax({
-            type:'get',
-            dataType:'json',
-            url:api_endpoint+'replishment-task/need-to-check-products/devices/'+task_id,
-            success:function(res){
-                console.log(res);
-                if(res.status == 'success' && res.data.devices.length == 0){
-                    alert(`no devices sold during the ${res.data.to} to ${res.data.from} in ${res.data.shopname}`);
-                }else if (res.status == 'success' && res.data.devices.length > 0){
-                    var doc = new jsPDF();
-                    var rows = res.data.devices.map(e=>[e.product_name,e.device_type]);
-
-                    doc.autoTable({ 
-                        body:rows,
-                        theme:'grid',
-                        style:{fontSize:'10px'},
-                        didDrawPage:function(){
-                            doc.text(`${res.data.shopname} sold devices from ${res.data.to} to ${res.data.from}`,5,5)
-                        }
-                    });
-
-                    doc.save(`${res.data.shopname} devices from ${res.data.to} to ${res.data.from}`);
-
+        let from = $('.select_device_sold_from').val(),
+            to   = $('.select_device_sold_to').val() + ' 23:00:00';
+        console.log(to)
+        if(from !== '' && to !== '' && from < to){
+            $.ajax({
+                type:'get',
+                url:api_endpoint+`replishment/devices_sold_lists?from=${from}&to=${to}`,
+                success:function(res){
+                    console.log(res.data)
+                    if(res.data.devices.length == 0){
+                        alert(`no devices sold during ${res.data.date_from} to ${res.data.date_to}`)
+                    }else{
+                        var doc = new jsPDF();
+                            doc.autoTable({ 
+                            body:res.data.devices,
+                            theme:'grid',
+                            didDrawPage:function(){
+                                doc.text(`all shop device sold from ${from} to ${to}`,20,10)
+                            }
+                        });
+                        doc.save(`devices sold ${from} to ${to}.pdf`)
+                    }
+                },
+                error:function(error,code,text){
+                    alert(error.status+' '+code+' '+text)
                 }
-            }
-        })
-
+            })
+        }else{
+            alert('wrong time choosen')
+        }
+        
     })
-
 
 
 </script>
