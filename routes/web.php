@@ -188,8 +188,6 @@ Route::get('/crosscheck','cross_checkController@index')->name('crosscheck');
 Route::get('/crosscheck/scan-product/{task_id}','cross_checkController@barcode_scan')->name('scanproducts');
 
 
-
-
 /*get check parts */
 
 Route::get('/trackPartsByStandard','PartsController@track_Parts_by_Standard')->name('track_Parts_by_Standard');
@@ -205,3 +203,10 @@ Route::get('/pop_stockTake',function(){
 })->name('pop_stockTake');
 
 Route::get('/parts_check_upload_history','PartsController@sm1_parts_upload_history')->name('sm1_parts_upload_history');
+
+
+/* tracking */
+
+Route::get('/track_product_info',function(){
+	return view('tracking.track_product_info');
+});

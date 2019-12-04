@@ -10,7 +10,7 @@ class cross_checkController extends Controller
 {
     public function index(){
         $shops = DB::table('c1ft_pos_prestashop.ps_shop')
-                 ->whereNotIn('id_shop',[1,32,35,42])->get();
+                 ->whereNotIn('id_shop',[1,32,35])->get();
         $tasks = DB::table('c1ft_stock_manager.sm1_rep_tasks')->where('checked',0)->get();
         foreach($tasks as $task){
             $task->products = DB::table('c1ft_stock_manager.sm1_rep_task_products')
