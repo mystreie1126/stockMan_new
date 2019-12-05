@@ -1,6 +1,7 @@
 @extends('template')
 @section('content')
 @if(Auth::check())
+	
 	<div class="row container">
 		<div class="input-field col s3">
 		    <select class="time">
@@ -9,10 +10,10 @@
 		      	<option value="14">Last 2 Weeks</option>
 		      	<option value="30">Last Month</option>
 		    </select>
-		    <label>Materialize Select</label>
+		    <label>Choose Time From<</label>
   		</div>
 		<div class="input-field col s7">
-          	<input placeholder="Placeholder" id="barcode_name" type="text" class="validate">
+          	<input placeholder="Barcode or name" id="barcode_name" type="text" class="validate">
           	<label for="first_name">Barcode or name</label>
     	</div>
     	<button class="getCharts btn col s2" style="transform: translateY(50%);">Go</button>	
@@ -125,13 +126,13 @@
 					let selling_trends_datasets = [
 						{
 							label:'All shop sold',
-							data:res.data.soldBetweenDays.map(e =>e[0].daily_sold),
+							data:res.data.soldBetweenDays.map(e =>e[0].daily_sold).reverse(),
 							borderColor: "#3e95cd",
 							fill:false
 						}
 					];
 
-					let selling_trends_labels = res.data.soldBetweenDays.map(e=>e[0].v_date.slice(0,10));
+					let selling_trends_labels = res.data.soldBetweenDays.map(e=>e[0].v_date.slice(0,10)).reverse();
 					let selling_trends_text = `${res.data.product_info.name} ${res.data.product_info.reference} all shops selling trend in last ${res.data.days_before} days`
 
 					 selling_trend_chart.data.labels = selling_trends_labels;

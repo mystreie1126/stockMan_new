@@ -37,8 +37,24 @@
              <li class="center">
                <a class="indigo-text">Login As: {{Auth::User()->name}}</a>
              </li>
+            
+            <li class="light-green accent-3">
+              <a><span class="nav_sub_header white-text">Charts</span></a>
+            </li>
 
-             <li class="deep-purple accent-1">
+             <li>
+              <a href="{{route('track_product_info_chart')}}">Product Chart</a>
+            </li>
+
+             <li>
+              <a href="{{route('salespage')}}">Sold percentage Chart</a>
+            </li>
+            <li>
+              <div class="divider">User Action</div>
+            </li>
+
+
+            <li class="deep-purple accent-1">
               <a><span class="nav_sub_header white-text">Cross Check</span></a>
             </li>
 

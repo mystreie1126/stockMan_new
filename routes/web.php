@@ -209,4 +209,4 @@ Route::get('/parts_check_upload_history','PartsController@sm1_parts_upload_histo
 
 Route::get('/track_product_info',function(){
 	return view('tracking.track_product_info');
-});
+})->name('track_product_info_chart');
