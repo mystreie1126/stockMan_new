@@ -210,3 +210,15 @@ Route::get('/parts_check_upload_history','PartsController@sm1_parts_upload_histo
 Route::get('/track_product_info',function(){
 	return view('tracking.track_product_info');
 })->name('track_product_info_chart');
+
+
+Route::get('/product_order_transaction',function(){
+	return view('tracking.productOrderTransaction');
+})->name('product_order_transaction');
+
+Route::get('/detail_product_all',function(){
+	$shops = \DB::table('c1ft_pos_prestashop.ps_shop')
+			->whereNotIn('id_shop',[1,32,35,41,42])
+			->get();
+	return view('detail_product_all',compact('shops'));
+})->name('detail_product_all');

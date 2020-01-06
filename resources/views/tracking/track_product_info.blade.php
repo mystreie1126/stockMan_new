@@ -1,7 +1,7 @@
 @extends('template')
 @section('content')
 @if(Auth::check())
-	
+
 	<div class="row container">
 		<div class="input-field col s3">
 		    <select class="time">
@@ -9,8 +9,10 @@
 	     		<option value="7">Last Week</option>
 		      	<option value="14">Last 2 Weeks</option>
 		      	<option value="30">Last Month</option>
+		      	<option value="60">Last Two Months</option>
+		      	<option value="90">Last Three Months</option>
 		    </select>
-		    <label>Choose Time From<</label>
+		    <label>Choose Time From</label>
   		</div>
 		<div class="input-field col s7">
           	<input placeholder="Barcode or name" id="barcode_name" type="text" class="validate">
@@ -25,6 +27,7 @@
 		    </div>
 		</div>
 		
+
 		
 		<div class="card col s12">
 		    <div class="card-content">
@@ -73,10 +76,38 @@
 				text:''
 			},
 			scales: {
-			    yAxes: [{ ticks:{beginAtZero: true} }]
+			    yAxes:[{
+			    	ticks:{
+			    			beginAtZero: true,
+			    			callback: function(value) {if (value % 1 === 0) {return value;}}
+			    		}
+			    	}]
 			}
 		}
 	})
+
+	var branches_selling_trend_chart = new Chart($('.selling_trend_chart'),{
+		type:'line',
+		data:{
+			labels:[],
+			datasets:[]
+		},
+		options:{
+			title:{
+				display:true,
+				text:''
+			},
+			scales: {
+			    yAxes:[{
+			    	ticks:{
+			    			beginAtZero: true,
+			    			callback: function(value) {if (value % 1 === 0) {return value;}}
+			    		}
+			    	}]
+			}
+		}
+	})
+
 
 	
 	$('.getCharts').click(function(e){
@@ -90,6 +121,8 @@
 			success:function(res){
 				console.log(res)
 				if(res.status == 'success' && res.data.stock_details.length > 0){
+					
+					
 					//draw_chart($('.selling_detail_chart'),'bar','')
 					let productDetail_datasets = [
 						{
@@ -123,10 +156,12 @@
 					product_detail_chart.options.title.text = productDetail_text;
 					product_detail_chart.update();
 
+
+					//sold charts trends
 					let selling_trends_datasets = [
 						{
 							label:'All shop sold',
-							data:res.data.soldBetweenDays.map(e =>e[0].daily_sold).reverse(),
+							data:res.data.allShop_soldBetweenDays.map(e =>e[0].daily_sold).reverse(),
 							borderColor: "#3e95cd",
 							fill:false
 						}
@@ -140,6 +175,15 @@
 					 selling_trend_chart.options.title.text = selling_trends_text;
 					 selling_trend_chart.update();
 
+					 
+
+					 //shops sell charts trends
+
+					
+
+
+
+
 				}else{
 					alert('can not find this product')
 				}
@@ -149,31 +193,5 @@
 	})
 
 
-
-
-	// var selling_detail_chart = new Chart($('.selling_detail_chart'),{
-	// 	type: 'bar',
-	//     data: {
-	//       	labels: ["1900", "1950", "1999", "2050"],
-	//       	datasets: [
-	// 	        {
-	// 	          	label: "Africa",
-	// 	          	backgroundColor: "#3e95cd",
-	// 	          	data: [133,221,783,2478]
-	// 	        }, 
-	// 	        {
-	// 	          	label: "Europe",
-	// 	          	backgroundColor: "#8e5ea2",
-	// 	         	data: [408,547,675,734]
-	// 	        }
-	//       	]
-	//     },
-	//     options: {
-	// 	    title: {
-	// 	        display: true,
-	// 	        text: 'Population growth (millions)'
-	// 	    }
-	//     }
-	// })
 </script>
 @endpush

@@ -52,6 +52,20 @@
             <li>
               <div class="divider">User Action</div>
             </li>
+            
+
+            <li class="teal darken-4">
+              <a><span class="nav_sub_header white-text">Standards and stock</span></a>
+            </li>
+
+             <li>
+              <a href="{{route('detail_product_all')}}">Product By Standard</a>
+            </li>
+
+            
+            <li>
+              <div class="divider">User Action</div>
+            </li>
 
 
             <li class="deep-purple accent-1">

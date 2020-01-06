@@ -10,6 +10,8 @@
 	     		<option value="7">Last Week</option>
 		      	<option value="14">Last 2 Weeks</option>
 		      	<option value="30">Last Month</option>
+		      	<option value="60">Last Two Months</option>
+		      	<option value="90">Last Three Months</option>
 		    </select>
 		    <label>Choose Time From</label>
   		</div>
@@ -119,12 +121,12 @@ $('.choose_time').on('change', function (e) {
    					},
    					{
    						label:'Brand New Phones',
-   						backgroundColor:'#32a2a8',
+   						backgroundColor:'#03f2ff',
    						data:res.data.allShopSoldDetails.map(e=>e[2].sold_amount)
    					},
    					{
    						label:'Tempered Glasses',
-   						backgroundColor:'#32a84c',
+   						backgroundColor:'#0e9629',
    						data:res.data.allShopSoldDetails.map(e=>e[3].sold_amount)
    					},
    					{
@@ -151,7 +153,7 @@ $('.choose_time').on('change', function (e) {
 
    				soldAmount_doughnutChart.data.datasets = [{
    					label: "Sold Amount",
-			        backgroundColor: ["#a8327d", "#4832a8","#32a2a8","#32a84c","#e0b30d","#e00d0d","#4a4a48"],
+			        backgroundColor: ["#a8327d", "#4832a8","#03f2ff","#0e9629","#e0b30d","#e00d0d","#4a4a48"],
 			        data: res.data.categoryOverview.map(e=>e.totalAmount)
    				}]
 
