@@ -23,10 +23,11 @@
         <thead>
             <tr>
                 <th>shopname</th>
-                <th>Name</th>
-                <th>Barcode</th>
-                <th>store Qty</th>
-                <th>Standard</th>
+                <th><a class="btn-small">Name</a></th>
+                <th><a class="btn-small">Barcode</a></th>
+                <th><a class="btn-small">Branch Qty</a></th>
+                <th><a class="btn-small">Branch Standard</a></th>
+                <th><a class="btn-small">Warehouse Qty</a></th>
                
             </tr>
         </thead>
@@ -36,19 +37,23 @@
                 <td>@{{list.shopname}}</td>
                 <td>@{{list.name}}</td>
                 <td>@{{list.reference}}</td>
+                @if(Auth::user()->id == 1)
                 <td>                  
-                    <input type="number" v-model="list.store_qty" style="width:40%" class="center indigo-text">
-                    <a class="btn-floating btn-small indigo" @click="update_store_qty(index)">
+                    <input type="number" v-model="list.store_qty" style="width:50%" class="center indigo-text">
+                    <a class="btn-floating btn-small indigo" @click="update_store_qty(list)">
                         <i class="large material-icons">mode_edit</i>
                     </a>
                 </td>
+                @else 
+            <td>@{{list.store_qty}}</td>
+                @endif
                 <td>
-                    <input type="number" v-model="list.standard_quantity"  style="width:40%" class="center green-text">
-                    <a class="btn-floating btn-small green" @click="update_standard_qty(index)">
+                    <input type="number" v-model="list.standard_quantity"  style="width:50%" class="center green-text">
+                    <a class="btn-floating btn-small green" @click="update_standard_qty(list)">
                         <i class="large material-icons">mode_edit</i>
                     </a>
                 </td>
-               
+                <td class="red-text">@{{list.warehouse_qty}}</td>
             </tr>
             
           </tbody>
@@ -60,6 +65,7 @@
 
 @push('detail_product_all')
 <script>
+    var sortOrder = false;
     console.log(api_endpoint+'detail_product_all')
     var dd = new Vue({
         el:'#someshit',
@@ -91,14 +97,14 @@
                 }
                 
             },
-            update_store_qty:function(index){
-               
-                if(Number(this.data[index].store_qty) >= 0){
+            update_store_qty:function(list){
+                
+                if(list.store_qty >= 0){
                     axios({
                         method:'put',
                         data:{
-                            updated_quantity:Number(this.data[index].store_qty),
-                            stock_id:this.data[index].stock_id
+                            updated_quantity:list.store_qty,
+                            stock_id:list.stock_id
                         },
                         url:api_endpoint+'detail_product_all/store_qty'
                     }).then((e)=>{
@@ -113,14 +119,14 @@
                     alert('can not less than 0')
                 }
             },
-            update_standard_qty:function(index){
+            update_standard_qty:function(list){
                 
-                if(Number(this.data[index].standard_quantity) >= 0){
+                if(list.standard_quantity >= 0){
                     axios({
                         method:'put',
                         data:{
-                            updated_quantity:Number(this.data[index].standard_quantity),
-                            standard_id:this.data[index].standard_id
+                            updated_quantity:list.standard_quantity,
+                            standard_id:list.standard_id
                         },
                         url:api_endpoint+'detail_product_all/standard_qty'
                     }).then((e)=>{
@@ -134,6 +140,7 @@
                     alert('can not less than 0')
                 }
             }
+            
         },
         computed:{
 			searchLower:function(){
