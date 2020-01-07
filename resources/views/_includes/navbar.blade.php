@@ -55,11 +55,14 @@
             <li class="teal darken-4">
               <a><span class="nav_sub_header white-text">Standards and stock</span></a>
             </li>
-
+            <li>
+              <a href="{{route('detail_product_warehouse_info')}}">All Products</a>
+            </li>
              <li>
-              <a href="{{route('detail_product_all')}}">Product By Standard</a>
+              <a href="{{route('detail_product_all')}}">Branch Standard</a>
             </li>
 
+            
             
             <li>
               <div class="divider">User Action</div>
