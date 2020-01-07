@@ -222,3 +222,8 @@ Route::get('/detail_product_all',function(){
 			->get();
 	return view('detail_product_all',compact('shops'));
 })->name('detail_product_all');
+
+Route::get('/detail_product_warehouse_info',function(){
+	$catas = \DB::table('c1ft_stock_manager.sm_wholesale_categories')->get();
+	return view('detail_product_warehouse_info',compact('catas'));
+})->name('detail_product_warehouse_info');

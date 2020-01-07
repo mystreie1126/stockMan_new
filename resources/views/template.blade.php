@@ -134,5 +134,6 @@
     @stack('track_product_standard')
     @stack('product_order_transaction')
     @stack('detail_product_all')
+    @stack('detail_product_warehouse')
     </body>
 </html>
