@@ -19,6 +19,9 @@ use Nexmo\Laravel\Facade\Nexmo;
 use Excel;
 use DB;
 use PDF;
+use Mail;
+use App\Mail\parts_sendEmail;
+use App\Mail\parts_missmatchEmail;
 
 class helperController extends Controller
 {
@@ -167,9 +170,12 @@ class helperController extends Controller
     }
 
     public function getThis(){
-
-    // $a = DB::table('c1ft_pos_prestashop.ps_shop')->get();
-    // return $a;
+        $email = 'jianqilu1126@gmail.com';
+        $send_query = DB::table('c1ft_stock_manager.sm_parts_sendHistory')->get();
+        $shopname = 'lalala';
+        Mail::to($email)
+        //->cc(['warehouse@funtech.ie','hq@funtech.ie','it@funtech.ie'])
+        ->send(new parts_sendEmail($send_query,$shopname));
     
     
 

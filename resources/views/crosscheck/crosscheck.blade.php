@@ -184,9 +184,9 @@
                         url:api_endpoint+'replishment-task'
                     }).then((e)=>{
                         console.log(e.data);
-                        if(e.data.status == 'success'){
-                            window.location.href = "./"
-                        }
+                        // if(e.data.status == 'success'){
+                        //     window.location.href = "./"
+                        // }
                     })
                 }        
                  
